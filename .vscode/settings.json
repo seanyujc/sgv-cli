@@ -1,0 +1,6 @@
+{
+  "tslint.exclude": [
+    "**/.sgv/**/*"
+  ],
+  "eslint.enable": false
+}

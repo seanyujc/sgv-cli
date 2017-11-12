@@ -1,8 +1,15 @@
 import { IPage } from "../IPage";
-export declare class Page implements IPage {
+import { Base } from "./Base";
+export declare class Page extends Base implements IPage {
+    private pageName;
     name: string;
     templatePath: string;
-    constructor();
+    routerTplPath: string;
+    constructor(pageName: string);
     copyFiles(): void;
-    replace(): void;
+    addFactoryFun(): void;
+    addRouter(): void;
+    removeFiles(): void;
+    deleteFactoryFun(): void;
+    deleteRouter(): void;
 }

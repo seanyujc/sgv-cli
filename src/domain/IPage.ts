@@ -1,7 +1,9 @@
-export interface IPage {
+import { IBase } from "./IBase";
+
+export interface IPage extends IBase {
   name: string;
   templatePath: string;
 
   copyFiles(): void;
-  replace(): void;
+  addFactoryFun(): void;
 }
