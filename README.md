@@ -1,22 +1,22 @@
 A simple CLI for scaffolding Vue.js projects(ts).
 # usage
-1. install
+I. install
 ```sh
 npm i -g sgv-cli
 ```
-2. initialize
+II. initialize
 ```sh
 sgv init [project name]
 ```
-3. build page
+III. build page
 ```sh
 sgv build --page [page name]
 ```
-4. remvoe page
+IV. remvoe page
 ```sh
 sgv remove --page [page name]
 ```
-5. help
+V. help
 ```sh
 sgv --help
 ```
