@@ -110,7 +110,7 @@ export class Base implements IBase {
           return;
         }
         callback(undefined);
-      })
+      });
     });
   }
 }

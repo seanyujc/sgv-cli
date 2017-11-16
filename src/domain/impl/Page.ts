@@ -1,11 +1,10 @@
 import fs = require("fs");
 import path = require("path");
+import * as rimraf from "rimraf";
+import * as winston from "winston";
 import { IPageConst, PAGE } from "../../config";
 import { IPage } from "../IPage";
 import { Base } from "./Base";
-import { basename } from "path";
-import * as rimraf from "rimraf";
-import * as winston from "winston";
 
 export class Page extends Base implements IPage {
   name: string;
@@ -50,7 +49,7 @@ export class Page extends Base implements IPage {
         return;
       }
       winston.info("Added " + this.pageName + " page's factory!");
-    })
+    });
   }
 
   addRouter() {
@@ -66,17 +65,17 @@ export class Page extends Base implements IPage {
         return;
       }
       winston.info("Added " + this.pageName + " page's route!");
-    })
+    });
   }
 
   removeFiles() {
     const basePath = path.join(super.getCurrentDir(), "src/app/pages", this.pageName);
     rimraf(basePath, (err) => {
-      if(err){
+      if (err) {
         winston.error(err.message);
         return;
       }
-      winston.info("Removed All files of "+ this.pageName +" page.");
+      winston.info("Removed All files of " + this.pageName + " page.");
     });
   }
 

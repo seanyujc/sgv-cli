@@ -1,6 +1,6 @@
 import program = require("commander");
-import { Page } from "./domain/impl/Page";
 import * as winston from "winston";
+import { Page } from "./domain/impl/Page";
 
 program
   .usage("[entry]")
