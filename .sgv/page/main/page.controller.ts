@@ -1,4 +1,3 @@
-import $ from "jquery";
 import Vue from "vue";
 import Component from "vue-class-component";
 import Common from "../../core/common";
