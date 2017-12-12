@@ -7,9 +7,7 @@ import Common from "../../core/common";
   template: require("./<%= keyword%>.html"),
   // components: { HeaderBar },
   mounted: () => {
-    // const file = new File([""], "file.txt");
-    const file: any = document.getElementById("file");
-    console.log(file);
+    console.log("mounted");
   },
 })
 export default class <%= uFKeyword%>Page extends Vue {
