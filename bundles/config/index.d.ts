@@ -20,6 +20,9 @@ export interface IServiceConst {
     FUNCTION_ANCHOR: string;
     FUNCTION_FUNCTION_CONTENT: string;
     FUNCTION_FUNCTION_PATTERN: string;
+    API_CONTENT: string;
+    API_GET_ANCHOR: string;
+    API_POST_ANCHOR: string;
 }
 export declare const PAGE: IPageConst;
 export declare const SERVICE: IServiceConst;

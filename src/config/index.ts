@@ -74,7 +74,7 @@ export class Services {
     return this.proxyHttp.post("<%= keyword%>", {arg});
   }`,
   FUNCTION_FUNCTION_PATTERN: "",
-  API_GET_ANCHOR: "     // SGV-BUILD-API-GET # NOT DELETE",
-  API_CONTENT: `     <%= keyword%>: "apiHost:/<%= keyword%>",`,
-  API_POST_ANCHOR: "     // SGV-BUILD-API-POST # NOT DELETE"
+  API_GET_ANCHOR: "    // SGV-BUILD-API-GET # NOT DELETE",
+  API_CONTENT: `    <%= keyword%>: "apiHost:/<%= keyword%>",`,
+  API_POST_ANCHOR: "    // SGV-BUILD-API-POST # NOT DELETE"
 };

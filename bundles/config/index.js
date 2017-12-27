@@ -22,5 +22,8 @@ exports.SERVICE = {
     FUNCTION_ANCHOR: "  // SGV-BUILD-SERVICE-FUNCTION # NOT DELETE",
     FUNCTION_FUNCTION_CONTENT: "  <%= keyword%>(arg: string): Promise<any> {\n    return this.proxyHttp.post(\"<%= keyword%>\", {arg});\n  }",
     FUNCTION_FUNCTION_PATTERN: "",
+    API_GET_ANCHOR: "    // SGV-BUILD-API-GET # NOT DELETE",
+    API_CONTENT: "    <%= keyword%>: \"apiHost:/<%= keyword%>\",",
+    API_POST_ANCHOR: "    // SGV-BUILD-API-POST # NOT DELETE"
 };
 //# sourceMappingURL=index.js.map

@@ -11,4 +11,5 @@ export declare class Service extends Base implements IService {
     removeFiles(): void;
     deleteFactoryFun(): void;
     addServiceFun(): void;
+    addAPI(method: string): void;
 }

@@ -130,6 +130,21 @@ var Service = /** @class */ (function (_super) {
             });
         });
     };
+    Service.prototype.addAPI = function (method) {
+        var _this = this;
+        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/app/config");
+        var fileName = "api.conf.ts";
+        var apiContent = _super.prototype.replaceKeyword.call(this, config_1.SERVICE.API_CONTENT, this.funName);
+        var addAPIAnchor = method.toLocaleUpperCase() === "POST" ? config_1.SERVICE.API_POST_ANCHOR : config_1.SERVICE.API_GET_ANCHOR;
+        var addAPIContent = addAPIAnchor + _super.prototype.endl.call(this) + apiContent;
+        _super.prototype.addContentToFile.call(this, basePath, fileName, "", addAPIAnchor, addAPIContent, function (err) {
+            if (err) {
+                winston.error(err.message);
+                return;
+            }
+            winston.info("Added " + _this.funName + " api cofig!");
+        });
+    };
     return Service;
 }(Base_1.Base));
 exports.Service = Service;

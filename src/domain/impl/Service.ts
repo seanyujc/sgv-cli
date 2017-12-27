@@ -125,10 +125,17 @@ export class Service extends Base implements IService {
   }
 
   addAPI(method: string) {
-    const basePath = path.join(super.getCurrentDir(), "src/app/config/services");
+    const basePath = path.join(super.getCurrentDir(), "src/app/config");
     const fileName = "api.conf.ts";
     const apiContent = super.replaceKeyword(SERVICE.API_CONTENT, this.funName);
-    let addAPIContent = method.toLocaleUpperCase() === "POST" ? SERVICE.API_POST_ANCHOR : SERVICE.API_GET_ANCHOR;
-    addAPIContent = addAPIContent + super.endl() + apiContent;
+    const addAPIAnchor = method.toLocaleUpperCase() === "POST" ? SERVICE.API_POST_ANCHOR : SERVICE.API_GET_ANCHOR;
+    const addAPIContent = addAPIAnchor + super.endl() + apiContent;
+    super.addContentToFile(basePath, fileName, "", addAPIAnchor, addAPIContent, (err) => {
+      if (err) {
+        winston.error(err.message);
+        return;
+      }
+      winston.info("Added " + this.funName + " api cofig!");
+    });
   }
 }
