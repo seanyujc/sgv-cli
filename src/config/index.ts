@@ -15,6 +15,15 @@ export interface IServiceConst {
   FACTORY_ANCHOR: string;
   FACTORY_FUNCTION_CONTENT: string;
   FACTORY_FUNCTION_PATTERN: string;
+  INTERFACE_ANCHOR: string;
+  INTERFACE_CONTENT: string;
+  INTERFACE_PATTERN: string;
+  FUNCTION_ANCHOR: string;
+  FUNCTION_FUNCTION_CONTENT: string;
+  FUNCTION_FUNCTION_PATTERN: string;
+  API_CONTENT: string;
+  API_GET_ANCHOR: string;
+  API_POST_ANCHOR: string;
 }
 
 export const PAGE: IPageConst = {
@@ -46,7 +55,7 @@ export class Services {
   IMPORT_CONTENT: `import { create<%= uFKeyword%>Service, I<%= uFKeyword%>Service, <%= uFKeyword%>Service } from "./services/<%= keyword%>.serv";`,
   IMPORT_PATTERN: `import { create<%= uFKeyword%>Service, I<%= uFKeyword%>Service, <%= uFKeyword%>Service } from "./services/<%= keyword%>.serv";`,
   FACTORY_ANCHOR: "  // SGV-BUILD-SERVICE-FAC # NOT DELETE",
-  FACTORY_FUNCTION_CONTENT: `// '<%= uFKeyword%>' SERVICE FACTORY START
+  FACTORY_FUNCTION_CONTENT: `  // '<%= uFKeyword%>' SERVICE FACTORY START
   static <%= keyword%>Service: I<%= uFKeyword%>Service;  
   static create<%= uFKeyword%>Service() {
     if (this.<%= keyword%>Service) {
@@ -57,4 +66,15 @@ export class Services {
   }
   // '<%= uFKeyword%>' SERVICE FACTORY END`,
   FACTORY_FUNCTION_PATTERN: "// '<%= uFKeyword%>' SERVICE FACTORY START[\\s\\S]*// '<%= uFKeyword%>' SERVICE FACTORY END",
+  INTERFACE_ANCHOR: "  // SGV-BUILD-SERVICE-INTERFACE # NOT DELETE",
+  INTERFACE_CONTENT: "  <%= keyword%>(arg: string): Promise<any>;",
+  INTERFACE_PATTERN: "",
+  FUNCTION_ANCHOR: "  // SGV-BUILD-SERVICE-FUNCTION # NOT DELETE",
+  FUNCTION_FUNCTION_CONTENT: `  <%= keyword%>(arg: string): Promise<any> {
+    return this.proxyHttp.post("<%= keyword%>", {arg});
+  }`,
+  FUNCTION_FUNCTION_PATTERN: "",
+  API_GET_ANCHOR: "     // SGV-BUILD-API-GET # NOT DELETE",
+  API_CONTENT: `     <%= keyword%>: "apiHost:/<%= keyword%>",`,
+  API_POST_ANCHOR: "     // SGV-BUILD-API-POST # NOT DELETE"
 };

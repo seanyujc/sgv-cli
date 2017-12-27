@@ -3,22 +3,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var program = require("commander");
 var readline = require("readline");
 var Page_1 = require("./domain/impl/Page");
+var Service_1 = require("./domain/impl/Service");
 program
-    .usage('[entry]')
-    .option('-p,--page [page-name]', 'create page module')
-    .option('-c,--comp [comp-name]', 'create component module')
+    .usage("[entry]")
+    .option("-p,--page [page-name]", "remove page module")
+    .option("-s,--service [service-name]", "remove service")
+    .option("-c,--comp [comp-name]", "remove component module")
     .parse(process.argv);
 var rl = readline.createInterface({
     input: process.stdin,
-    output: process.stdout
+    output: process.stdout,
 });
 if (program.hasOwnProperty("page")) {
     rl.question("Are you sure to remove " + program.page + " page?(y or N):", function (answer) {
-        if (answer.toLocaleLowerCase() === 'y') {
+        if (answer.toLocaleLowerCase() === "y") {
             var page = new Page_1.Page(program.page);
             page.removeFiles();
             page.deleteFactoryFun();
             page.deleteRouter();
+        }
+        rl.close();
+    });
+}
+if (program.hasOwnProperty("service")) {
+    rl.question("Are you sure to remove " + program.service + " service?(y or N):", function (answer) {
+        if (answer.toLocaleLowerCase() === "y") {
+            var service = new Service_1.Service(program.service);
+            service.removeFiles();
+            service.deleteFactoryFun();
         }
         rl.close();
     });

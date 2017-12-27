@@ -11,7 +11,7 @@
   },
   "scripts": {
     "rebuild": "rimraf bundles && tsc && npm unlink && npm link",
-    "debug": "node --debug-brk=9229 --nolazy ./bundles/sgv-build.js --page=contact"
+    "debug": "node --debug-brk=9229 --nolazy ./bundles/sgv-build.js --service=person"
   },
   "keywords": [],
   "author": "",

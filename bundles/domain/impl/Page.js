@@ -12,10 +12,10 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require("fs");
 var path = require("path");
-var config_1 = require("../../config");
-var Base_1 = require("./Base");
 var rimraf = require("rimraf");
 var winston = require("winston");
+var config_1 = require("../../config");
+var Base_1 = require("./Base");
 var Page = /** @class */ (function (_super) {
     __extends(Page, _super);
     function Page(pageName) {

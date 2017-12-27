@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var program = require("commander");
 var Page_1 = require("./domain/impl/Page");
+var Service_1 = require("./domain/impl/Service");
 program
     .usage("[entry]")
     .option("-p,--page [page-name]", "create page module")
@@ -16,5 +17,14 @@ if (program.hasOwnProperty("page")) {
     page.addRouter();
 }
 if (program.hasOwnProperty("comp")) {
+}
+if (program.hasOwnProperty("service") && !program.hasOwnProperty("fun")) {
+    var service = new Service_1.Service(program.service);
+    service.copyFiles();
+    service.addFactoryFun();
+}
+if (program.hasOwnProperty("service") && program.hasOwnProperty("fun")) {
+    var service = new Service_1.Service(program.service, program.fun);
+    service.addServiceFun();
 }
 //# sourceMappingURL=sgv-build.js.map

@@ -7,4 +7,7 @@ export interface IService extends IBase {
 
   copyFiles(): void;
   addFactoryFun(): void;
+  removeFiles(): void;
+  deleteFactoryFun(): void;
+  addServiceFun(): void;
 }
