@@ -56,7 +56,7 @@ export class Services {
   IMPORT_PATTERN: `import { create<%= uFKeyword%>Service, I<%= uFKeyword%>Service, <%= uFKeyword%>Service } from "./services/<%= keyword%>.serv";`,
   FACTORY_ANCHOR: "  // SGV-BUILD-SERVICE-FAC # NOT DELETE",
   FACTORY_FUNCTION_CONTENT: `  // '<%= uFKeyword%>' SERVICE FACTORY START
-  static <%= keyword%>Service: I<%= uFKeyword%>Service;  
+  static <%= keyword%>Service: I<%= uFKeyword%>Service;
   static create<%= uFKeyword%>Service() {
     if (this.<%= keyword%>Service) {
       return this.<%= keyword%>Service;
@@ -70,11 +70,11 @@ export class Services {
   INTERFACE_CONTENT: "  <%= keyword%>(arg: string): Promise<any>;",
   INTERFACE_PATTERN: "",
   FUNCTION_ANCHOR: "  // SGV-BUILD-SERVICE-FUNCTION # NOT DELETE",
-  FUNCTION_FUNCTION_CONTENT: `  <%= keyword%>(arg: string): Promise<any> {
+  FUNCTION_FUNCTION_CONTENT: `  public <%= keyword%>(arg: string): Promise<any> {
     return this.proxyHttp.post("<%= keyword%>", {arg});
   }`,
   FUNCTION_FUNCTION_PATTERN: "",
   API_GET_ANCHOR: "    // SGV-BUILD-API-GET # NOT DELETE",
   API_CONTENT: `    <%= keyword%>: "apiHost:/<%= keyword%>",`,
-  API_POST_ANCHOR: "    // SGV-BUILD-API-POST # NOT DELETE"
+  API_POST_ANCHOR: "    // SGV-BUILD-API-POST # NOT DELETE",
 };
