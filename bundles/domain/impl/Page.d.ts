@@ -2,7 +2,6 @@ import { IPage } from "../IPage";
 import { Base } from "./Base";
 export declare class Page extends Base implements IPage {
     private pageName;
-    name: string;
     templatePath: string;
     routerTplPath: string;
     constructor(pageName: string);

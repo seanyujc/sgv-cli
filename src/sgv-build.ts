@@ -2,6 +2,7 @@ import program = require("commander");
 import * as winston from "winston";
 import { Page } from "./domain/impl/Page";
 import { Service } from "./domain/impl/Service";
+import { Component } from "./domain/impl/Component";
 
 program
   .usage("[entry]")
@@ -21,7 +22,9 @@ if (program.hasOwnProperty("page")) {
 }
 
 if (program.hasOwnProperty("comp")) {
-
+  const comp = new Component(program.comp);
+  comp.copyFiles();
+  comp.addFactoryConfig();
 }
 
 if (program.hasOwnProperty("service") && !program.hasOwnProperty("fun")) {

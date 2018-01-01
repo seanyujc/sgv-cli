@@ -7,7 +7,6 @@ import { IPage } from "../IPage";
 import { Base } from "./Base";
 
 export class Page extends Base implements IPage {
-  name: string;
   templatePath: string;
   routerTplPath: string;
 

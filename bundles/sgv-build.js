@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var program = require("commander");
 var Page_1 = require("./domain/impl/Page");
 var Service_1 = require("./domain/impl/Service");
+var Component_1 = require("./domain/impl/Component");
 program
     .usage("[entry]")
     .option("-p,--page [page-name]", "create page module")
@@ -19,6 +20,9 @@ if (program.hasOwnProperty("page")) {
     page.addRouter();
 }
 if (program.hasOwnProperty("comp")) {
+    var comp = new Component_1.Component(program.comp);
+    comp.copyFiles();
+    comp.addFactoryConfig();
 }
 if (program.hasOwnProperty("service") && !program.hasOwnProperty("fun")) {
     var service = new Service_1.Service(program.service);

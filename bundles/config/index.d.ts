@@ -6,6 +6,11 @@ export interface IPageConst {
     ROUTER_CONFIG_CONTENT: string;
     ROUTER_CONFIG_PATTERN: string;
 }
+export interface ICompConst {
+    FACTORY_ANCHOR: string;
+    FACTORY_CONTENT: string;
+    FACTORY_PATTERN: string;
+}
 export interface IServiceConst {
     ORIGINAL: string;
     IMPORT_ANCHOR: string;
@@ -25,4 +30,5 @@ export interface IServiceConst {
     API_POST_ANCHOR: string;
 }
 export declare const PAGE: IPageConst;
+export declare const COMP: ICompConst;
 export declare const SERVICE: IServiceConst;

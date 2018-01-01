@@ -7,6 +7,12 @@ export interface IPageConst {
   ROUTER_CONFIG_PATTERN: string;
 }
 
+export interface ICompConst {
+  FACTORY_ANCHOR: string;
+  FACTORY_CONTENT: string;
+  FACTORY_PATTERN: string;
+}
+
 export interface IServiceConst {
   ORIGINAL: string;
   IMPORT_ANCHOR: string;
@@ -32,7 +38,7 @@ export const PAGE: IPageConst = {
 export function <%= keyword%>PagePreloading(): Promise<any> {
   return new Promise((resolve) => {
     require.ensure([], (require) => {
-      const <%= keyword%> = require<{ default: any }>("./<%= keyword%>/<%= keyword%>.module").default;
+      const <%= keyword%> = require("./<%= keyword%>/<%= keyword%>.vue").default;
       resolve(<%= keyword%>);
     });
   });
@@ -42,6 +48,12 @@ export function <%= keyword%>PagePreloading(): Promise<any> {
   ROUTER_CONFIG_ANCHOR: "  // SGV-BUILD-PAGE-ROUTER-CONFIG # NOT DELETE",
   ROUTER_CONFIG_CONTENT: "{ path: \"/<%= keyword%>\", component: PageFactory.<%= keyword%>PagePreloading },",
   ROUTER_CONFIG_PATTERN: "[\\t| ]*{ path: \"/<%= keyword%>\", component: PageFactory.<%= keyword%>PagePreloading },",
+};
+
+export const COMP: ICompConst = {
+  FACTORY_ANCHOR: "// SGV-BUILD-COMP-FAC # NOT DELETE",
+  FACTORY_CONTENT: "  .component(\"<%= keyword%>\", <%= uFKeyword%>)",
+  FACTORY_PATTERN: "[\\t| ]*.component(\"<%= keyword%>\", <%= uFKeyword%>)",
 };
 
 export const SERVICE: IServiceConst = {
