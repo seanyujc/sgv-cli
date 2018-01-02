@@ -4,6 +4,7 @@ var program = require("commander");
 var readline = require("readline");
 var Page_1 = require("./domain/impl/Page");
 var Service_1 = require("./domain/impl/Service");
+var Component_1 = require("./domain/impl/Component");
 program
     .usage("[entry]")
     .option("-p,--page [page-name]", "remove page module")
@@ -21,6 +22,16 @@ if (program.hasOwnProperty("page")) {
             page.removeFiles();
             page.deleteFactoryFun();
             page.deleteRouter();
+        }
+        rl.close();
+    });
+}
+if (program.hasOwnProperty("comp")) {
+    rl.question("Are you sure to remove " + program.comp + " component?(y or N):", function (answer) {
+        if (answer.toLocaleLowerCase() === "y") {
+            var comp = new Component_1.Component(program.comp);
+            comp.removeFiles();
+            comp.deleteFactoryConfig();
         }
         rl.close();
     });

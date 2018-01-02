@@ -3,6 +3,7 @@ import path = require("path");
 import * as winston from "winston";
 import { Base } from "./Base";
 import { COMP } from "../../config/index";
+import * as rimraf from "rimraf";
 
 export class Component extends Base {
   name: string;
@@ -44,6 +45,34 @@ export class Component extends Base {
         return;
       }
       winston.info("Added " + this.compName + " components's factory config!");
+    });
+  }
+
+  removeFiles() {
+    const basePath = path.join(super.getCurrentDir(), "src/app/components", this.compName);
+    rimraf(basePath, (err) => {
+      if (err) {
+        winston.error(err.message);
+        return;
+      }
+      winston.info("Removed All files of " + this.compName + " component.");
+    });
+  }
+
+  deleteFactoryConfig() {
+    const basePath = path.join(super.getCurrentDir(), "src/app/components");
+    const fileName = "factory.comp.ts";
+    const pattern = super.replaceKeyword(COMP.FACTORY_PATTERN, this.compName) + super.endl();
+
+    super.deleteContentFromFile(basePath, fileName, pattern, (err) => {
+      if (err && err.name === "without") {
+        winston.error("Without config option in factory file!");
+        return;
+      } else if (err) {
+        winston.log("error", err.message, err);
+        return;
+      }
+      winston.info("Deleted Factory function of " + this.compName + " component.")
     });
   }
 }

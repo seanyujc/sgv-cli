@@ -2,6 +2,7 @@ import program = require("commander");
 import readline = require("readline");
 import { Page } from "./domain/impl/Page";
 import { Service } from "./domain/impl/Service";
+import { Component } from "./domain/impl/Component";
 
 program
   .usage("[entry]")
@@ -27,8 +28,15 @@ if (program.hasOwnProperty("page")) {
   });
 }
 
-if (program.hasOwnProperty("comp")){
-
+if (program.hasOwnProperty("comp")) {
+  rl.question(`Are you sure to remove ${program.comp} component?(y or N):`, (answer) => {
+    if (answer.toLocaleLowerCase() === "y") {
+      const comp = new Component(program.comp);
+      comp.removeFiles();
+      comp.deleteFactoryConfig();
+    }
+    rl.close();
+  });
 }
 
 if (program.hasOwnProperty("service")) {

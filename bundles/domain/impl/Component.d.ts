@@ -6,4 +6,6 @@ export declare class Component extends Base {
     constructor(compName: string);
     copyFiles(): void;
     addFactoryConfig(): void;
+    removeFiles(): void;
+    deleteFactoryConfig(): void;
 }

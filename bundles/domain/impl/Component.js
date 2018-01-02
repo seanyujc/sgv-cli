@@ -15,6 +15,7 @@ var path = require("path");
 var winston = require("winston");
 var Base_1 = require("./Base");
 var index_1 = require("../../config/index");
+var rimraf = require("rimraf");
 var Component = /** @class */ (function (_super) {
     __extends(Component, _super);
     function Component(compName) {
@@ -55,6 +56,35 @@ var Component = /** @class */ (function (_super) {
                 return;
             }
             winston.info("Added " + _this.compName + " components's factory config!");
+        });
+    };
+    Component.prototype.removeFiles = function () {
+        var _this = this;
+        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/app/components", this.compName);
+        rimraf(basePath, function (err) {
+            if (err) {
+                winston.error(err.message);
+                return;
+            }
+            winston.info("Removed All files of " + _this.compName + " component.");
+        });
+    };
+    Component.prototype.deleteFactoryConfig = function () {
+        var _this = this;
+        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/app/components");
+        var fileName = "factory.comp.ts";
+        var pattern = _super.prototype.replaceKeyword.call(this, index_1.COMP.FACTORY_PATTERN, this.compName) + _super.prototype.endl.call(this);
+        winston.log("error", pattern);
+        _super.prototype.deleteContentFromFile.call(this, basePath, fileName, pattern, function (err) {
+            if (err && err.name === "without") {
+                winston.error("Without config option in factory file!");
+                return;
+            }
+            else if (err) {
+                winston.log("error", err.message, err);
+                return;
+            }
+            winston.info("Deleted Factory function of " + _this.compName + " component.");
         });
     };
     return Component;
