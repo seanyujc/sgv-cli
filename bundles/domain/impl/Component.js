@@ -21,7 +21,7 @@ var Component = /** @class */ (function (_super) {
     function Component(compName) {
         var _this = _super.call(this) || this;
         _this.compName = compName;
-        _this.templatePath = path.join(__dirname, "../../../", ".sgv/page/main");
+        _this.templatePath = path.join(__dirname, "../../../", ".sgv/comp");
         return _this;
     }
     Component.prototype.copyFiles = function () {
@@ -74,7 +74,6 @@ var Component = /** @class */ (function (_super) {
         var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/app/components");
         var fileName = "factory.comp.ts";
         var pattern = _super.prototype.replaceKeyword.call(this, index_1.COMP.FACTORY_PATTERN, this.compName) + _super.prototype.endl.call(this);
-        winston.log("error", pattern);
         _super.prototype.deleteContentFromFile.call(this, basePath, fileName, pattern, function (err) {
             if (err && err.name === "without") {
                 winston.error("Without config option in factory file!");

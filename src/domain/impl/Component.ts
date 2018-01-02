@@ -10,7 +10,7 @@ export class Component extends Base {
   templatePath: string;
   constructor(private compName: string) {
     super();
-    this.templatePath = path.join(__dirname, "../../../", ".sgv/page/main");
+    this.templatePath = path.join(__dirname, "../../../", ".sgv/comp");
   }
 
   copyFiles(): void {
