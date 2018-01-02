@@ -52,8 +52,8 @@ export function <%= keyword%>PagePreloading(): Promise<any> {
 
 export const COMP: ICompConst = {
   FACTORY_ANCHOR: "// SGV-BUILD-COMP-FAC # NOT DELETE",
-  FACTORY_CONTENT: "  .component(\"<%= keyword%>\", <%= uFKeyword%>)",
-  FACTORY_PATTERN: "[\\t| ]*.component(\"<%= keyword%>\", <%= uFKeyword%>)",
+  FACTORY_CONTENT: "Vue.component(\"<%= keyword%>\", require(\"./<%= keyword%>/<%= keyword%>.vue\").default);",
+  FACTORY_PATTERN: "[\\t| ]*Vue.component(\"<%= keyword%>\", require(\"./<%= keyword%>/<%= keyword%>.vue\").default);",
 };
 
 export const SERVICE: IServiceConst = {

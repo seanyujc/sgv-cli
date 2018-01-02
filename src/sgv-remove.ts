@@ -27,6 +27,10 @@ if (program.hasOwnProperty("page")) {
   });
 }
 
+if (program.hasOwnProperty("comp")){
+
+}
+
 if (program.hasOwnProperty("service")) {
   rl.question(`Are you sure to remove ${program.service} service?(y or N):`, (answer) => {
     if (answer.toLocaleLowerCase() === "y") {
