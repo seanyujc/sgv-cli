@@ -11,7 +11,7 @@ program
     .parse(process.argv);
 var projectName = program.args[0];
 var spinner = ora("initializing for " + projectName + " project...").start();
-download("seanyujc/sgn-tpl-vue", projectName, function (err) {
+download("seanyujc/sgv-tpl-webpack", projectName, function (err) {
     spinner.stop();
     if (err) {
         winston.log(err);

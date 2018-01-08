@@ -10,7 +10,7 @@ program
   .parse(process.argv);
 const projectName = program.args[0];
 const spinner = ora("initializing for " + projectName + " project...").start();
-download("seanyujc/sgn-tpl-vue", projectName, (err) => {
+download("seanyujc/sgv-tpl-webpack", projectName, (err) => {
   spinner.stop();
   if (err) {
     winston.log(err);
