@@ -1,28 +1,40 @@
-import Vue from "vue";
-import Component from "vue-class-component";
 import { AutowiredService } from "../../../lib/sg-resource/decorators";
 import { ICommonService } from "../../core/services/common.serv";
+import { Component, Emit, Inject, Model, Prop, Provide, Vue, Watch } from "vue-property-decorator";
+// import Common from "../../core/common";
 
 @Component({
-  props: {
-    message: String,
-  },
+  // components: { HeaderBar },
 })
 export default class <%= uFKeyword%>Comp extends Vue {
   @AutowiredService
-  private commonService: ICommonService;
+  commonService: ICommonService;
+  @Prop({ default: "<%= uFKeyword%>" })
+  name: string = "<%= uFKeyword%>";
 
-  private name: string = "<%= uFKeyword%>";
+  // 一般属性
+  nameC: string = this.name;
 
-  public show() {
-  }
-
+  // 计算属性
   get today() {
     return new Date();
   }
 
-  private mounted(){
-    console.log(this.message);
+  @Watch("name")
+  onNameChanged(val: string) {
+    this.nameC = val;
+  }
+
+  @Emit("onChangeName")
+  setName(name: string){ this.nameC = name; }
+
+  // 普通方法
+  show() {
+  }
+
+  // 生命周期钩子
+  mounted() {
+
   }
 
 }

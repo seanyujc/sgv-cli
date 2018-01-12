@@ -1,5 +1,6 @@
 <template>
   <div class="comp-module">
+    {{nameC}}
   </div>
 </template>
 <script lang="ts" src="./<%= keyword%>.ts">
