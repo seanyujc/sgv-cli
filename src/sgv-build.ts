@@ -1,8 +1,8 @@
 import program = require("commander");
 import * as winston from "winston";
+import { Component } from "./domain/impl/Component";
 import { Page } from "./domain/impl/Page";
 import { Service } from "./domain/impl/Service";
-import { Component } from "./domain/impl/Component";
 
 program
   .usage("[entry]")
@@ -43,4 +43,3 @@ if (program.hasOwnProperty("api") && program.hasOwnProperty("method")) {
   const service = new Service(undefined, program.api);
   service.addAPI(program.method);
 }
-

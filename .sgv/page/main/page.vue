@@ -9,10 +9,10 @@
 
 </script>
 <style lang="scss" scoped>
-$color-red: #f00;
+$color: #333;
 
 .page-module {
-  color: $color-red;
+  color: $color;
   font-size: 0.6rem;
 }
 </style>

@@ -90,16 +90,19 @@ export class Base implements IBase {
 
   deleteContentFromFile(basePath: string, fileName: string, pattern: string, callback?: (err: NodeJS.ErrnoException) => any) {
     const pathName = path.join(basePath, fileName);
+    console.log(pathName);
     fs.readFile(pathName, (err, data) => {
       if (err) {
         winston.log("error", err.message, err);
         return;
       }
       let content = data.toString("utf8");
+      console.log('readed');
+      console.log(pattern);
       const reg = new RegExp(pattern);
       if (content.search(reg) === -1) {
         const error = new Error();
-        error.name = "whithout";
+        error.name = "没有找到配置";
         callback(error);
         return;
       }
@@ -109,6 +112,7 @@ export class Base implements IBase {
           callback(error);
           return;
         }
+        console.log('writed');
         callback(undefined);
       });
     });

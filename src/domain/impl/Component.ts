@@ -1,9 +1,9 @@
 import fs = require("fs");
 import path = require("path");
-import * as winston from "winston";
-import { Base } from "./Base";
-import { COMP } from "../../config/index";
 import * as rimraf from "rimraf";
+import * as winston from "winston";
+import { COMP } from "../../config/index";
+import { Base } from "./Base";
 
 export class Component extends Base {
   name: string;

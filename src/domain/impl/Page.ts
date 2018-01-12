@@ -105,7 +105,7 @@ export class Page extends Base implements IPage {
         winston.error("Without config option in router file!");
         return;
       } else if (err) {
-        winston.error(err.message);
+        winston.log("error", err.message, err);
         return;
       }
       winston.info("Deleted router config of " + this.pageName + " page.")

@@ -113,7 +113,7 @@ var Page = /** @class */ (function (_super) {
                 return;
             }
             else if (err) {
-                winston.error(err.message);
+                winston.log("error", err.message, err);
                 return;
             }
             winston.info("Deleted router config of " + _this.pageName + " page.");
