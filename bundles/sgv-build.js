@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var program = require("commander");
+var Component_1 = require("./domain/impl/Component");
 var Page_1 = require("./domain/impl/Page");
 var Service_1 = require("./domain/impl/Service");
-var Component_1 = require("./domain/impl/Component");
 program
     .usage("[entry]")
     .option("-p,--page [page-name]", "create page module")

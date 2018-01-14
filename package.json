@@ -1,6 +1,6 @@
 {
   "name": "sgv-cli",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A simple CLI for scaffolding Vue.js projects.",
   "main": "index.js",
   "bin": {
