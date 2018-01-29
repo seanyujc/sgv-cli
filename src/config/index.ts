@@ -46,8 +46,8 @@ export function <%= keyword%>PagePreloading(): Promise<any> {
 // '<%= uFKeyword%>' PAGE FACTORY END`,
   FACTORY_FUNCTION_PATTERN: "// '<%= uFKeyword%>' PAGE FACTORY START[\\s\\S]*// '<%= uFKeyword%>' PAGE FACTORY END",
   ROUTER_CONFIG_ANCHOR: "  // SGV-BUILD-PAGE-ROUTER-CONFIG # NOT DELETE",
-  ROUTER_CONFIG_CONTENT: "{ path: \"/<%= keyword%>\", component: PageFactory.<%= keyword%>PagePreloading },",
-  ROUTER_CONFIG_PATTERN: "[\\t ]*{ path: \"/<%= keyword%>\", component: PageFactory.<%= keyword%>PagePreloading },",
+  ROUTER_CONFIG_CONTENT: "{ path: \"/<%= keyword%>\", name: \"<%= keyword%>\", component: PageFactory.<%= keyword%>PagePreloading },",
+  ROUTER_CONFIG_PATTERN: "[\\t ]*{ path: \"/<%= keyword%>\", name: \"<%= keyword%>\", component: PageFactory.<%= keyword%>PagePreloading },",
 };
 
 export const COMP: ICompConst = {
