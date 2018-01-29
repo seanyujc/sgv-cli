@@ -1,6 +1,6 @@
+import { Component, Emit, Inject, Model, Prop, Provide, Vue, Watch } from "vue-property-decorator";
 import { AutowiredService } from "../../../lib/sg-resource/decorators";
 import { ICommonService } from "../../core/services/common.serv";
-import { Component, Emit, Inject, Model, Prop, Provide, Vue, Watch } from "vue-property-decorator";
 // import Common from "../../core/common";
 
 @Component({
