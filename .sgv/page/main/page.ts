@@ -2,23 +2,31 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { AutowiredService } from "../../../lib/sg-resource/decorators";
 import { ICommonService } from "../../core/services/common.serv";
+import BasePage from "../BasePage";
 
-@Component
-export default class <%= uFKeyword%>Page extends Vue {
+interface I<%= uFKeyword%>Page {
+
+}
+
+@Component({
+  name: "<%= keyword%>",
+  components: {},
+})
+export default class <%= uFKeyword%>Page extends BasePage implements I<%= uFKeyword%>Page {
   @AutowiredService
-  private commonService: ICommonService;
+  commonService: ICommonService;
 
-  private title: string = "<%= uFKeyword%>";
-
-  public show() {
-    alert(this.commonService.getLocalDomain());
-  }
+  title: string = "<%= uFKeyword%>";
 
   get today() {
     return new Date();
   }
 
-  private mounted() {
-    console.log("mounted");
+  show() {
+    alert(this.commonService.getLocalDomain());
+  }
+
+  mounted() {
+    //
   }
 }

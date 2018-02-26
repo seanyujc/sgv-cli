@@ -1,7 +1,7 @@
 <template>
   <div class="page-module">
     {{title}}
-    <p>{{tomorrow}}</p>
+    <p>{{today}}</p>
     <button type="button" @click="show()">按钮</button>
   </div>
 </template>

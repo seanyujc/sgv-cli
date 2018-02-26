@@ -91,7 +91,7 @@ export class Page extends Base implements IPage {
         winston.log("error", err.message, err);
         return;
       }
-      winston.info("Deleted Factory function of " + this.pageName + " page.")
+      winston.info("Deleted Factory function of " + this.pageName + " page.");
     });
   }
 
@@ -108,7 +108,7 @@ export class Page extends Base implements IPage {
         winston.log("error", err.message, err);
         return;
       }
-      winston.info("Deleted router config of " + this.pageName + " page.")
+      winston.info("Deleted router config of " + this.pageName + " page.");
     });
   }
 

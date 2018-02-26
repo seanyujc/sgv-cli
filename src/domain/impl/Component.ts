@@ -72,7 +72,7 @@ export class Component extends Base {
         winston.log("error", err.message, err);
         return;
       }
-      winston.info("Deleted Factory function of " + this.compName + " component.")
+      winston.info("Deleted Factory function of " + this.compName + " component.");
     });
   }
 }
