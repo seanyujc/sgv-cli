@@ -14,28 +14,28 @@ program
     .option("-m,--method [request method name]", "method name of current api")
     .parse(process.argv);
 if (program.hasOwnProperty("page")) {
-    var page = new Page_1.Page(program.page);
+    var page = new Page_1.Page(program.page, program.args[0]);
     page.copyFiles();
     page.addFactoryFun();
     page.addRouter();
 }
 if (program.hasOwnProperty("comp")) {
-    var comp = new Component_1.Component(program.comp);
+    var comp = new Component_1.Component(program.comp, program.args[0]);
     comp.copyFiles();
     comp.addFactoryConfig();
 }
 if (program.hasOwnProperty("service") && !program.hasOwnProperty("fun")) {
-    var service = new Service_1.Service(program.service);
+    var service = new Service_1.Service(program.service, program.args[0]);
     service.copyFiles();
     service.addFactoryFun();
 }
 if (program.hasOwnProperty("service") && program.hasOwnProperty("fun")) {
-    var service = new Service_1.Service(program.service, program.fun);
+    var service = new Service_1.Service(program.service, program.args[0], program.fun);
     service.addServiceFun();
     service.addAPI(program.method || "post");
 }
 if (program.hasOwnProperty("api") && program.hasOwnProperty("method")) {
-    var service = new Service_1.Service(undefined, program.api);
+    var service = new Service_1.Service(undefined, program.args[0], program.api);
     service.addAPI(program.method);
 }
 //# sourceMappingURL=sgv-build.js.map

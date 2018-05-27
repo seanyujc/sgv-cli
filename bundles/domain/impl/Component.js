@@ -18,9 +18,11 @@ var index_1 = require("../../config/index");
 var Base_1 = require("./Base");
 var Component = /** @class */ (function (_super) {
     __extends(Component, _super);
-    function Component(compName) {
+    function Component(compName, appName) {
+        if (appName === void 0) { appName = "app"; }
         var _this = _super.call(this) || this;
         _this.compName = compName;
+        _this.appName = appName;
         _this.templatePath = path.join(__dirname, "../../../", ".sgv/comp");
         return _this;
     }
@@ -38,7 +40,7 @@ var Component = /** @class */ (function (_super) {
                 var pathName = path.join(_this.templatePath, fileName);
                 fs.readFile(pathName, function (error, data) {
                     var content = _super.prototype.replaceKeyword.call(_this, data.toString("utf8"), _this.compName);
-                    var basePath = path.join(_super.prototype.getCurrentDir.call(_this), "src/app/components", _this.compName);
+                    var basePath = path.join(_super.prototype.getCurrentDir.call(_this), "src/" + _this.appName + "/components", _this.compName);
                     _super.prototype.writeFile.call(_this, basePath, _this.compName + extname, content);
                 });
             });
@@ -46,7 +48,7 @@ var Component = /** @class */ (function (_super) {
     };
     Component.prototype.addFactoryConfig = function () {
         var _this = this;
-        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/app/components");
+        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/" + this.appName + "/components");
         var fileName = "factory.comp.ts";
         var content = _super.prototype.replaceKeyword.call(this, index_1.COMP.FACTORY_CONTENT, this.compName);
         var addContent = index_1.COMP.FACTORY_ANCHOR + _super.prototype.endl.call(this) + content;
@@ -60,7 +62,7 @@ var Component = /** @class */ (function (_super) {
     };
     Component.prototype.removeFiles = function () {
         var _this = this;
-        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/app/components", this.compName);
+        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/" + this.appName + "/components", this.compName);
         rimraf(basePath, function (err) {
             if (err) {
                 winston.error(err.message);
@@ -71,7 +73,7 @@ var Component = /** @class */ (function (_super) {
     };
     Component.prototype.deleteFactoryConfig = function () {
         var _this = this;
-        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/app/components");
+        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/" + this.appName + "/components");
         var fileName = "factory.comp.ts";
         var pattern = _super.prototype.replaceKeyword.call(this, index_1.COMP.FACTORY_PATTERN, this.compName) + _super.prototype.endl.call(this);
         _super.prototype.deleteContentFromFile.call(this, basePath, fileName, pattern, function (err) {

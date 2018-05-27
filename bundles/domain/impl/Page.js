@@ -18,9 +18,11 @@ var config_1 = require("../../config");
 var Base_1 = require("./Base");
 var Page = /** @class */ (function (_super) {
     __extends(Page, _super);
-    function Page(pageName) {
+    function Page(pageName, appName) {
+        if (appName === void 0) { appName = "app"; }
         var _this = _super.call(this) || this;
         _this.pageName = pageName;
+        _this.appName = appName;
         _this.templatePath = path.join(__dirname, "../../../", ".sgv/page/main");
         _this.routerTplPath = path.join(__dirname, "../../../", ".sgv/page/index.router.ts");
         return _this;
@@ -39,7 +41,7 @@ var Page = /** @class */ (function (_super) {
                 var pathName = path.join(_this.templatePath, fileName);
                 fs.readFile(pathName, function (error, data) {
                     var content = _super.prototype.replaceKeyword.call(_this, data.toString("utf8"), _this.pageName);
-                    var basePath = path.join(_super.prototype.getCurrentDir.call(_this), "src/app/pages", _this.pageName);
+                    var basePath = path.join(_super.prototype.getCurrentDir.call(_this), "src/" + _this.appName + "/pages", _this.pageName);
                     _super.prototype.writeFile.call(_this, basePath, _this.pageName + extname, content);
                 });
             });
@@ -47,7 +49,7 @@ var Page = /** @class */ (function (_super) {
     };
     Page.prototype.addFactoryFun = function () {
         var _this = this;
-        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/app/pages");
+        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/" + this.appName + "/pages");
         var fileName = "factory.page.ts";
         var content = _super.prototype.replaceKeyword.call(this, config_1.PAGE.FACTORY_FUNCTION_CONTENT, this.pageName);
         var addContent = config_1.PAGE.FACTORY_ANCHOR + _super.prototype.endl.call(this) + content;
@@ -61,11 +63,13 @@ var Page = /** @class */ (function (_super) {
     };
     Page.prototype.addRouter = function () {
         var _this = this;
-        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/app");
+        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/" + this.appName + "");
         var fileName = "index.router.ts";
         var original = fs.readFileSync(this.routerTplPath).toString("utf8");
-        var configContent = config_1.PAGE.ROUTER_CONFIG_ANCHOR + _super.prototype.endl.call(this) + "  "
-            + _super.prototype.replaceKeyword.call(this, config_1.PAGE.ROUTER_CONFIG_CONTENT, this.pageName);
+        var configContent = config_1.PAGE.ROUTER_CONFIG_ANCHOR +
+            _super.prototype.endl.call(this) +
+            "  " +
+            _super.prototype.replaceKeyword.call(this, config_1.PAGE.ROUTER_CONFIG_CONTENT, this.pageName);
         _super.prototype.addContentToFile.call(this, basePath, fileName, original, config_1.PAGE.ROUTER_CONFIG_ANCHOR, configContent, function (err) {
             if (err) {
                 winston.error(err.message);
@@ -76,7 +80,7 @@ var Page = /** @class */ (function (_super) {
     };
     Page.prototype.removeFiles = function () {
         var _this = this;
-        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/app/pages", this.pageName);
+        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/" + this.appName + "/pages", this.pageName);
         rimraf(basePath, function (err) {
             if (err) {
                 winston.error(err.message);
@@ -87,9 +91,10 @@ var Page = /** @class */ (function (_super) {
     };
     Page.prototype.deleteFactoryFun = function () {
         var _this = this;
-        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/app/pages");
+        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/" + this.appName + "/pages");
         var fileName = "factory.page.ts";
-        var pattern = _super.prototype.replaceKeyword.call(this, config_1.PAGE.FACTORY_FUNCTION_PATTERN, this.pageName) + _super.prototype.endl.call(this);
+        var pattern = _super.prototype.replaceKeyword.call(this, config_1.PAGE.FACTORY_FUNCTION_PATTERN, this.pageName) +
+            _super.prototype.endl.call(this);
         _super.prototype.deleteContentFromFile.call(this, basePath, fileName, pattern, function (err) {
             if (err && err.name === "without") {
                 winston.error("Without config option in factory file!");
@@ -104,9 +109,10 @@ var Page = /** @class */ (function (_super) {
     };
     Page.prototype.deleteRouter = function () {
         var _this = this;
-        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/app");
+        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/" + this.appName + "");
         var fileName = "index.router.ts";
-        var pattern = _super.prototype.replaceKeyword.call(this, config_1.PAGE.ROUTER_CONFIG_PATTERN, this.pageName) + _super.prototype.endl.call(this);
+        var pattern = _super.prototype.replaceKeyword.call(this, config_1.PAGE.ROUTER_CONFIG_PATTERN, this.pageName) +
+            _super.prototype.endl.call(this);
         _super.prototype.deleteContentFromFile.call(this, basePath, fileName, pattern, function (err) {
             if (err && err.name === "without") {
                 winston.error("Without config option in router file!");

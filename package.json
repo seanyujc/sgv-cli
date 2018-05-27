@@ -1,6 +1,6 @@
 {
   "name": "sgv-cli",
-  "version": "1.0.8",
+  "version": "1.0.12",
   "description": "A simple CLI for scaffolding Vue.js projects.",
   "main": "index.js",
   "bin": {
@@ -12,6 +12,10 @@
   "scripts": {
     "rebuild": "rimraf bundles && tsc && npm unlink && npm link",
     "debug": "node --debug-brk=9229 --nolazy ./bundles/sgv-build.js --service=person"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seanyujc/sgv-cli.git"
   },
   "keywords": [],
   "author": "",
@@ -32,7 +36,10 @@
     "download-git-repo": "^1.0.1",
     "escape-string-regexp": "^1.0.5",
     "lodash.template": "^4.4.0",
+    "ncp": "^2.0.0",
     "ora": "^1.3.0",
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.3",
     "winston": "^2.4.0"
   }
 }

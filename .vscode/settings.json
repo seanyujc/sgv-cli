@@ -2,5 +2,6 @@
   "tslint.exclude": [
     "**/.sgv/**/*"
   ],
-  "eslint.enable": false
+  "eslint.enable": false,
+  "prettier.trailingComma": "all"
 }

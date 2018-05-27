@@ -8,7 +8,7 @@ import { Base } from "./Base";
 export class Component extends Base {
   name: string;
   templatePath: string;
-  constructor(private compName: string) {
+  constructor(private compName: string, private appName: string = "app") {
     super();
     this.templatePath = path.join(__dirname, "../../../", ".sgv/comp");
   }
@@ -26,7 +26,7 @@ export class Component extends Base {
         const pathName = path.join(this.templatePath, fileName);
         fs.readFile(pathName, (error, data) => {
           const content = super.replaceKeyword(data.toString("utf8"), this.compName);
-          const basePath = path.join(super.getCurrentDir(), "src/app/components", this.compName);
+          const basePath = path.join(super.getCurrentDir(), "src/" + this.appName + "/components", this.compName);
           super.writeFile(basePath, this.compName + extname, content);
         });
       });
@@ -34,7 +34,7 @@ export class Component extends Base {
   }
 
   addFactoryConfig(): void {
-    const basePath = path.join(super.getCurrentDir(), "src/app/components");
+    const basePath = path.join(super.getCurrentDir(), "src/" + this.appName + "/components");
     const fileName = "factory.comp.ts";
     const content = super.replaceKeyword(COMP.FACTORY_CONTENT, this.compName);
     const addContent = COMP.FACTORY_ANCHOR + super.endl() + content;
@@ -49,7 +49,7 @@ export class Component extends Base {
   }
 
   removeFiles() {
-    const basePath = path.join(super.getCurrentDir(), "src/app/components", this.compName);
+    const basePath = path.join(super.getCurrentDir(), "src/" + this.appName + "/components", this.compName);
     rimraf(basePath, (err) => {
       if (err) {
         winston.error(err.message);
@@ -60,7 +60,7 @@ export class Component extends Base {
   }
 
   deleteFactoryConfig() {
-    const basePath = path.join(super.getCurrentDir(), "src/app/components");
+    const basePath = path.join(super.getCurrentDir(), "src/" + this.appName + "/components");
     const fileName = "factory.comp.ts";
     const pattern = super.replaceKeyword(COMP.FACTORY_PATTERN, this.compName) + super.endl();
 

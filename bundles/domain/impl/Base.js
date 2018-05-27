@@ -86,15 +86,15 @@ var Base = /** @class */ (function () {
     };
     Base.prototype.deleteContentFromFile = function (basePath, fileName, pattern, callback) {
         var pathName = path.join(basePath, fileName);
-        console.log(pathName);
+        // console.log(pathName);
         fs.readFile(pathName, function (err, data) {
             if (err) {
                 winston.log("error", err.message, err);
                 return;
             }
             var content = data.toString("utf8");
-            console.log('readed');
-            console.log(pattern);
+            // console.log('readed');
+            // console.log(pattern);
             var reg = new RegExp(pattern);
             if (content.search(reg) === -1) {
                 var error = new Error();
@@ -108,7 +108,7 @@ var Base = /** @class */ (function () {
                     callback(error);
                     return;
                 }
-                console.log('writed');
+                // console.log('writed');
                 callback(undefined);
             });
         });

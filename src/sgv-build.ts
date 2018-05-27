@@ -15,31 +15,31 @@ program
   .parse(process.argv);
 
 if (program.hasOwnProperty("page")) {
-  const page = new Page(program.page);
+  const page = new Page(program.page, program.args[0]);
   page.copyFiles();
   page.addFactoryFun();
   page.addRouter();
 }
 
 if (program.hasOwnProperty("comp")) {
-  const comp = new Component(program.comp);
+  const comp = new Component(program.comp, program.args[0]);
   comp.copyFiles();
   comp.addFactoryConfig();
 }
 
 if (program.hasOwnProperty("service") && !program.hasOwnProperty("fun")) {
-  const service = new Service(program.service);
+  const service = new Service(program.service, program.args[0]);
   service.copyFiles();
   service.addFactoryFun();
 }
 
 if (program.hasOwnProperty("service") && program.hasOwnProperty("fun")) {
-  const service = new Service(program.service, program.fun);
+  const service = new Service(program.service, program.args[0], program.fun);
   service.addServiceFun();
   service.addAPI(program.method || "post");
 }
 
 if (program.hasOwnProperty("api") && program.hasOwnProperty("method")) {
-  const service = new Service(undefined, program.api);
+  const service = new Service(undefined, program.args[0], program.api);
   service.addAPI(program.method);
 }

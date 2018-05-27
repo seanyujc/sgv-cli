@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var program = require("commander");
 var readline = require("readline");
+var Component_1 = require("./domain/impl/Component");
 var Page_1 = require("./domain/impl/Page");
 var Service_1 = require("./domain/impl/Service");
-var Component_1 = require("./domain/impl/Component");
 program
     .usage("[entry]")
     .option("-p,--page [page-name]", "remove page module")
@@ -18,7 +18,7 @@ var rl = readline.createInterface({
 if (program.hasOwnProperty("page")) {
     rl.question("Are you sure to remove " + program.page + " page?(y or N):", function (answer) {
         if (answer.toLocaleLowerCase() === "y") {
-            var page = new Page_1.Page(program.page);
+            var page = new Page_1.Page(program.page, program.args[0]);
             page.removeFiles();
             page.deleteFactoryFun();
             page.deleteRouter();
@@ -29,7 +29,7 @@ if (program.hasOwnProperty("page")) {
 if (program.hasOwnProperty("comp")) {
     rl.question("Are you sure to remove " + program.comp + " component?(y or N):", function (answer) {
         if (answer.toLocaleLowerCase() === "y") {
-            var comp = new Component_1.Component(program.comp);
+            var comp = new Component_1.Component(program.comp, program.args[0]);
             comp.removeFiles();
             comp.deleteFactoryConfig();
         }
@@ -39,7 +39,7 @@ if (program.hasOwnProperty("comp")) {
 if (program.hasOwnProperty("service")) {
     rl.question("Are you sure to remove " + program.service + " service?(y or N):", function (answer) {
         if (answer.toLocaleLowerCase() === "y") {
-            var service = new Service_1.Service(program.service);
+            var service = new Service_1.Service(program.service, program.args[0]);
             service.removeFiles();
             service.deleteFactoryFun();
         }

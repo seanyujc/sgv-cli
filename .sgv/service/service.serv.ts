@@ -1,7 +1,7 @@
 import { BaseService } from "./base.serv";
 
 export interface I<%= uFKeyword%>Service {
-
+  // SGV-BUILD-SERVICE-INTERFACE # NOT DELETE
 }
 
 interface I<%= uFKeyword%>ServiceConstructor {
@@ -16,4 +16,5 @@ export class <%= uFKeyword%>Service extends BaseService implements I<%= uFKeywor
   constructor() {
     super();
   }
+  // SGV-BUILD-SERVICE-FUNCTION # NOT DELETE
 }
