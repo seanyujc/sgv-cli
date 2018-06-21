@@ -46,7 +46,7 @@ if (program.hasOwnProperty("new")) {
           err1 => {
             rm("./" + projectName + "/.temp");
             if (err1) {
-              return console.error(err1);
+              return winston.error(err1);
             }
             winston.log(chalk.cyan(" " + appName + " Initialize complete.\n"));
           },

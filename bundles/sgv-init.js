@@ -39,7 +39,7 @@ if (program.hasOwnProperty("new")) {
             ncp("./" + projectName + "/.temp/" + appName_1 + "/src/app", "./" + projectName + "/src/" + appName_1 + "", function (err1) {
                 rm("./" + projectName + "/.temp");
                 if (err1) {
-                    return console.error(err1);
+                    return winston.error(err1);
                 }
                 winston.log(chalk.cyan(" " + appName_1 + " Initialize complete.\n"));
             });

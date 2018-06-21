@@ -5,8 +5,10 @@
   "main": "index.js",
   "bin": {
     "sgv": "bundles/sgv.js",
+    "sgvs": "bundles/sgvs.js",
     "sgv-init": "bundles/sgv-init.js",
     "sgv-build": "bundles/sgv-build.js",
+    "sgvs-build": "bundles/sgvs-build.js",
     "sgv-remove": "bundles/sgv-remove.js"
   },
   "scripts": {
