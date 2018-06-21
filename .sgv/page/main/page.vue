@@ -1,8 +1,6 @@
 <template>
   <div class="page-module">
     {{title}}
-    <p>{{today}}</p>
-    <button type="button" @click="show()">按钮</button>
   </div>
 </template>
 <script lang="ts" src="./<%= keyword%>.ts">

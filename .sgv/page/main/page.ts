@@ -18,12 +18,8 @@ export default class <%= uFKeyword%>Page extends BasePage implements I<%= uFKeyw
 
   title: string = "<%= uFKeyword%>";
 
-  get today() {
-    return new Date();
-  }
-
-  show() {
-    alert(this.commonService.getLocalDomain());
+  fetchData() {
+    //
   }
 
   mounted() {

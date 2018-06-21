@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var program = require("commander");
 var winston = require("winston");
+var Store_1 = require("./domain/impl/Store");
 program
     .usage("[entry]")
     .option("-p,--page [page-name]", "create page module")
@@ -15,7 +16,12 @@ program
 if ((program.hasOwnProperty("page") || program.hasOwnProperty("comp")) &&
     program.hasOwnProperty("store")) {
     var appName = program.args[0];
-    winston.debug(program.page);
-    winston.debug(program.store);
+    var states = program.hasOwnProperty("store")
+        ? program.store.split(",")
+        : undefined;
+    winston.info(program.page);
+    winston.info(states);
+    var store = new Store_1.Store(program.page, program.comp, states, program.args[0]);
+    store.copyFile();
 }
 //# sourceMappingURL=sgvs-build.js.map

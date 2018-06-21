@@ -1,5 +1,6 @@
 import program = require("commander");
 import * as winston from "winston";
+import { Store } from "./domain/impl/Store";
 
 program
   .usage("[entry]")
@@ -17,6 +18,11 @@ if (
   program.hasOwnProperty("store")
 ) {
   const appName = program.args[0];
-  winston.debug(program.page);
-  winston.debug(program.store);
+  const states = program.hasOwnProperty("store")
+    ? program.store.split(",")
+    : undefined;
+  winston.info(program.page);
+  winston.info(states);
+  const store = new Store(program.page, program.comp, states, program.args[0]);
+  store.copyFile();
 }
