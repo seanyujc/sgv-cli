@@ -32,6 +32,15 @@ export interface IServiceConst {
   API_POST_ANCHOR: string;
 }
 
+export interface IStoreConst {
+  IMPORT_ANCHOR: string;
+  INTERFACE_ANCHOR: string;
+  STATE_ANCHOR: string;
+  MUTATIONS_ANCHOR: string;
+  ACTIONS_ANCHOR: string;
+  GETTERS_ANCHOR: string;
+}
+
 export const PAGE: IPageConst = {
   FACTORY_ANCHOR: "// SGV-BUILD-PAGE-FAC # NOT DELETE",
   FACTORY_FUNCTION_CONTENT: `// '<%= uFKeyword%>' PAGE FACTORY START
@@ -44,16 +53,21 @@ export function <%= keyword%>PagePreloading(): Promise<any> {
   });
 }
 // '<%= uFKeyword%>' PAGE FACTORY END`,
-  FACTORY_FUNCTION_PATTERN: "// '<%= uFKeyword%>' PAGE FACTORY START[\\s\\S]*// '<%= uFKeyword%>' PAGE FACTORY END",
+  FACTORY_FUNCTION_PATTERN:
+    "// '<%= uFKeyword%>' PAGE FACTORY START[\\s\\S]*// '<%= uFKeyword%>' PAGE FACTORY END",
   ROUTER_CONFIG_ANCHOR: "  // SGV-BUILD-PAGE-ROUTER-CONFIG # NOT DELETE",
-  ROUTER_CONFIG_CONTENT: "{ path: \"/<%= keyword%>\", name: \"<%= keyword%>\", component: PageFactory.<%= keyword%>PagePreloading },",
-  ROUTER_CONFIG_PATTERN: "[\\t ]*{ path: \"/<%= keyword%>\", name: \"<%= keyword%>\", component: PageFactory.<%= keyword%>PagePreloading },",
+  ROUTER_CONFIG_CONTENT:
+    '{ path: "/<%= keyword%>", name: "<%= keyword%>", component: PageFactory.<%= keyword%>PagePreloading },',
+  ROUTER_CONFIG_PATTERN:
+    '[\\t ]*{ path: "/<%= keyword%>", name: "<%= keyword%>", component: PageFactory.<%= keyword%>PagePreloading },',
 };
 
 export const COMP: ICompConst = {
   FACTORY_ANCHOR: "// SGV-BUILD-COMP-FAC # NOT DELETE",
-  FACTORY_CONTENT: "Vue.component(\"<%= keyword%>\", require(\"./<%= keyword%>/<%= keyword%>.vue\").default);",
-  FACTORY_PATTERN: "Vue\\.component\\(\"<%= keyword%>\", require\\(\"./<%= keyword%>/<%= keyword%>.vue\"\\)\\.default\\);",
+  FACTORY_CONTENT:
+    'Vue.component("<%= keyword%>", require("./<%= keyword%>/<%= keyword%>.vue").default);',
+  FACTORY_PATTERN:
+    'Vue\\.component\\("<%= keyword%>", require\\("./<%= keyword%>/<%= keyword%>.vue"\\)\\.default\\);',
 };
 
 export const SERVICE: IServiceConst = {
@@ -77,7 +91,8 @@ export class Services {
     return this.<%= keyword%>Service;
   }
   // '<%= uFKeyword%>' SERVICE FACTORY END`,
-  FACTORY_FUNCTION_PATTERN: "// '<%= uFKeyword%>' SERVICE FACTORY START[\\s\\S]*// '<%= uFKeyword%>' SERVICE FACTORY END",
+  FACTORY_FUNCTION_PATTERN:
+    "// '<%= uFKeyword%>' SERVICE FACTORY START[\\s\\S]*// '<%= uFKeyword%>' SERVICE FACTORY END",
   INTERFACE_ANCHOR: "  // SGV-BUILD-SERVICE-INTERFACE # NOT DELETE",
   INTERFACE_CONTENT: "  <%= keyword%>(arg: string): Promise<any>;",
   INTERFACE_PATTERN: "",
@@ -89,4 +104,13 @@ export class Services {
   API_GET_ANCHOR: "    // SGV-BUILD-API-GET # NOT DELETE",
   API_CONTENT: `    <%= keyword%>: "apiHost:/<%= keyword%>",`,
   API_POST_ANCHOR: "    // SGV-BUILD-API-POST # NOT DELETE",
+};
+
+export const STORE: IStoreConst = {
+  IMPORT_ANCHOR: "// SGV-BUILD-STORE-IMPORT # NOT DELETE",
+  INTERFACE_ANCHOR: "// SGV-BUILD-STORE-INTERFACE # NOT DELETE",
+  STATE_ANCHOR: "// SGV-BUILD-STORE-STATE # NOT DELETE",
+  MUTATIONS_ANCHOR: "// SGV-BUILD-STORE-MUTATIONS # NOT DELETE",
+  ACTIONS_ANCHOR: "// SGV-BUILD-STORE-ACTIONS # NOT DELETE",
+  GETTERS_ANCHOR: "// SGV-BUILD-STORE-GETTERS # NOT DELETE",
 };

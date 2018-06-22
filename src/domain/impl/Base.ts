@@ -15,12 +15,17 @@ export class Base implements IBase {
   }
   getExtname(filename: string) {
     const i = filename.indexOf(".");
-    return (i < 0) ? "" : filename.substr(i);
+    return i < 0 ? "" : filename.substr(i);
   }
   upperFirst(str: string) {
     const first = str.substr(0, 1).toLocaleUpperCase();
     const surplus = str.substr(1, str.length);
     return first + surplus;
+  }
+  changeCaseConstant(str: string) {
+    if (str) {
+      return str.replace(/([A-Z])/g, "_$1").toLocaleUpperCase();
+    }
   }
   replaceKeyword(tplContent: string, keyword: string) {
     const compiled = template(tplContent);
@@ -48,7 +53,7 @@ export class Base implements IBase {
     if (!fs.existsSync(basePath)) {
       mkdirp.sync(basePath);
     }
-    fs.writeFile(filePath, data, { flag: "a" }, (err) => {
+    fs.writeFile(filePath, data, { flag: "a" }, err => {
       if (err) {
         winston.error(err.message);
         return;
@@ -58,9 +63,13 @@ export class Base implements IBase {
   }
 
   addContentToFile(
-    basePath: string, fileName: string, original: string, anchor: string, content: string,
-    callback?: (err: NodeJS.ErrnoException) => any) {
-
+    basePath: string,
+    fileName: string,
+    original: string,
+    anchor: string,
+    content: string,
+    callback?: (err: NodeJS.ErrnoException) => any,
+  ) {
     const filePath = path.join(basePath, fileName);
     if (!fs.existsSync(filePath)) {
       this.writeFile(basePath, fileName, original);
@@ -78,7 +87,7 @@ export class Base implements IBase {
         return;
       }
       fileContent = fileContent.replace(reg, content);
-      fs.writeFile(filePath, fileContent, (error) => {
+      fs.writeFile(filePath, fileContent, error => {
         if (error) {
           callback(error);
           return;
@@ -88,7 +97,12 @@ export class Base implements IBase {
     });
   }
 
-  deleteContentFromFile(basePath: string, fileName: string, pattern: string, callback?: (err: NodeJS.ErrnoException) => any) {
+  deleteContentFromFile(
+    basePath: string,
+    fileName: string,
+    pattern: string,
+    callback?: (err: NodeJS.ErrnoException) => any,
+  ) {
     const pathName = path.join(basePath, fileName);
     // console.log(pathName);
     fs.readFile(pathName, (err, data) => {
@@ -107,7 +121,7 @@ export class Base implements IBase {
         return;
       }
       content = content.replace(reg, "");
-      fs.writeFile(pathName, content, (error) => {
+      fs.writeFile(pathName, content, error => {
         if (error) {
           callback(error);
           return;
