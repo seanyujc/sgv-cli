@@ -43,17 +43,17 @@ export class Base implements IBase {
     }
   }
 
-  writeFile(basePath: string, fileName: string, data) {
+  writeFile(basePath: string, fileName: string, data, overwrite: boolean = false) {
     // const srcRoot = path.join(commons.currentPath(),  dir)
     const filePath = path.join(basePath, fileName);
 
-    if (fs.existsSync(basePath) && fs.existsSync(filePath)) {
+    if (!overwrite && fs.existsSync(basePath) && fs.existsSync(filePath)) {
       return;
     }
     if (!fs.existsSync(basePath)) {
       mkdirp.sync(basePath);
     }
-    fs.writeFile(filePath, data, { flag: "a" }, err => {
+    fs.writeFile(filePath, data, { flag: "w" }, err => {
       if (err) {
         winston.error(err.message);
         return;

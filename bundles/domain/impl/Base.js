@@ -17,12 +17,17 @@ var Base = /** @class */ (function () {
     };
     Base.prototype.getExtname = function (filename) {
         var i = filename.indexOf(".");
-        return (i < 0) ? "" : filename.substr(i);
+        return i < 0 ? "" : filename.substr(i);
     };
     Base.prototype.upperFirst = function (str) {
         var first = str.substr(0, 1).toLocaleUpperCase();
         var surplus = str.substr(1, str.length);
         return first + surplus;
+    };
+    Base.prototype.changeCaseConstant = function (str) {
+        if (str) {
+            return str.replace(/([A-Z])/g, "_$1").toLocaleUpperCase();
+        }
     };
     Base.prototype.replaceKeyword = function (tplContent, keyword) {
         var compiled = template(tplContent);
@@ -40,16 +45,17 @@ var Base = /** @class */ (function () {
             });
         }
     };
-    Base.prototype.writeFile = function (basePath, fileName, data) {
+    Base.prototype.writeFile = function (basePath, fileName, data, overwrite) {
+        if (overwrite === void 0) { overwrite = false; }
         // const srcRoot = path.join(commons.currentPath(),  dir)
         var filePath = path.join(basePath, fileName);
-        if (fs.existsSync(basePath) && fs.existsSync(filePath)) {
+        if (!overwrite && fs.existsSync(basePath) && fs.existsSync(filePath)) {
             return;
         }
         if (!fs.existsSync(basePath)) {
             mkdirp.sync(basePath);
         }
-        fs.writeFile(filePath, data, { flag: "a" }, function (err) {
+        fs.writeFile(filePath, data, { flag: "w" }, function (err) {
             if (err) {
                 winston.error(err.message);
                 return;

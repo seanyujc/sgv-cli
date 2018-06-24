@@ -29,6 +29,19 @@ export interface IServiceConst {
     API_GET_ANCHOR: string;
     API_POST_ANCHOR: string;
 }
+export interface IStoreConst {
+    IMPORT_ANCHOR: string;
+    INTERFACE_ANCHOR: string;
+    STATE_ANCHOR: string;
+    MUTATIONS_ANCHOR: string;
+    ACTIONS_ANCHOR: string;
+    GETTERS_ANCHOR: string;
+    CONSTANT_PAGE_MUTATIONS_ANCHOR: string;
+    CONSTANT_PAGE_ACTIONS_ANCHOR: string;
+    CONSTANT_COMP_MUTATIONS_ANCHOR: string;
+    CONSTANT_COMP_ACTIONS_ANCHOR: string;
+}
 export declare const PAGE: IPageConst;
 export declare const COMP: ICompConst;
 export declare const SERVICE: IServiceConst;
+export declare const STORE: IStoreConst;

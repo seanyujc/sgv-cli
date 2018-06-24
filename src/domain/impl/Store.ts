@@ -1,13 +1,18 @@
 import fs = require("fs");
 import path = require("path");
 import * as winston from "winston";
-import { Base } from "./Base";
 import { STORE } from "../../config";
+import { Base } from "./Base";
 
 export class Store extends Base {
   templateFile: string = path.join(__dirname, "../../../", ".sgv/store.ts");
   targetPath: string;
+  typesFilePath: string = path.join(
+    super.getCurrentDir(),
+    "src/app/core/store/mutationTypes.ts",
+  );
   name: string;
+  componentType: string;
 
   constructor(
     pageName: string,
@@ -19,9 +24,11 @@ export class Store extends Base {
     if (pageName) {
       this.targetPath = "src/" + this.appName + "/pages/" + pageName;
       this.name = pageName + "Page";
+      this.componentType = "Page";
     } else if (compName) {
       this.targetPath = "src/" + this.appName + "/components/" + compName;
       this.name = compName + "Comp";
+      this.componentType = "Comp";
     }
   }
 
@@ -29,7 +36,12 @@ export class Store extends Base {
     let templateFile = this.templateFile;
     // 如果目标位置已存在文件
     if (fs.existsSync(this.targetPath + "/store.ts")) {
-      templateFile = this.targetPath + "/store.ts";
+      templateFile = path.join(
+        super.getCurrentDir(),
+        this.targetPath + "/store.ts",
+      );
+      winston.error("文件已存在，将之后添加内容！");
+      // return;
     }
 
     fs.readFile(templateFile, (err, data) => {
@@ -37,22 +49,131 @@ export class Store extends Base {
         winston.error(err.message);
         return;
       }
-      const content = super.replaceKeyword(data.toString("utf8"), this.name);
+      let content = super.replaceKeyword(data.toString("utf8"), this.name);
+      // 需要添加state吗
+      if (this.states) {
+        for (const item of this.states) {
+          const info: string[] = item.split(":");
+          let type = "string";
+          if (info.length > 1) {
+            type = info[1];
+          }
+          content = this.addContentToStore(info[0], type, content);
+          // 添加导出类型
+          this.addExportConstantContent(info[0]);
+        }
+      }
       const basePath = path.join(super.getCurrentDir(), this.targetPath);
-      super.writeFile(basePath, "store.ts", content);
+      super.writeFile(basePath, "store.ts", content, true);
     });
   }
 
-  addContentToStore(key: string, type: string) {
+  addContentToStore(key: string, type: string, fileContent: string) {
     let initVal = '""';
-    if (type.indexOf("[]") === -1) {
+    if (type.indexOf("[]") !== -1) {
       initVal = "[]";
-    }
-    if (type.indexOf("number") === -1) {
+    } else if (type.indexOf("number") !== -1) {
       initVal = "0";
     }
+    let reg = null;
+    const constantKeyName =
+      super.changeCaseConstant(this.name) + "_" + super.changeCaseConstant(key);
+    // 添加导入
+    reg = new RegExp(STORE.IMPORT_ANCHOR);
+    const importContent =
+      STORE.IMPORT_ANCHOR +
+      super.endl() +
+      `  FETCH_${constantKeyName},` +
+      super.endl() +
+      `  SET_${constantKeyName},`;
+    fileContent = fileContent.replace(reg, importContent);
+    // 添加state
+    reg = new RegExp(STORE.STATE_ANCHOR);
     const stateContent =
       STORE.STATE_ANCHOR + super.endl() + "  " + key + ": " + initVal + ",";
-    super.addContentToFile(this.targetPath, "store.ts", "", STORE.STATE_ANCHOR, stateContent);
+    fileContent = fileContent.replace(reg, stateContent);
+    // 添加interface
+    reg = new RegExp(STORE.INTERFACE_ANCHOR);
+    const interfaceContent =
+      STORE.INTERFACE_ANCHOR + super.endl() + "  " + key + ": " + type + ";";
+    fileContent = fileContent.replace(reg, interfaceContent);
+    // 添加mutations
+    reg = new RegExp(STORE.MUTATIONS_ANCHOR);
+    const mutationContent =
+      STORE.MUTATIONS_ANCHOR +
+      super.endl() +
+      `  [SET_${constantKeyName}](state: I${super.upperFirst(
+        this.name,
+      )}State, val: any[]) {` +
+      super.endl() +
+      `    state.${key} = val;` +
+      super.endl() +
+      `  },`;
+    fileContent = fileContent.replace(reg, mutationContent);
+    // 添加actions
+    reg = new RegExp(STORE.ACTIONS_ANCHOR);
+    const actionContent =
+      STORE.ACTIONS_ANCHOR +
+      super.endl() +
+      `  [FETCH_${constantKeyName}]: ({ commit }: ActionContext<I${super.upperFirst(
+        this.name,
+      )}State, any>) => {` +
+      super.endl() +
+      `    commit(SET_${constantKeyName}, "");` +
+      `    return Promise.resolve();` +
+      super.endl() +
+      `  },`;
+    fileContent = fileContent.replace(reg, actionContent);
+    // 添加getters
+    return fileContent;
+  }
+
+  addExportConstantContent(key: string) {
+    const constantKeyName =
+      super.changeCaseConstant(this.name) + "_" + super.changeCaseConstant(key);
+    let mutationsAnchor = `// "${super.upperFirst(
+      this.name,
+    )}" MUTATIONS # NOT DELETE`;
+    let actionsAnchor = `// "${super.upperFirst(
+      this.name,
+    )}" ACTIONS # NOT DELETE`;
+    let exportMutationsContent =
+      mutationsAnchor +
+      super.endl() +
+      `export const SET_${constantKeyName} = "SET_${constantKeyName}";`;
+
+    let exportActionsContent =
+      actionsAnchor +
+      super.endl() +
+      `export const FETCH_${constantKeyName} = "FETCH_${constantKeyName}";`;
+    try {
+      let fileContent = fs.readFileSync(this.typesFilePath, {
+        encoding: "utf8",
+      });
+      // 判断是否曾添加过这一类
+      if (!fileContent.match(new RegExp(mutationsAnchor))) {
+        mutationsAnchor =
+          this.componentType === "Page"
+            ? STORE.CONSTANT_PAGE_MUTATIONS_ANCHOR
+            : STORE.CONSTANT_COMP_MUTATIONS_ANCHOR;
+        exportMutationsContent =
+          mutationsAnchor.replace(/\\/g, "") + super.endl() + exportMutationsContent;
+      }
+      if (!fileContent.match(new RegExp(actionsAnchor))) {
+        actionsAnchor =
+          this.componentType === "Page"
+            ? STORE.CONSTANT_PAGE_ACTIONS_ANCHOR
+            : STORE.CONSTANT_COMP_ACTIONS_ANCHOR;
+        exportActionsContent =
+          actionsAnchor.replace(/\\/g, "") + super.endl() + exportActionsContent;
+      }
+      fileContent = fileContent
+        .replace(new RegExp(mutationsAnchor), exportMutationsContent)
+        .replace(new RegExp(actionsAnchor), exportActionsContent);
+      fs.writeFileSync(this.typesFilePath, fileContent);
+      winston.info("写入类型常量成功！");
+    } catch (error) {
+      winston.error(error.message);
+    }
   }
 }
