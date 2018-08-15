@@ -40,8 +40,8 @@ var Component = /** @class */ (function (_super) {
                 var pathName = path.join(_this.templatePath, fileName);
                 fs.readFile(pathName, function (error, data) {
                     var content = _super.prototype.replaceKeyword.call(_this, data.toString("utf8"), _this.compName);
-                    var basePath = path.join(_super.prototype.getCurrentDir.call(_this), "src/" + _this.appName + "/components", _this.compName);
-                    _super.prototype.writeFile.call(_this, basePath, _this.compName + extname, content);
+                    var basePath = path.join(_super.prototype.getCurrentDir.call(_this), "src/" + _this.appName + "/components", _this.changeCaseKebab(_this.compName));
+                    _super.prototype.writeFile.call(_this, basePath, _this.changeCaseKebab(_this.compName) + extname, content);
                 });
             });
         });
@@ -62,7 +62,7 @@ var Component = /** @class */ (function (_super) {
     };
     Component.prototype.removeFiles = function () {
         var _this = this;
-        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/" + this.appName + "/components", this.compName);
+        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "src/" + this.appName + "/components", this.changeCaseKebab(this.compName));
         rimraf(basePath, function (err) {
             if (err) {
                 winston.error(err.message);

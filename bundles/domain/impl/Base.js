@@ -19,6 +19,10 @@ var Base = /** @class */ (function () {
         var i = filename.indexOf(".");
         return i < 0 ? "" : filename.substr(i);
     };
+    /**
+     * 转换成 Pascal
+     * @param str 驼峰字符串
+     */
     Base.prototype.upperFirst = function (str) {
         var first = str.substr(0, 1).toLocaleUpperCase();
         var surplus = str.substr(1, str.length);
@@ -29,10 +33,16 @@ var Base = /** @class */ (function () {
             return str.replace(/([A-Z])/g, "_$1").toLocaleUpperCase();
         }
     };
+    Base.prototype.changeCaseKebab = function (str) {
+        if (str) {
+            return str.replace(/([A-Z])/g, "-$1").toLocaleLowerCase();
+        }
+    };
     Base.prototype.replaceKeyword = function (tplContent, keyword) {
         var compiled = template(tplContent);
         var uFKeyword = this.upperFirst(keyword);
-        return compiled({ keyword: keyword, uFKeyword: uFKeyword });
+        var kebabKeyword = this.changeCaseKebab(keyword);
+        return compiled({ keyword: keyword, uFKeyword: uFKeyword, kebabKeyword: kebabKeyword });
     };
     Base.prototype.mkdirs = function (dirpath, mode, callback) {
         if (fs.existsSync(dirpath)) {

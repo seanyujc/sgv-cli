@@ -17,6 +17,10 @@ export class Base implements IBase {
     const i = filename.indexOf(".");
     return i < 0 ? "" : filename.substr(i);
   }
+  /**
+   * 转换成 Pascal
+   * @param str 驼峰字符串
+   */
   upperFirst(str: string) {
     const first = str.substr(0, 1).toLocaleUpperCase();
     const surplus = str.substr(1, str.length);
@@ -27,10 +31,16 @@ export class Base implements IBase {
       return str.replace(/([A-Z])/g, "_$1").toLocaleUpperCase();
     }
   }
+  changeCaseKebab(str: string) {
+    if (str) {
+      return str.replace(/([A-Z])/g, "-$1").toLocaleLowerCase();
+    }
+  }
   replaceKeyword(tplContent: string, keyword: string) {
     const compiled = template(tplContent);
     const uFKeyword = this.upperFirst(keyword);
-    return compiled({ keyword, uFKeyword });
+    const kebabKeyword = this.changeCaseKebab(keyword);
+    return compiled({ keyword, uFKeyword, kebabKeyword });
   }
   mkdirs(dirpath: string, mode: number, callback?: () => void) {
     if (fs.existsSync(dirpath)) {
@@ -43,7 +53,12 @@ export class Base implements IBase {
     }
   }
 
-  writeFile(basePath: string, fileName: string, data, overwrite: boolean = false) {
+  writeFile(
+    basePath: string,
+    fileName: string,
+    data,
+    overwrite: boolean = false,
+  ) {
     // const srcRoot = path.join(commons.currentPath(),  dir)
     const filePath = path.join(basePath, fileName);
 

@@ -25,32 +25,62 @@ export class Component extends Base {
         const extname = super.getExtname(fileName);
         const pathName = path.join(this.templatePath, fileName);
         fs.readFile(pathName, (error, data) => {
-          const content = super.replaceKeyword(data.toString("utf8"), this.compName);
-          const basePath = path.join(super.getCurrentDir(), "src/" + this.appName + "/components", this.compName);
-          super.writeFile(basePath, this.compName + extname, content);
+          const content = super.replaceKeyword(
+            data.toString("utf8"),
+            this.compName,
+          );
+          const basePath = path.join(
+            super.getCurrentDir(),
+            "src/" + this.appName + "/components",
+            this.changeCaseKebab(this.compName),
+          );
+          super.writeFile(
+            basePath,
+            this.changeCaseKebab(this.compName) + extname,
+            content,
+          );
         });
       });
     });
   }
 
   addFactoryConfig(): void {
-    const basePath = path.join(super.getCurrentDir(), "src/" + this.appName + "/components");
+    const basePath = path.join(
+      super.getCurrentDir(),
+      "src/" + this.appName + "/components",
+    );
     const fileName = "factory.comp.ts";
-    const content = super.replaceKeyword(COMP.FACTORY_CONTENT, this.compName);
+    const content = super.replaceKeyword(
+      COMP.FACTORY_CONTENT,
+      this.compName,
+    );
     const addContent = COMP.FACTORY_ANCHOR + super.endl() + content;
 
-    super.addContentToFile(basePath, fileName, COMP.FACTORY_ANCHOR, COMP.FACTORY_ANCHOR, addContent, (err) => {
-      if (err) {
-        winston.error(err.message);
-        return;
-      }
-      winston.info("Added " + this.compName + " components's factory config!");
-    });
+    super.addContentToFile(
+      basePath,
+      fileName,
+      COMP.FACTORY_ANCHOR,
+      COMP.FACTORY_ANCHOR,
+      addContent,
+      err => {
+        if (err) {
+          winston.error(err.message);
+          return;
+        }
+        winston.info(
+          "Added " + this.compName + " components's factory config!",
+        );
+      },
+    );
   }
 
   removeFiles() {
-    const basePath = path.join(super.getCurrentDir(), "src/" + this.appName + "/components", this.compName);
-    rimraf(basePath, (err) => {
+    const basePath = path.join(
+      super.getCurrentDir(),
+      "src/" + this.appName + "/components",
+      this.changeCaseKebab(this.compName),
+    );
+    rimraf(basePath, err => {
       if (err) {
         winston.error(err.message);
         return;
@@ -60,11 +90,18 @@ export class Component extends Base {
   }
 
   deleteFactoryConfig() {
-    const basePath = path.join(super.getCurrentDir(), "src/" + this.appName + "/components");
+    const basePath = path.join(
+      super.getCurrentDir(),
+      "src/" + this.appName + "/components",
+    );
     const fileName = "factory.comp.ts";
-    const pattern = super.replaceKeyword(COMP.FACTORY_PATTERN, this.compName) + super.endl();
+    const pattern =
+      super.replaceKeyword(
+        COMP.FACTORY_PATTERN,
+        this.compName,
+      ) + super.endl();
 
-    super.deleteContentFromFile(basePath, fileName, pattern, (err) => {
+    super.deleteContentFromFile(basePath, fileName, pattern, err => {
       if (err && err.name === "without") {
         winston.error("Without config option in factory file!");
         return;
@@ -72,7 +109,9 @@ export class Component extends Base {
         winston.log("error", err.message, err);
         return;
       }
-      winston.info("Deleted Factory function of " + this.compName + " component.");
+      winston.info(
+        "Deleted Factory function of " + this.compName + " component.",
+      );
     });
   }
 }
