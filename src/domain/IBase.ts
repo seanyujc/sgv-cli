@@ -1,7 +1,7 @@
 export interface IBase {
   getCurrentDir(): string;
   getExtname(filename: string);
-  upperFirst(str: string);
+  changeCasePascal(str: string);
   replaceKeyword(tplContent: string, moduleName: string);
   /**
    * 写文件，如果路径不存在或文件不存在新建

@@ -51,7 +51,7 @@ export const PAGE: IPageConst = {
 export function <%= keyword%>PagePreloading(): Promise<any> {
   return new Promise((resolve) => {
     require.ensure([], (require) => {
-      const <%= keyword%> = require("./<%= keyword%>/<%= keyword%>.vue").default;
+      const <%= keyword%> = require("./<%= kebabKeyword%>/<%= kebabKeyword%>.vue").default;
       resolve(<%= keyword%>);
     });
   });
@@ -61,9 +61,9 @@ export function <%= keyword%>PagePreloading(): Promise<any> {
     "// '<%= uFKeyword%>' PAGE FACTORY START[\\s\\S]*// '<%= uFKeyword%>' PAGE FACTORY END",
   ROUTER_CONFIG_ANCHOR: "  // SGV-BUILD-PAGE-ROUTER-CONFIG # NOT DELETE",
   ROUTER_CONFIG_CONTENT:
-    '{ path: "/<%= keyword%>", name: "<%= keyword%>", component: PageFactory.<%= keyword%>PagePreloading },',
+    '{ path: "/<%= snakeKeyword%>", name: "<%= keyword%>", component: PageFactory.<%= keyword%>PagePreloading },',
   ROUTER_CONFIG_PATTERN:
-    '[\\t ]*{ path: "/<%= keyword%>", name: "<%= keyword%>", component: PageFactory.<%= keyword%>PagePreloading },',
+    '[\\t ]*{ path: "/<%= snakeKeyword%>", name: "<%= keyword%>", component: PageFactory.<%= keyword%>PagePreloading },',
 };
 
 export const COMP: ICompConst = {

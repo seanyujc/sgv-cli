@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
+import { ICommonService } from "../../../common/core/services/common.serv";
 import { AutowiredService } from "../../../lib/sg-resource/decorators";
-import { ICommonService } from "../../core/services/common.serv";
 import BasePage from "../BasePage";
 
 interface I<%= uFKeyword%>Page {
@@ -9,8 +9,8 @@ interface I<%= uFKeyword%>Page {
 }
 
 @Component({
-  name: "<%= keyword%>",
   components: {},
+  name: "<%= keyword%>",
 })
 export default class <%= uFKeyword%>Page extends BasePage implements I<%= uFKeyword%>Page {
   @AutowiredService
@@ -21,7 +21,7 @@ export default class <%= uFKeyword%>Page extends BasePage implements I<%= uFKeyw
   fetchData() {
     //
   }
-
+  /* 生命钩子 START */
   mounted() {
     //
   }

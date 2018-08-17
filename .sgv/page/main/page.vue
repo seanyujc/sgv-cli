@@ -3,7 +3,7 @@
     {{title}}
   </div>
 </template>
-<script lang="ts" src="./<%= keyword%>.ts">
+<script lang="ts" src="./<%= kebabKeyword%>.ts">
 
 </script>
 <style lang="scss" scoped>

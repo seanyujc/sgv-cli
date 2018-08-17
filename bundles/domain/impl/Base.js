@@ -23,7 +23,7 @@ var Base = /** @class */ (function () {
      * 转换成 Pascal
      * @param str 驼峰字符串
      */
-    Base.prototype.upperFirst = function (str) {
+    Base.prototype.changeCasePascal = function (str) {
         var first = str.substr(0, 1).toLocaleUpperCase();
         var surplus = str.substr(1, str.length);
         return first + surplus;
@@ -38,11 +38,17 @@ var Base = /** @class */ (function () {
             return str.replace(/([A-Z])/g, "-$1").toLocaleLowerCase();
         }
     };
+    Base.prototype.changeCaseSnake = function (str) {
+        if (str) {
+            return str.replace(/([A-Z])/g, "_$1").toLocaleLowerCase();
+        }
+    };
     Base.prototype.replaceKeyword = function (tplContent, keyword) {
         var compiled = template(tplContent);
-        var uFKeyword = this.upperFirst(keyword);
+        var uFKeyword = this.changeCasePascal(keyword);
         var kebabKeyword = this.changeCaseKebab(keyword);
-        return compiled({ keyword: keyword, uFKeyword: uFKeyword, kebabKeyword: kebabKeyword });
+        var snakeKeyword = this.changeCaseSnake(keyword);
+        return compiled({ keyword: keyword, uFKeyword: uFKeyword, kebabKeyword: kebabKeyword, snakeKeyword: snakeKeyword });
     };
     Base.prototype.mkdirs = function (dirpath, mode, callback) {
         if (fs.existsSync(dirpath)) {

@@ -23,17 +23,23 @@ var Store = /** @class */ (function (_super) {
         _this.states = states;
         _this.appName = appName;
         _this.templateFile = path.join(__dirname, "../../../", ".sgv/store.ts");
-        _this.typesFilePath = path.join(_super.prototype.getCurrentDir.call(_this), "src/app/core/store/mutationTypes.ts");
+        _this.typesFilePath = path.join(_super.prototype.getCurrentDir.call(_this), "src/common/core/store/mutationTypes.ts");
         if (pageName) {
-            _this.targetPath = "src/" + _this.appName + "/pages/" + pageName;
+            _this.targetPath =
+                "src/" + _this.appName + "/pages/" + _this.changeCaseKebab(pageName);
             _this.name = pageName + "Page";
             _this.componentType = "Page";
         }
         else if (compName) {
-            _this.targetPath = "src/" + _this.appName + "/components/" + compName;
+            _this.targetPath =
+                "src/" + _this.appName + "/components/" + _this.changeCaseKebab(compName);
             _this.name = compName + "Comp";
             _this.componentType = "Comp";
         }
+        _this.constantKeyName =
+            _super.prototype.changeCaseConstant.call(_this, _this.appName) +
+                "_" +
+                _super.prototype.changeCaseConstant.call(_this, _this.name);
         return _this;
     }
     Store.prototype.copyFile = function () {
@@ -78,7 +84,7 @@ var Store = /** @class */ (function (_super) {
             initVal = "0";
         }
         var reg = null;
-        var constantKeyName = _super.prototype.changeCaseConstant.call(this, this.name) + "_" + _super.prototype.changeCaseConstant.call(this, key);
+        var constantKeyName = this.constantKeyName + "_" + _super.prototype.changeCaseConstant.call(this, key);
         // 添加导入
         reg = new RegExp(config_1.STORE.IMPORT_ANCHOR);
         var importContent = config_1.STORE.IMPORT_ANCHOR +
@@ -99,7 +105,7 @@ var Store = /** @class */ (function (_super) {
         reg = new RegExp(config_1.STORE.MUTATIONS_ANCHOR);
         var mutationContent = config_1.STORE.MUTATIONS_ANCHOR +
             _super.prototype.endl.call(this) +
-            ("  [SET_" + constantKeyName + "](state: I" + _super.prototype.upperFirst.call(this, this.name) + "State, val: any[]) {") +
+            ("  [SET_" + constantKeyName + "](state: I" + _super.prototype.changeCasePascal.call(this, this.name) + "State, val: " + type + ") {") +
             _super.prototype.endl.call(this) +
             ("    state." + key + " = val;") +
             _super.prototype.endl.call(this) +
@@ -109,7 +115,7 @@ var Store = /** @class */ (function (_super) {
         reg = new RegExp(config_1.STORE.ACTIONS_ANCHOR);
         var actionContent = config_1.STORE.ACTIONS_ANCHOR +
             _super.prototype.endl.call(this) +
-            ("  [FETCH_" + constantKeyName + "]: ({ commit }: ActionContext<I" + _super.prototype.upperFirst.call(this, this.name) + "State, any>) => {") +
+            ("  [FETCH_" + constantKeyName + "]: ({ commit }: ActionContext<I" + _super.prototype.changeCasePascal.call(this, this.name) + "State, any>) => {") +
             _super.prototype.endl.call(this) +
             ("    commit(SET_" + constantKeyName + ", \"\");") +
             "    return Promise.resolve();" +
@@ -120,9 +126,9 @@ var Store = /** @class */ (function (_super) {
         return fileContent;
     };
     Store.prototype.addExportConstantContent = function (key) {
-        var constantKeyName = _super.prototype.changeCaseConstant.call(this, this.name) + "_" + _super.prototype.changeCaseConstant.call(this, key);
-        var mutationsAnchor = "// \"" + _super.prototype.upperFirst.call(this, this.name) + "\" MUTATIONS # NOT DELETE";
-        var actionsAnchor = "// \"" + _super.prototype.upperFirst.call(this, this.name) + "\" ACTIONS # NOT DELETE";
+        var constantKeyName = this.constantKeyName + "_" + _super.prototype.changeCaseConstant.call(this, key);
+        var mutationsAnchor = "// \"" + _super.prototype.changeCasePascal.call(this, this.name) + "\" MUTATIONS # NOT DELETE";
+        var actionsAnchor = "// \"" + _super.prototype.changeCasePascal.call(this, this.name) + "\" ACTIONS # NOT DELETE";
         var exportMutationsContent = mutationsAnchor +
             _super.prototype.endl.call(this) +
             ("export const SET_" + constantKeyName + " = \"SET_" + constantKeyName + "\";");
@@ -140,7 +146,9 @@ var Store = /** @class */ (function (_super) {
                         ? config_1.STORE.CONSTANT_PAGE_MUTATIONS_ANCHOR
                         : config_1.STORE.CONSTANT_COMP_MUTATIONS_ANCHOR;
                 exportMutationsContent =
-                    mutationsAnchor.replace(/\\/g, "") + _super.prototype.endl.call(this) + exportMutationsContent;
+                    mutationsAnchor.replace(/\\/g, "") +
+                        _super.prototype.endl.call(this) +
+                        exportMutationsContent;
             }
             if (!fileContent.match(new RegExp(actionsAnchor))) {
                 actionsAnchor =
@@ -148,7 +156,9 @@ var Store = /** @class */ (function (_super) {
                         ? config_1.STORE.CONSTANT_PAGE_ACTIONS_ANCHOR
                         : config_1.STORE.CONSTANT_COMP_ACTIONS_ANCHOR;
                 exportActionsContent =
-                    actionsAnchor.replace(/\\/g, "") + _super.prototype.endl.call(this) + exportActionsContent;
+                    actionsAnchor.replace(/\\/g, "") +
+                        _super.prototype.endl.call(this) +
+                        exportActionsContent;
             }
             fileContent = fileContent
                 .replace(new RegExp(mutationsAnchor), exportMutationsContent)

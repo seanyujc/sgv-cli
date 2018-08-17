@@ -9,10 +9,11 @@ export class Store extends Base {
   targetPath: string;
   typesFilePath: string = path.join(
     super.getCurrentDir(),
-    "src/app/core/store/mutationTypes.ts",
+    "src/common/core/store/mutationTypes.ts",
   );
   name: string;
   componentType: string;
+  constantKeyName: string;
 
   constructor(
     pageName: string,
@@ -22,14 +23,20 @@ export class Store extends Base {
   ) {
     super();
     if (pageName) {
-      this.targetPath = "src/" + this.appName + "/pages/" + pageName;
+      this.targetPath =
+        "src/" + this.appName + "/pages/" + this.changeCaseKebab(pageName);
       this.name = pageName + "Page";
       this.componentType = "Page";
     } else if (compName) {
-      this.targetPath = "src/" + this.appName + "/components/" + compName;
+      this.targetPath =
+        "src/" + this.appName + "/components/" + this.changeCaseKebab(compName);
       this.name = compName + "Comp";
       this.componentType = "Comp";
     }
+    this.constantKeyName =
+      super.changeCaseConstant(this.appName) +
+      "_" +
+      super.changeCaseConstant(this.name);
   }
 
   copyFile() {
@@ -77,7 +84,7 @@ export class Store extends Base {
     }
     let reg = null;
     const constantKeyName =
-      super.changeCaseConstant(this.name) + "_" + super.changeCaseConstant(key);
+      this.constantKeyName + "_" + super.changeCaseConstant(key);
     // 添加导入
     reg = new RegExp(STORE.IMPORT_ANCHOR);
     const importContent =
@@ -102,9 +109,9 @@ export class Store extends Base {
     const mutationContent =
       STORE.MUTATIONS_ANCHOR +
       super.endl() +
-      `  [SET_${constantKeyName}](state: I${super.upperFirst(
+      `  [SET_${constantKeyName}](state: I${super.changeCasePascal(
         this.name,
-      )}State, val: any[]) {` +
+      )}State, val: ${type}) {` +
       super.endl() +
       `    state.${key} = val;` +
       super.endl() +
@@ -115,7 +122,7 @@ export class Store extends Base {
     const actionContent =
       STORE.ACTIONS_ANCHOR +
       super.endl() +
-      `  [FETCH_${constantKeyName}]: ({ commit }: ActionContext<I${super.upperFirst(
+      `  [FETCH_${constantKeyName}]: ({ commit }: ActionContext<I${super.changeCasePascal(
         this.name,
       )}State, any>) => {` +
       super.endl() +
@@ -130,11 +137,11 @@ export class Store extends Base {
 
   addExportConstantContent(key: string) {
     const constantKeyName =
-      super.changeCaseConstant(this.name) + "_" + super.changeCaseConstant(key);
-    let mutationsAnchor = `// "${super.upperFirst(
+      this.constantKeyName + "_" + super.changeCaseConstant(key);
+    let mutationsAnchor = `// "${super.changeCasePascal(
       this.name,
     )}" MUTATIONS # NOT DELETE`;
-    let actionsAnchor = `// "${super.upperFirst(
+    let actionsAnchor = `// "${super.changeCasePascal(
       this.name,
     )}" ACTIONS # NOT DELETE`;
     let exportMutationsContent =
@@ -157,7 +164,9 @@ export class Store extends Base {
             ? STORE.CONSTANT_PAGE_MUTATIONS_ANCHOR
             : STORE.CONSTANT_COMP_MUTATIONS_ANCHOR;
         exportMutationsContent =
-          mutationsAnchor.replace(/\\/g, "") + super.endl() + exportMutationsContent;
+          mutationsAnchor.replace(/\\/g, "") +
+          super.endl() +
+          exportMutationsContent;
       }
       if (!fileContent.match(new RegExp(actionsAnchor))) {
         actionsAnchor =
@@ -165,7 +174,9 @@ export class Store extends Base {
             ? STORE.CONSTANT_PAGE_ACTIONS_ANCHOR
             : STORE.CONSTANT_COMP_ACTIONS_ANCHOR;
         exportActionsContent =
-          actionsAnchor.replace(/\\/g, "") + super.endl() + exportActionsContent;
+          actionsAnchor.replace(/\\/g, "") +
+          super.endl() +
+          exportActionsContent;
       }
       fileContent = fileContent
         .replace(new RegExp(mutationsAnchor), exportMutationsContent)

@@ -7,6 +7,7 @@ export declare class Store extends Base {
     typesFilePath: string;
     name: string;
     componentType: string;
+    constantKeyName: string;
     constructor(pageName: string, compName: string, states?: string[], appName?: string);
     copyFile(): void;
     addContentToStore(key: string, type: string, fileContent: string): string;

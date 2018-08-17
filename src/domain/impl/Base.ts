@@ -21,7 +21,7 @@ export class Base implements IBase {
    * 转换成 Pascal
    * @param str 驼峰字符串
    */
-  upperFirst(str: string) {
+  changeCasePascal(str: string) {
     const first = str.substr(0, 1).toLocaleUpperCase();
     const surplus = str.substr(1, str.length);
     return first + surplus;
@@ -36,11 +36,17 @@ export class Base implements IBase {
       return str.replace(/([A-Z])/g, "-$1").toLocaleLowerCase();
     }
   }
+  changeCaseSnake(str: string) {
+    if (str) {
+      return str.replace(/([A-Z])/g, "_$1").toLocaleLowerCase();
+    }
+  }
   replaceKeyword(tplContent: string, keyword: string) {
     const compiled = template(tplContent);
-    const uFKeyword = this.upperFirst(keyword);
+    const uFKeyword = this.changeCasePascal(keyword);
     const kebabKeyword = this.changeCaseKebab(keyword);
-    return compiled({ keyword, uFKeyword, kebabKeyword });
+    const snakeKeyword = this.changeCaseSnake(keyword);
+    return compiled({ keyword, uFKeyword, kebabKeyword, snakeKeyword });
   }
   mkdirs(dirpath: string, mode: number, callback?: () => void) {
     if (fs.existsSync(dirpath)) {

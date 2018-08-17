@@ -39,16 +39,23 @@ export class Page extends Base implements IPage {
           const basePath = path.join(
             super.getCurrentDir(),
             "src/" + this.appName + "/pages",
-            this.pageName,
+            this.changeCaseKebab(this.pageName),
           );
-          super.writeFile(basePath, this.pageName + extname, content);
+          super.writeFile(
+            basePath,
+            this.changeCaseKebab(this.pageName) + extname,
+            content,
+          );
         });
       });
     });
   }
 
   addFactoryFun(): void {
-    const basePath = path.join(super.getCurrentDir(), "src/" + this.appName + "/pages");
+    const basePath = path.join(
+      super.getCurrentDir(),
+      "src/" + this.appName + "/pages",
+    );
     const fileName = "factory.page.ts";
     const content = super.replaceKeyword(
       PAGE.FACTORY_FUNCTION_CONTENT,
@@ -73,7 +80,10 @@ export class Page extends Base implements IPage {
   }
 
   addRouter() {
-    const basePath = path.join(super.getCurrentDir(), "src/" + this.appName + "");
+    const basePath = path.join(
+      super.getCurrentDir(),
+      "src/" + this.appName + "",
+    );
     const fileName = "index.router.ts";
     const original = fs.readFileSync(this.routerTplPath).toString("utf8");
     const configContent =
@@ -102,7 +112,7 @@ export class Page extends Base implements IPage {
     const basePath = path.join(
       super.getCurrentDir(),
       "src/" + this.appName + "/pages",
-      this.pageName,
+      super.changeCaseKebab(this.pageName),
     );
     rimraf(basePath, err => {
       if (err) {
@@ -114,7 +124,10 @@ export class Page extends Base implements IPage {
   }
 
   deleteFactoryFun() {
-    const basePath = path.join(super.getCurrentDir(), "src/" + this.appName + "/pages");
+    const basePath = path.join(
+      super.getCurrentDir(),
+      "src/" + this.appName + "/pages",
+    );
     const fileName = "factory.page.ts";
     const pattern =
       super.replaceKeyword(PAGE.FACTORY_FUNCTION_PATTERN, this.pageName) +
@@ -133,7 +146,10 @@ export class Page extends Base implements IPage {
   }
 
   deleteRouter() {
-    const basePath = path.join(super.getCurrentDir(), "src/" + this.appName + "");
+    const basePath = path.join(
+      super.getCurrentDir(),
+      "src/" + this.appName + "",
+    );
     const fileName = "index.router.ts";
     const pattern =
       super.replaceKeyword(PAGE.ROUTER_CONFIG_PATTERN, this.pageName) +

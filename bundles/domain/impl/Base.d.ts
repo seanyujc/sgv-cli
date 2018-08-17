@@ -8,9 +8,10 @@ export declare class Base implements IBase {
      * 转换成 Pascal
      * @param str 驼峰字符串
      */
-    upperFirst(str: string): string;
+    changeCasePascal(str: string): string;
     changeCaseConstant(str: string): string;
     changeCaseKebab(str: string): string;
+    changeCaseSnake(str: string): string;
     replaceKeyword(tplContent: string, keyword: string): string;
     mkdirs(dirpath: string, mode: number, callback?: () => void): void;
     writeFile(basePath: string, fileName: string, data: any, overwrite?: boolean): void;

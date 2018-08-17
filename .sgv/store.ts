@@ -1,8 +1,8 @@
 import { ActionContext } from "vuex";
-import { Services } from "../../core/factory.serv";
 import {
   // SGV-BUILD-STORE-IMPORT # NOT DELETE
-} from "../../core/store/mutationTypes";
+} from "../../../common/core/store/mutationTypes";
+import { Services } from "../../core/factory.serv";
 
 interface I<%= uFKeyword%>State {
   // SGV-BUILD-STORE-INTERFACE # NOT DELETE
@@ -25,9 +25,9 @@ const getters = {
 };
 
 export default {
-  namespaced: true,
-  state: xState,
-  mutations,
   actions,
   getters,
+  mutations,
+  namespaced: true,
+  state: xState,
 };
