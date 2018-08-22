@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Component from "vue-class-component";
+import Component, { mixins } from "vue-class-component";
 import { ICommonService } from "../../../common/core/services/common.serv";
 import { AutowiredService } from "../../../lib/sg-resource/decorators";
 import BasePage from "../BasePage";
@@ -12,7 +12,7 @@ interface I<%= uFKeyword%>Page {
   components: {},
   name: "<%= keyword%>",
 })
-export default class <%= uFKeyword%>Page extends BasePage implements I<%= uFKeyword%>Page {
+export default class <%= uFKeyword%>Page extends mixins(BasePage) implements I<%= uFKeyword%>Page {
   @AutowiredService
   commonService: ICommonService;
 

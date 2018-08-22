@@ -24,6 +24,7 @@ var Store = /** @class */ (function (_super) {
         _this.appName = appName;
         _this.templateFile = path.join(__dirname, "../../../", ".sgv/store.ts");
         _this.typesFilePath = path.join(_super.prototype.getCurrentDir.call(_this), "src/common/core/store/mutationTypes.ts");
+        // console.log(pageName, compName);
         if (pageName) {
             _this.targetPath =
                 "src/" + _this.appName + "/pages/" + _this.changeCaseKebab(pageName);
@@ -31,9 +32,8 @@ var Store = /** @class */ (function (_super) {
             _this.componentType = "Page";
         }
         else if (compName) {
-            _this.targetPath =
-                "src/" + _this.appName + "/components/" + _this.changeCaseKebab(compName);
-            _this.name = compName + "Comp";
+            _this.targetPath = "src/" + _this.appName + "/components/";
+            _this.name = "comp";
             _this.componentType = "Comp";
         }
         _this.constantKeyName =
@@ -45,7 +45,7 @@ var Store = /** @class */ (function (_super) {
     Store.prototype.copyFile = function () {
         var _this = this;
         var templateFile = this.templateFile;
-        // 如果目标位置已存在文件
+        // 如果目标位置已存在文件则修改
         if (fs.existsSync(this.targetPath + "/store.ts")) {
             templateFile = path.join(_super.prototype.getCurrentDir.call(this), this.targetPath + "/store.ts");
             winston.error("文件已存在，将之后添加内容！");
@@ -127,8 +127,8 @@ var Store = /** @class */ (function (_super) {
     };
     Store.prototype.addExportConstantContent = function (key) {
         var constantKeyName = this.constantKeyName + "_" + _super.prototype.changeCaseConstant.call(this, key);
-        var mutationsAnchor = "// \"" + _super.prototype.changeCasePascal.call(this, this.name) + "\" MUTATIONS # NOT DELETE";
-        var actionsAnchor = "// \"" + _super.prototype.changeCasePascal.call(this, this.name) + "\" ACTIONS # NOT DELETE";
+        var mutationsAnchor = "// \"" + _super.prototype.changeCaseConstant.call(this, this.appName) + " " + _super.prototype.changeCasePascal.call(this, this.name) + "\" MUTATIONS # NOT DELETE";
+        var actionsAnchor = "// \"" + _super.prototype.changeCaseConstant.call(this, this.appName) + " " + _super.prototype.changeCasePascal.call(this, this.name) + "\" ACTIONS # NOT DELETE";
         var exportMutationsContent = mutationsAnchor +
             _super.prototype.endl.call(this) +
             ("export const SET_" + constantKeyName + " = \"SET_" + constantKeyName + "\";");

@@ -61,17 +61,17 @@ export function <%= keyword%>PagePreloading(): Promise<any> {
     "// '<%= uFKeyword%>' PAGE FACTORY START[\\s\\S]*// '<%= uFKeyword%>' PAGE FACTORY END",
   ROUTER_CONFIG_ANCHOR: "  // SGV-BUILD-PAGE-ROUTER-CONFIG # NOT DELETE",
   ROUTER_CONFIG_CONTENT:
-    '{ path: "/<%= snakeKeyword%>", name: "<%= keyword%>", component: PageFactory.<%= keyword%>PagePreloading },',
+    '{ path: "/<%= snakeKeyword%>", name: "<%= keyword%>", component: component: () => import("./pages/<%= snakeKeyword%>/<%= snakeKeyword%>.vue") },',
   ROUTER_CONFIG_PATTERN:
-    '[\\t ]*{ path: "/<%= snakeKeyword%>", name: "<%= keyword%>", component: PageFactory.<%= keyword%>PagePreloading },',
+    '[\\t ]*{ path: "/<%= snakeKeyword%>", name: "<%= keyword%>", component: component: () => import\\("./pages/<%= snakeKeyword%>/<%= snakeKeyword%>.vue"\\) \\},',
 };
 
 export const COMP: ICompConst = {
   FACTORY_ANCHOR: "// SGV-BUILD-COMP-FAC # NOT DELETE",
   FACTORY_CONTENT:
-    'Vue.component("<%= keyword%>", require("./<%= kebabKeyword%>/<%= kebabKeyword%>.vue").default);',
+    'Vue.component("<%= keyword%>", import("./<%= kebabKeyword%>/<%= kebabKeyword%>.vue"));',
   FACTORY_PATTERN:
-    'Vue\\.component\\("<%= keyword%>", require\\("./<%= kebabKeyword%>/<%= kebabKeyword%>.vue"\\)\\.default\\);',
+    'Vue\\.component\\("<%= keyword%>", import\\("./<%= kebabKeyword%>/<%= kebabKeyword%>.vue"\\)\\);',
 };
 
 export const SERVICE: IServiceConst = {

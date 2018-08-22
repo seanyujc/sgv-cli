@@ -10,12 +10,14 @@ var ncp = require("ncp").ncp;
 var rm = require("rimraf").sync;
 program
     .usage("<project-name>")
-    .option("-n,--new [app-name]", "create new app ")
+    .option("-n,--new [app-name]", "create sub app ")
+    .option("-t,--template [template-name]", "create sub app ")
     .parse(process.argv);
-var projectName = program.args[0];
+var projectName = program.args[0] || ".";
+var template = program.template || "seanyujc/sgv-tpl-webpack";
 if (!program.hasOwnProperty("new")) {
     var spinner_1 = ora("initializing for " + projectName + " project...").start();
-    download("seanyujc/sgv-tpl-webpack", projectName, function (err) {
+    download(template, projectName, function (err) {
         spinner_1.stop();
         if (err) {
             winston.log(err);
@@ -29,7 +31,7 @@ if (!program.hasOwnProperty("new")) {
 if (program.hasOwnProperty("new")) {
     var appName_1 = program.new;
     var spinner_2 = ora("initializing for " + projectName + " project...").start();
-    download("seanyujc/sgv-tpl-webpack", projectName + "/.temp/" + appName_1 + "", function (err) {
+    download(template, projectName + "/.temp/" + appName_1 + "", function (err) {
         spinner_2.stop();
         if (err) {
             winston.log(err);

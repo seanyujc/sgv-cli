@@ -6,11 +6,17 @@ import { Base } from "./Base";
 
 export class Store extends Base {
   templateFile: string = path.join(__dirname, "../../../", ".sgv/store.ts");
+  /**
+   * 创建store的路径
+   */
   targetPath: string;
   typesFilePath: string = path.join(
     super.getCurrentDir(),
     "src/common/core/store/mutationTypes.ts",
   );
+  /**
+   * 创建对象名 + Page or Comp 以区分页面还是组件
+   */
   name: string;
   componentType: string;
   constantKeyName: string;
@@ -22,15 +28,15 @@ export class Store extends Base {
     private appName: string = "app",
   ) {
     super();
+    // console.log(pageName, compName);
     if (pageName) {
       this.targetPath =
         "src/" + this.appName + "/pages/" + this.changeCaseKebab(pageName);
       this.name = pageName + "Page";
       this.componentType = "Page";
     } else if (compName) {
-      this.targetPath =
-        "src/" + this.appName + "/components/" + this.changeCaseKebab(compName);
-      this.name = compName + "Comp";
+      this.targetPath = "src/" + this.appName + "/components/";
+      this.name = "comp";
       this.componentType = "Comp";
     }
     this.constantKeyName =
@@ -41,7 +47,7 @@ export class Store extends Base {
 
   copyFile() {
     let templateFile = this.templateFile;
-    // 如果目标位置已存在文件
+    // 如果目标位置已存在文件则修改
     if (fs.existsSync(this.targetPath + "/store.ts")) {
       templateFile = path.join(
         super.getCurrentDir(),
@@ -138,12 +144,12 @@ export class Store extends Base {
   addExportConstantContent(key: string) {
     const constantKeyName =
       this.constantKeyName + "_" + super.changeCaseConstant(key);
-    let mutationsAnchor = `// "${super.changeCasePascal(
-      this.name,
-    )}" MUTATIONS # NOT DELETE`;
-    let actionsAnchor = `// "${super.changeCasePascal(
-      this.name,
-    )}" ACTIONS # NOT DELETE`;
+    let mutationsAnchor = `// "${super.changeCaseConstant(
+      this.appName,
+    )} ${super.changeCasePascal(this.name)}" MUTATIONS # NOT DELETE`;
+    let actionsAnchor = `// "${super.changeCaseConstant(
+      this.appName,
+    )} ${super.changeCasePascal(this.name)}" ACTIONS # NOT DELETE`;
     let exportMutationsContent =
       mutationsAnchor +
       super.endl() +
