@@ -49,11 +49,8 @@ export const PAGE: IPageConst = {
   FACTORY_ANCHOR: "// SGV-BUILD-PAGE-FAC # NOT DELETE",
   FACTORY_FUNCTION_CONTENT: `// '<%= uFKeyword%>' PAGE FACTORY START
 export function <%= keyword%>PagePreloading(): Promise<any> {
-  return new Promise((resolve) => {
-    require.ensure([], (require) => {
-      const <%= keyword%> = require("./<%= kebabKeyword%>/<%= kebabKeyword%>.vue").default;
-      resolve(<%= keyword%>);
-    });
+  return import("./<%= kebabKeyword%>/<%= kebabKeyword%>.vue").catch(error => {
+    return dealOccurred(error, "<%= uFKeyword%>");
   });
 }
 // '<%= uFKeyword%>' PAGE FACTORY END`,
