@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PAGE = {
     FACTORY_ANCHOR: "// SGV-BUILD-PAGE-FAC # NOT DELETE",
-    FACTORY_FUNCTION_CONTENT: "// '<%= uFKeyword%>' PAGE FACTORY START\nexport function <%= keyword%>PagePreloading(): Promise<any> {\n  return new Promise((resolve) => {\n    require.ensure([], (require) => {\n      const <%= keyword%> = require(\"./<%= kebabKeyword%>/<%= kebabKeyword%>.vue\").default;\n      resolve(<%= keyword%>);\n    });\n  });\n}\n// '<%= uFKeyword%>' PAGE FACTORY END",
+    FACTORY_FUNCTION_CONTENT: "// '<%= uFKeyword%>' PAGE FACTORY START\nexport function <%= keyword%>PagePreloading(): Promise<any> {\n  return import(\"./<%= kebabKeyword%>/<%= kebabKeyword%>.vue\").catch(error => {\n    return dealOccurred(error, \"<%= uFKeyword%>\");\n  });\n}\n// '<%= uFKeyword%>' PAGE FACTORY END",
     FACTORY_FUNCTION_PATTERN: "// '<%= uFKeyword%>' PAGE FACTORY START[\\s\\S]*// '<%= uFKeyword%>' PAGE FACTORY END",
     ROUTER_CONFIG_ANCHOR: "  // SGV-BUILD-PAGE-ROUTER-CONFIG # NOT DELETE",
     ROUTER_CONFIG_CONTENT: '{ path: "/<%= snakeKeyword%>", name: "<%= keyword%>", component: PageFactory.<%= keyword%>PagePreloading },',
