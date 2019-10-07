@@ -125,17 +125,13 @@ var Service = /** @class */ (function (_super) {
                 return;
             }
             winston.info("Added " + _this.funName + " interface in " + _this.name + " service!");
-            _super.prototype.addContentToFile.call(_this, basePath, fileName, "", config_1.SERVICE.FUNCTION_ANCHOR, addFunContent, function (err1) {
-                if (err1) {
-                    winston.error(err1.message);
-                    return;
-                }
-                winston.info("Added " +
-                    _this.funName +
-                    " function in " +
-                    _this.name +
-                    " service!");
-            });
+        });
+        _super.prototype.addContentToFile.call(this, basePath, fileName, "", config_1.SERVICE.FUNCTION_ANCHOR, addFunContent, function (err1) {
+            if (err1) {
+                winston.error(err1.message);
+                return;
+            }
+            winston.info("Added " + _this.funName + " function in " + _this.name + " service!");
         });
     };
     Service.prototype.addAPI = function (method) {
