@@ -13,7 +13,7 @@ export class WechatMini extends Base {
       beforePath = name.substring(0, name.lastIndexOf("/")).replace(/^\//, "");
     }
     const miniprogramRoot = path.join(super.getCurrentDir(), "miniprogram");
-    const config = `"pages/${beforePath}${fileName}/${fileName}"`;
+    const config = `"pages/${beforePath}/${fileName}/${fileName}"`;
 
     fs.readFile(miniprogramRoot + "/app.json", (error, data) => {
       const content = data.toString("utf8");
