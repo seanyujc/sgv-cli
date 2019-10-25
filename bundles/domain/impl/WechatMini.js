@@ -27,11 +27,12 @@ var WechatMini = /** @class */ (function (_super) {
         _super.prototype.writeFile.call(this, basePath, fileName + ".wxml", "<view class=\"container\"></view>");
         _super.prototype.writeFile.call(this, basePath, fileName + ".wxss", "");
         var dir = path.join(_super.prototype.getCurrentDir.call(this), "miniprogram");
+        // console.log(dir);
         fs.readFile(dir + "/app.json", function (error, data) {
             var content = data.toString("utf8");
             var res = content.replace(/"pages": \[([^\]]*)/, "\"pages\": [\n    \"pages/" + fileName + "/" + fileName + "\",$1");
             // console.log(res);
-            _super.prototype.writeFile.call(_this, dir, "/app.json", res);
+            _super.prototype.writeFile.call(_this, dir, "/app.json", res, true);
         });
     };
     return WechatMini;

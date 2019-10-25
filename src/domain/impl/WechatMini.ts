@@ -38,6 +38,8 @@ Page({});
     super.writeFile(basePath, fileName + ".wxss", ``);
 
     const dir = path.join(super.getCurrentDir(), "miniprogram");
+    // console.log(dir);
+    
     fs.readFile(dir + "/app.json", (error, data) => {
       const content = data.toString("utf8");
       const res = content.replace(
@@ -46,7 +48,7 @@ Page({});
     "pages/${fileName}/${fileName}",$1`,
       );
       // console.log(res);
-      super.writeFile(dir, "/app.json", res);
+      super.writeFile(dir, "/app.json", res, true);
     });
   }
 }
