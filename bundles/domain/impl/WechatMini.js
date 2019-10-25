@@ -12,6 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require("fs");
 var path = require("path");
+var winston = require("winston");
 var Base_1 = require("./Base");
 var WechatMini = /** @class */ (function (_super) {
     __extends(WechatMini, _super);
@@ -20,20 +21,73 @@ var WechatMini = /** @class */ (function (_super) {
     }
     WechatMini.prototype.buildPage = function (name) {
         var _this = this;
-        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "miniprogram/pages", this.changeCaseKebab(name));
         var fileName = this.changeCaseKebab(name);
-        _super.prototype.writeFile.call(this, basePath, fileName + ".json", "{\n  \"usingComponents\": {\n  }\n}\n");
-        _super.prototype.writeFile.call(this, basePath, fileName + ".ts", "/**\n * " + name + "\n */\nPage({});\n");
-        _super.prototype.writeFile.call(this, basePath, fileName + ".wxml", "<view class=\"container\"></view>");
-        _super.prototype.writeFile.call(this, basePath, fileName + ".wxss", "");
-        var dir = path.join(_super.prototype.getCurrentDir.call(this), "miniprogram");
-        // console.log(dir);
-        fs.readFile(dir + "/app.json", function (error, data) {
+        var beforePath = "";
+        if (name.indexOf("/") !== -1) {
+            var fn = name.substring(name.lastIndexOf("/") + 1);
+            fileName = this.changeCaseKebab(fn);
+            beforePath = name.substring(0, name.lastIndexOf("/")).replace(/^\//, "");
+        }
+        var miniprogramRoot = path.join(_super.prototype.getCurrentDir.call(this), "miniprogram");
+        var config = "\"pages/" + beforePath + fileName + "/" + fileName + "\"";
+        fs.readFile(miniprogramRoot + "/app.json", function (error, data) {
             var content = data.toString("utf8");
-            var res = content.replace(/"pages": \[([^\]]*)/, "\"pages\": [\n    \"pages/" + fileName + "/" + fileName + "\",$1");
-            // console.log(res);
-            _super.prototype.writeFile.call(_this, dir, "/app.json", res, true);
+            try {
+                var appJson = JSON.parse(content);
+                if (appJson.pages.indexOf(config) === -1) {
+                    appJson.pages = appJson.pages.map(JSON.stringify);
+                    appJson.pages.push(config);
+                    var val = appJson.pages.join("," + _super.prototype.endl.call(_this) + "    ");
+                    var res = content.replace(/"pages": \[([^\]]*)/, "\"pages\": [\n  " + val + "\n");
+                    _super.prototype.writeFile.call(_this, miniprogramRoot, "/app.json", res, true);
+                    _this.buildComponentBase("pages", fileName, beforePath, false);
+                }
+            }
+            catch (error) {
+                winston.error(error);
+            }
         });
+    };
+    WechatMini.prototype.buildComponent = function (name) {
+        var _this = this;
+        var fileName = this.changeCaseKebab(name);
+        var miniprogramRoot = path.join(_super.prototype.getCurrentDir.call(this), "miniprogram");
+        fs.readdir(miniprogramRoot + "/components", function (error, files) {
+            if (error) {
+                winston.error(error.message);
+                return;
+            }
+            else {
+                var existed = [];
+                for (var _i = 0, files_1 = files; _i < files_1.length; _i++) {
+                    var file = files_1[_i];
+                    var dir = miniprogramRoot + "/components/" + file;
+                    var stats = fs.statSync(dir);
+                    if (stats.isDirectory()) {
+                        existed.push(file);
+                    }
+                }
+                if (existed.indexOf(fileName) !== -1) {
+                    winston.warn("已经存在！");
+                    return;
+                }
+                _this.buildComponentBase("components", fileName);
+            }
+        });
+    };
+    WechatMini.prototype.buildComponentBase = function (dirPath, fileName, prefix, isComponent) {
+        if (prefix === void 0) { prefix = ""; }
+        if (isComponent === void 0) { isComponent = true; }
+        var className = isComponent ? "Component" : "Page";
+        var p = [dirPath];
+        if (prefix) {
+            p.push(prefix);
+        }
+        var basePath = path.join(_super.prototype.getCurrentDir.call(this), "miniprogram/" + p.join("/"), fileName);
+        _super.prototype.writeFile.call(this, basePath, fileName + ".json", "{\n  \"usingComponents\": {\n  }\n}\n");
+        _super.prototype.writeFile.call(this, basePath, fileName + ".ts", "/**\n * " + fileName + "\n */\n" + className + "({});\n");
+        _super.prototype.writeFile.call(this, basePath, fileName + ".wxml", "<view class=\"container\">" + fileName + "</view>");
+        _super.prototype.writeFile.call(this, basePath, fileName + ".wxss", "");
     };
     return WechatMini;
 }(Base_1.Base));

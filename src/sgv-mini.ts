@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-console.log(123);
+// console.log(123);
 
 import program = require("commander");
 import { WechatMini } from "./domain/impl/WechatMini";
@@ -11,17 +11,18 @@ program
   .parse(process.argv);
 
 const cmdName = program.args[0] || "build";
-console.log(program);
+// console.log(program);
 
 const wechatMini = new WechatMini();
 
 switch (cmdName) {
   case "build":
     if (program.hasOwnProperty("page")) {
+      console.log("Begin create page...");
       wechatMini.buildPage(program.page);
-      console.log("page");
     } else if (program.hasOwnProperty("comp")) {
-      console.log("comp");
+      console.log("Begin create component...");
+      wechatMini.buildComponent(program.comp);
     }
 
     break;
