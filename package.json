@@ -13,7 +13,7 @@
   },
   "scripts": {
     "rebuild": "rimraf bundles && tsc && npm unlink && npm link",
-    "debug": "node --debug-brk=9229 --nolazy ./bundles/sgvs-build.js -p=person -t=newsList,tabs"
+    "debug": "node --debug-brk=9229 --nolazy ./bundles/sgv-mini.js build -p=person"
   },
   "repository": {
     "type": "git",
