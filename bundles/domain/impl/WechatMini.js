@@ -78,7 +78,6 @@ var WechatMini = /** @class */ (function (_super) {
     WechatMini.prototype.buildComponentBase = function (dirPath, fileName, prefix, isComponent) {
         if (prefix === void 0) { prefix = ""; }
         if (isComponent === void 0) { isComponent = true; }
-        var className = isComponent ? "Component" : "Page";
         var p = [dirPath];
         if (prefix) {
             p.push(prefix);
@@ -86,7 +85,8 @@ var WechatMini = /** @class */ (function (_super) {
         var basePath = path.join(_super.prototype.getCurrentDir.call(this), "miniprogram/" + p.join("/"), fileName);
         var jsonContent = isComponent ? "{\n  \"component\": true,\n  \"usingComponents\": {\n  }\n}\n" : "{\n  \"usingComponents\": {\n  }\n}";
         _super.prototype.writeFile.call(this, basePath, fileName + ".json", jsonContent);
-        _super.prototype.writeFile.call(this, basePath, fileName + ".ts", "/**\n * " + fileName + "\n */\n" + className + "({});\n");
+        var tsContent = isComponent ? "/**\n * " + fileName + "\n */\nComponent({});\n" : "/**\n * " + fileName + "\n */\nPage({\n  data: {},\n  onLoad() {\n    // todo\n  },\n  onShow() {\n    // todo\n  },\n  onReady() {\n    // todo\n  },\n});\n";
+        _super.prototype.writeFile.call(this, basePath, fileName + ".ts", tsContent);
         _super.prototype.writeFile.call(this, basePath, fileName + ".wxml", "<view class=\"container\">" + fileName + "</view>");
         _super.prototype.writeFile.call(this, basePath, fileName + ".wxss", "");
     };

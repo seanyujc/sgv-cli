@@ -69,7 +69,6 @@ export class WechatMini extends Base {
     prefix = "",
     isComponent = true,
   ) {
-    const className = isComponent ? "Component" : "Page";
     const p = [dirPath];
     if (prefix) {
       p.push(prefix);
@@ -95,14 +94,34 @@ export class WechatMini extends Base {
       fileName + ".json",
       jsonContent ,
     );
+
+    const tsContent = isComponent ? `/**
+ * ${fileName}
+ */
+Component({
+  data: {},
+  methods: {},
+});
+` : `/**
+ * ${fileName}
+ */
+Page({
+  data: {},
+  onLoad() {
+    // todo
+  },
+  onShow() {
+    // todo
+  },
+  onReady() {
+    // todo
+  },
+});
+`;
     super.writeFile(
       basePath,
       fileName + ".ts",
-      `/**
- * ${fileName}
- */
-${className}({});
-`,
+      tsContent,
     );
     super.writeFile(
       basePath,
