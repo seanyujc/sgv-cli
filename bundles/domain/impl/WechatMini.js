@@ -29,7 +29,7 @@ var WechatMini = /** @class */ (function (_super) {
             beforePath = name.substring(0, name.lastIndexOf("/")).replace(/^\//, "");
         }
         var miniprogramRoot = path.join(_super.prototype.getCurrentDir.call(this), "miniprogram");
-        var config = "\"pages/" + beforePath + fileName + "/" + fileName + "\"";
+        var config = "\"pages/" + beforePath + "/" + fileName + "/" + fileName + "\"";
         fs.readFile(miniprogramRoot + "/app.json", function (error, data) {
             var content = data.toString("utf8");
             try {
