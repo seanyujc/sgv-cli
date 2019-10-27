@@ -26,7 +26,7 @@ export class WechatMini extends Base {
           const res = content.replace(
             /"pages": \[([^\]]*)/,
             `"pages": [
-  ${val}
+    ${val}
 `,
           );
           super.writeFile(miniprogramRoot, "/app.json", res, true);
@@ -80,14 +80,20 @@ export class WechatMini extends Base {
       fileName,
     );
 
-    super.writeFile(
-      basePath,
-      fileName + ".json",
-      `{
+    const jsonContent = isComponent ?  `{
+  "component": true,
   "usingComponents": {
   }
 }
-`,
+` : `{
+  "usingComponents": {
+  }
+}`;
+
+    super.writeFile(
+      basePath,
+      fileName + ".json",
+      jsonContent ,
     );
     super.writeFile(
       basePath,

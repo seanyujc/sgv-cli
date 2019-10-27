@@ -38,7 +38,7 @@ var WechatMini = /** @class */ (function (_super) {
                     appJson.pages = appJson.pages.map(JSON.stringify);
                     appJson.pages.push(config);
                     var val = appJson.pages.join("," + _super.prototype.endl.call(_this) + "    ");
-                    var res = content.replace(/"pages": \[([^\]]*)/, "\"pages\": [\n  " + val + "\n");
+                    var res = content.replace(/"pages": \[([^\]]*)/, "\"pages\": [\n    " + val + "\n");
                     _super.prototype.writeFile.call(_this, miniprogramRoot, "/app.json", res, true);
                     _this.buildComponentBase("pages", fileName, beforePath, false);
                 }
@@ -84,7 +84,8 @@ var WechatMini = /** @class */ (function (_super) {
             p.push(prefix);
         }
         var basePath = path.join(_super.prototype.getCurrentDir.call(this), "miniprogram/" + p.join("/"), fileName);
-        _super.prototype.writeFile.call(this, basePath, fileName + ".json", "{\n  \"usingComponents\": {\n  }\n}\n");
+        var jsonContent = isComponent ? "{\n  \"component\": true,\n  \"usingComponents\": {\n  }\n}\n" : "{\n  \"usingComponents\": {\n  }\n}";
+        _super.prototype.writeFile.call(this, basePath, fileName + ".json", jsonContent);
         _super.prototype.writeFile.call(this, basePath, fileName + ".ts", "/**\n * " + fileName + "\n */\n" + className + "({});\n");
         _super.prototype.writeFile.call(this, basePath, fileName + ".wxml", "<view class=\"container\">" + fileName + "</view>");
         _super.prototype.writeFile.call(this, basePath, fileName + ".wxss", "");
