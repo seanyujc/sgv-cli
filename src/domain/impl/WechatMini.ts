@@ -10,10 +10,12 @@ export class WechatMini extends Base {
     if (name.indexOf("/") !== -1) {
       const fn = name.substring(name.lastIndexOf("/") + 1);
       fileName = this.changeCaseKebab(fn);
-      beforePath = name.substring(0, name.lastIndexOf("/")).replace(/^\//, "");
+      beforePath = name
+        .substring(0, name.lastIndexOf("/") + 1)
+        .replace(/^\//, "");
     }
     const miniprogramRoot = path.join(super.getCurrentDir(), "miniprogram");
-    const config = `"pages/${beforePath}/${fileName}/${fileName}"`;
+    const config = `"pages/${beforePath}${fileName}/${fileName}"`;
 
     fs.readFile(miniprogramRoot + "/app.json", (error, data) => {
       const content = data.toString("utf8");
@@ -79,30 +81,30 @@ export class WechatMini extends Base {
       fileName,
     );
 
-    const jsonContent = isComponent ?  `{
+    const jsonContent = isComponent
+      ? `{
   "component": true,
   "usingComponents": {
   }
 }
-` : `{
+`
+      : `{
   "usingComponents": {
   }
 }`;
 
-    super.writeFile(
-      basePath,
-      fileName + ".json",
-      jsonContent ,
-    );
+    super.writeFile(basePath, fileName + ".json", jsonContent);
 
-    const tsContent = isComponent ? `/**
+    const tsContent = isComponent
+      ? `/**
  * ${fileName}
  */
 Component({
   data: {},
   methods: {},
 });
-` : `/**
+`
+      : `/**
  * ${fileName}
  */
 Page({
@@ -118,11 +120,7 @@ Page({
   },
 });
 `;
-    super.writeFile(
-      basePath,
-      fileName + ".ts",
-      tsContent,
-    );
+    super.writeFile(basePath, fileName + ".ts", tsContent);
     super.writeFile(
       basePath,
       fileName + ".wxml",
