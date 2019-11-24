@@ -126,6 +126,6 @@ Page({
       fileName + ".wxml",
       `<view class="container">${fileName}</view>`,
     );
-    super.writeFile(basePath, fileName + ".wxss", ``);
+    super.writeFile(basePath, fileName + ".styl", ``);
   }
 }
