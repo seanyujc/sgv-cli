@@ -17,7 +17,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/seanyujc/sgv-cli.git"
+    "url": "git+http://vpn.yaoyanshe.com/YYSWebBasicComponents/sgv-cli.git"
+  },
+  "publishConfig": {
+    "registry": "http://192.168.1.247:8081/repository/npm-yys/"
   },
   "keywords": [],
   "author": "",
