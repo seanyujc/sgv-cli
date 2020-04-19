@@ -41,6 +41,17 @@ export class Base implements IBase {
       return str.replace(/([A-Z])/g, "_$1").toLocaleLowerCase();
     }
   }
+  changeCaseCamel(str: string) {
+    if (str) {
+      return str
+        .replace(/(^[A-Z])/, $1 => {
+          return $1.toLocaleLowerCase();
+        })
+        .replace(/([-_][A-Za-z])/g, $1 => {
+          return $1.replace(/[-_]/, "").toLocaleUpperCase();
+        });
+    }
+  }
   replaceKeyword(tplContent: string, keyword: string) {
     const compiled = template(tplContent);
     const uFKeyword = this.changeCasePascal(keyword);

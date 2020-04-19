@@ -9,9 +9,15 @@ import { Base } from "./Base";
 export class Page extends Base implements IPage {
   templatePath: string;
   routerTplPath: string;
+  pagePath = "";
 
   constructor(private pageName: string, private appName: string = "app") {
     super();
+    if (pageName && pageName.indexOf("/") !== -1) {
+      const jar = pageName.replace(/^\//, "").split("/");
+      this.pageName = jar.pop();
+      this.pagePath = jar.join("/");
+    }
     this.templatePath = path.join(__dirname, "../../../", ".sgv/page/main");
     this.routerTplPath = path.join(
       __dirname,
@@ -39,6 +45,7 @@ export class Page extends Base implements IPage {
           const basePath = path.join(
             super.getCurrentDir(),
             "src/" + this.appName + "/pages",
+            this.pagePath,
             this.changeCaseKebab(this.pageName),
           );
           super.writeFile(
