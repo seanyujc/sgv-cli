@@ -22,6 +22,9 @@
   "publishConfig": {
     "registry": "http://192.168.1.247:8081/repository/npm-yys/"
   },
+  "sgvConfig": {
+    "template": "http://vpn.yaoyanshe.com/YYSWebBasicComponents/sgv-tpl-webpack.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
