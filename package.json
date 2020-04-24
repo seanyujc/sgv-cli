@@ -23,6 +23,7 @@
     "registry": "http://192.168.1.247:8081/repository/npm-yys/"
   },
   "sgvConfig": {
+    "private": true,
     "template": "http://vpn.yaoyanshe.com/YYSWebBasicComponents/sgv-tpl-webpack.git"
   },
   "keywords": [],
