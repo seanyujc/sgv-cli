@@ -52,7 +52,12 @@ export class Base implements IBase {
         });
     }
   }
-  replaceKeyword(tplContent: string, keyword: string, level = 0) {
+  replaceKeyword(
+    tplContent: string,
+    keyword: string,
+    level = 0,
+    pagePath: string = "",
+  ) {
     const compiled = template(tplContent);
     const uFKeyword = this.changeCasePascal(keyword);
     const kebabKeyword = this.changeCaseKebab(keyword);
@@ -61,12 +66,16 @@ export class Base implements IBase {
     for (let i = 0; i < level; i++) {
       levelPath.push("../");
     }
+    if (pagePath) {
+      pagePath += "/";
+    }
     return compiled({
       keyword,
       uFKeyword,
       kebabKeyword,
       snakeKeyword,
       levelPath: levelPath.join(""),
+      pagePath,
     });
   }
   mkdirs(dirpath: string, mode: number, callback?: () => void) {

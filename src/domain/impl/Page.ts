@@ -43,6 +43,7 @@ export class Page extends Base implements IPage {
           const content = super.replaceKeyword(
             data.toString("utf8"),
             this.pageName,
+            this.level,
           );
           const basePath = path.join(
             super.getCurrentDir(),
@@ -69,6 +70,8 @@ export class Page extends Base implements IPage {
     const content = super.replaceKeyword(
       PAGE.FACTORY_FUNCTION_CONTENT,
       this.pageName,
+      this.level,
+      this.pagePath,
     );
     const addContent = PAGE.FACTORY_ANCHOR + super.endl() + content;
 
@@ -121,6 +124,7 @@ export class Page extends Base implements IPage {
     const basePath = path.join(
       super.getCurrentDir(),
       "src/" + this.appName + "/pages",
+      this.pagePath,
       super.changeCaseKebab(this.pageName),
     );
     rimraf(basePath, (err) => {

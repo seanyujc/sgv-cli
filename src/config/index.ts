@@ -49,7 +49,7 @@ export const PAGE: IPageConst = {
   FACTORY_ANCHOR: "// SGV-BUILD-PAGE-FAC # NOT DELETE",
   FACTORY_FUNCTION_CONTENT: `// '<%= uFKeyword%>' PAGE FACTORY START
 export function <%= keyword%>PagePreloading(): Promise<any> {
-  return import("./<%= kebabKeyword%>/<%= kebabKeyword%>.vue").catch(error => {
+  return import("./<%= pagePath%><%= kebabKeyword%>/<%= kebabKeyword%>.vue").catch(error => {
     return dealOccurred(error, "<%= uFKeyword%>");
   });
 }
@@ -114,8 +114,12 @@ export const STORE: IStoreConst = {
   MUTATIONS_ANCHOR: "// SGV-BUILD-STORE-MUTATIONS # NOT DELETE",
   ACTIONS_ANCHOR: "// SGV-BUILD-STORE-ACTIONS # NOT DELETE",
   GETTERS_ANCHOR: "// SGV-BUILD-STORE-GETTERS # NOT DELETE",
-  CONSTANT_PAGE_MUTATIONS_ANCHOR: "/\\* PAGE-MUTATIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
-  CONSTANT_PAGE_ACTIONS_ANCHOR: "/\\* PAGE-ACTIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
-  CONSTANT_COMP_MUTATIONS_ANCHOR: "/\\* COMP-MUTATIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
-  CONSTANT_COMP_ACTIONS_ANCHOR: "/\\* COMP-ACTIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
+  CONSTANT_PAGE_MUTATIONS_ANCHOR:
+    "/\\* PAGE-MUTATIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
+  CONSTANT_PAGE_ACTIONS_ANCHOR:
+    "/\\* PAGE-ACTIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
+  CONSTANT_COMP_MUTATIONS_ANCHOR:
+    "/\\* COMP-MUTATIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
+  CONSTANT_COMP_ACTIONS_ANCHOR:
+    "/\\* COMP-ACTIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
 };
