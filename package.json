@@ -15,13 +15,6 @@
     "rebuild": "rimraf bundles && tsc && npm unlink && npm link",
     "debug": "node --debug-brk=9229 --nolazy ./bundles/sgv-mini.js build -p=person"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+http://vpn.yaoyanshe.com/YYSWebBasicComponents/sgv-cli.git"
-  },
-  "publishConfig": {
-    "registry": "http://192.168.1.247:8081/repository/npm-yys/"
-  },
   "sgvConfig": {
     "private": true,
     "template": "http://vpn.yaoyanshe.com/YYSWebBasicComponents/sgv-tpl-webpack.git"
