@@ -9,9 +9,17 @@ import { Base } from "./Base";
 export class Page extends Base implements IPage {
   templatePath: string;
   routerTplPath: string;
+  pagePath = "";
+  level = 0;
 
   constructor(private pageName: string, private appName: string = "app") {
     super();
+    if (pageName && pageName.indexOf("/") !== -1) {
+      const jar = pageName.replace(/^\//, "").split("/");
+      this.level = jar.length - 1;
+      this.pageName = jar.pop();
+      this.pagePath = jar.join("/");
+    }
     this.templatePath = path.join(__dirname, "../../../", ".sgv/page/main");
     this.routerTplPath = path.join(
       __dirname,
@@ -35,10 +43,12 @@ export class Page extends Base implements IPage {
           const content = super.replaceKeyword(
             data.toString("utf8"),
             this.pageName,
+            this.level,
           );
           const basePath = path.join(
             super.getCurrentDir(),
             "src/" + this.appName + "/pages",
+            this.pagePath,
             this.changeCaseKebab(this.pageName),
           );
           super.writeFile(
@@ -60,6 +70,8 @@ export class Page extends Base implements IPage {
     const content = super.replaceKeyword(
       PAGE.FACTORY_FUNCTION_CONTENT,
       this.pageName,
+      this.level,
+      this.pagePath,
     );
     const addContent = PAGE.FACTORY_ANCHOR + super.endl() + content;
 
@@ -69,7 +81,7 @@ export class Page extends Base implements IPage {
       PAGE.FACTORY_ANCHOR,
       PAGE.FACTORY_ANCHOR,
       addContent,
-      err => {
+      (err) => {
         if (err) {
           winston.error(err.message);
           return;
@@ -98,7 +110,7 @@ export class Page extends Base implements IPage {
       original,
       PAGE.ROUTER_CONFIG_ANCHOR,
       configContent,
-      err => {
+      (err) => {
         if (err) {
           winston.error(err.message);
           return;
@@ -112,9 +124,10 @@ export class Page extends Base implements IPage {
     const basePath = path.join(
       super.getCurrentDir(),
       "src/" + this.appName + "/pages",
+      this.pagePath,
       super.changeCaseKebab(this.pageName),
     );
-    rimraf(basePath, err => {
+    rimraf(basePath, (err) => {
       if (err) {
         winston.error(err.message);
         return;
@@ -133,7 +146,7 @@ export class Page extends Base implements IPage {
       super.replaceKeyword(PAGE.FACTORY_FUNCTION_PATTERN, this.pageName) +
       super.endl();
 
-    super.deleteContentFromFile(basePath, fileName, pattern, err => {
+    super.deleteContentFromFile(basePath, fileName, pattern, (err) => {
       if (err && err.name === "without") {
         winston.error("Without config option in factory file!");
         return;
@@ -155,7 +168,7 @@ export class Page extends Base implements IPage {
       super.replaceKeyword(PAGE.ROUTER_CONFIG_PATTERN, this.pageName) +
       super.endl();
 
-    super.deleteContentFromFile(basePath, fileName, pattern, err => {
+    super.deleteContentFromFile(basePath, fileName, pattern, (err) => {
       if (err && err.name === "without") {
         winston.error("Without config option in router file!");
         return;

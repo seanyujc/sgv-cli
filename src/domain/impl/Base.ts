@@ -41,12 +41,42 @@ export class Base implements IBase {
       return str.replace(/([A-Z])/g, "_$1").toLocaleLowerCase();
     }
   }
-  replaceKeyword(tplContent: string, keyword: string) {
+  changeCaseCamel(str: string) {
+    if (str) {
+      return str
+        .replace(/(^[A-Z])/, ($1) => {
+          return $1.toLocaleLowerCase();
+        })
+        .replace(/([-_][A-Za-z])/g, ($1) => {
+          return $1.replace(/[-_]/, "").toLocaleUpperCase();
+        });
+    }
+  }
+  replaceKeyword(
+    tplContent: string,
+    keyword: string,
+    level = 0,
+    pagePath: string = "",
+  ) {
     const compiled = template(tplContent);
     const uFKeyword = this.changeCasePascal(keyword);
     const kebabKeyword = this.changeCaseKebab(keyword);
     const snakeKeyword = this.changeCaseSnake(keyword);
-    return compiled({ keyword, uFKeyword, kebabKeyword, snakeKeyword });
+    const levelPath = [];
+    for (let i = 0; i < level; i++) {
+      levelPath.push("../");
+    }
+    if (pagePath) {
+      pagePath += "/";
+    }
+    return compiled({
+      keyword,
+      uFKeyword,
+      kebabKeyword,
+      snakeKeyword,
+      levelPath: levelPath.join(""),
+      pagePath,
+    });
   }
   mkdirs(dirpath: string, mode: number, callback?: () => void) {
     if (fs.existsSync(dirpath)) {
@@ -74,7 +104,7 @@ export class Base implements IBase {
     if (!fs.existsSync(basePath)) {
       mkdirp.sync(basePath);
     }
-    fs.writeFile(filePath, data, { flag: "w" }, err => {
+    fs.writeFile(filePath, data, { flag: "w" }, (err) => {
       if (err) {
         winston.error(err.message);
         return;
@@ -108,7 +138,7 @@ export class Base implements IBase {
         return;
       }
       fileContent = fileContent.replace(reg, content);
-      fs.writeFile(filePath, fileContent, error => {
+      fs.writeFile(filePath, fileContent, (error) => {
         if (error) {
           callback(error);
           return;
@@ -142,7 +172,7 @@ export class Base implements IBase {
         return;
       }
       content = content.replace(reg, "");
-      fs.writeFile(pathName, content, error => {
+      fs.writeFile(pathName, content, (error) => {
         if (error) {
           callback(error);
           return;

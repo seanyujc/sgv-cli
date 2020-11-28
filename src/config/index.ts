@@ -45,11 +45,11 @@ export interface IStoreConst {
   CONSTANT_COMP_ACTIONS_ANCHOR: string;
 }
 
-export const PAGE: IPageConst = {
+export const PAGE = {
   FACTORY_ANCHOR: "// SGV-BUILD-PAGE-FAC # NOT DELETE",
   FACTORY_FUNCTION_CONTENT: `// '<%= uFKeyword%>' PAGE FACTORY START
 export function <%= keyword%>PagePreloading(): Promise<any> {
-  return import("./<%= kebabKeyword%>/<%= kebabKeyword%>.vue").catch(error => {
+  return import("./<%= pagePath%><%= kebabKeyword%>/<%= kebabKeyword%>").catch(error => {
     return dealOccurred(error, "<%= uFKeyword%>");
   });
 }
@@ -63,7 +63,7 @@ export function <%= keyword%>PagePreloading(): Promise<any> {
     '[\\t ]*{ path: "/<%= snakeKeyword%>", name: "<%= keyword%>", component: PageFactory.<%= keyword%>PagePreloading \\},',
 };
 
-export const COMP: ICompConst = {
+export const COMP = {
   FACTORY_ANCHOR: "// SGV-BUILD-COMP-FAC # NOT DELETE",
   FACTORY_CONTENT:
     'Vue.component("<%= keyword%>", require("./<%= kebabKeyword%>/<%= kebabKeyword%>.vue").default);',
@@ -71,7 +71,7 @@ export const COMP: ICompConst = {
     'Vue\\.component\\("<%= keyword%>", require\\("./<%= kebabKeyword%>/<%= kebabKeyword%>.vue"\\).default\\);',
 };
 
-export const SERVICE: IServiceConst = {
+export const SERVICE = {
   ORIGINAL: `// SGV-BUILD-SERVICE-IMPORT # NOT DELETE
 
 export class Services {
@@ -107,15 +107,19 @@ export class Services {
   API_POST_ANCHOR: "    // SGV-BUILD-API-POST # NOT DELETE",
 };
 
-export const STORE: IStoreConst = {
+export const STORE = {
   IMPORT_ANCHOR: "// SGV-BUILD-STORE-IMPORT # NOT DELETE",
   INTERFACE_ANCHOR: "// SGV-BUILD-STORE-INTERFACE # NOT DELETE",
   STATE_ANCHOR: "// SGV-BUILD-STORE-STATE # NOT DELETE",
   MUTATIONS_ANCHOR: "// SGV-BUILD-STORE-MUTATIONS # NOT DELETE",
   ACTIONS_ANCHOR: "// SGV-BUILD-STORE-ACTIONS # NOT DELETE",
   GETTERS_ANCHOR: "// SGV-BUILD-STORE-GETTERS # NOT DELETE",
-  CONSTANT_PAGE_MUTATIONS_ANCHOR: "/\\* PAGE-MUTATIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
-  CONSTANT_PAGE_ACTIONS_ANCHOR: "/\\* PAGE-ACTIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
-  CONSTANT_COMP_MUTATIONS_ANCHOR: "/\\* COMP-MUTATIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
-  CONSTANT_COMP_ACTIONS_ANCHOR: "/\\* COMP-ACTIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
+  CONSTANT_PAGE_MUTATIONS_ANCHOR:
+    "/\\* PAGE-MUTATIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
+  CONSTANT_PAGE_ACTIONS_ANCHOR:
+    "/\\* PAGE-ACTIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
+  CONSTANT_COMP_MUTATIONS_ANCHOR:
+    "/\\* COMP-MUTATIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
+  CONSTANT_COMP_ACTIONS_ANCHOR:
+    "/\\* COMP-ACTIONS-TYPE-SGV-BUILD # NOT DELETE \\*/",
 };

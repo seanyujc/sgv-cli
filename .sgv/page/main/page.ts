@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Component, { mixins } from "vue-class-component";
-import { AutowiredService } from "../../../lib/sg-resource/decorators";
-import BasePage from "../BasePage";
+import { AutowiredService } from "../../../<%= levelPath%>lib/sg-resource/decorators";
+import BasePage from "../<%= levelPath%>BasePage";
 
 interface I<%= uFKeyword%>Page {
   /**
