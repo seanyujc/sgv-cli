@@ -45,6 +45,9 @@ export interface IStoreConst {
   CONSTANT_COMP_ACTIONS_ANCHOR: string;
 }
 
+export const TPL_GITHUB_REPOSITORY =
+  "https://github.com/seanyujc/sgv-tpl-webpack.git";
+
 export const PAGE = {
   FACTORY_ANCHOR: "// SGV-BUILD-PAGE-FAC # NOT DELETE",
   FACTORY_FUNCTION_CONTENT: `// '<%= uFKeyword%>' PAGE FACTORY START

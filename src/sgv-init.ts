@@ -2,6 +2,7 @@
 import program = require("commander");
 import download = require("download-git-repo");
 import ora = require("ora");
+import { TPL_GITHUB_REPOSITORY } from "./config";
 const chalk = require("chalk");
 const winston = require("winston");
 const ncp = require("ncp").ncp;
@@ -24,7 +25,7 @@ if (!program.hasOwnProperty("new")) {
     "initializing for " + projectName + " project...",
   ).start();
   if (sgvConfig.private) {
-    gitclone(template, projectName, {}, err => {
+    gitclone(template, projectName, {}, (err) => {
       if (err) {
         winston.log(err);
         winston.log(chalk.red("  Initialize failed with errors.\n"));
@@ -35,7 +36,7 @@ if (!program.hasOwnProperty("new")) {
       spinner.stop();
     });
   } else {
-    download(template, projectName, {}, err => {
+    gitclone(TPL_GITHUB_REPOSITORY, projectName, {}, (err) => {
       if (err) {
         winston.log(err);
         winston.log(chalk.red("  Initialize failed with errors.\n"));
@@ -52,7 +53,7 @@ if (program.hasOwnProperty("new")) {
     "initializing for " + projectName + " project...",
   ).start();
   if (sgvConfig.private) {
-    gitclone(template, projectName + "/.temp/" + appName + "", err => {
+    gitclone(template, projectName + "/.temp/" + appName + "", (err) => {
       spinner.stop();
       if (err) {
         winston.log(err);
@@ -61,7 +62,7 @@ if (program.hasOwnProperty("new")) {
         ncp(
           "./" + projectName + "/.temp/" + appName + "/src/app",
           "./" + projectName + "/src/" + appName + "",
-          err1 => {
+          (err1) => {
             rm("./" + projectName + "/.temp");
             if (err1) {
               return winston.error(err1);
@@ -72,24 +73,30 @@ if (program.hasOwnProperty("new")) {
       }
     });
   } else {
-    download(template, projectName + "/.temp/" + appName + "", err => {
-      spinner.stop();
-      if (err) {
-        winston.log(err);
-        winston.log(chalk.red("  Initialize failed with errors.\n"));
-      } else {
-        ncp(
-          "./" + projectName + "/.temp/" + appName + "/src/app",
-          "./" + projectName + "/src/" + appName + "",
-          err1 => {
-            rm("./" + projectName + "/.temp");
-            if (err1) {
-              return winston.error(err1);
-            }
-            winston.log(chalk.cyan(" " + appName + " Initialize complete.\n"));
-          },
-        );
-      }
-    });
+    gitclone(
+      TPL_GITHUB_REPOSITORY,
+      projectName + "/.temp/" + appName + "",
+      (err) => {
+        spinner.stop();
+        if (err) {
+          winston.log(err);
+          winston.log(chalk.red("  Initialize failed with errors.\n"));
+        } else {
+          ncp(
+            "./" + projectName + "/.temp/" + appName + "/src/app",
+            "./" + projectName + "/src/" + appName + "",
+            (err1) => {
+              rm("./" + projectName + "/.temp");
+              if (err1) {
+                return winston.error(err1);
+              }
+              winston.log(
+                chalk.cyan(" " + appName + " Initialize complete.\n"),
+              );
+            },
+          );
+        }
+      },
+    );
   }
 }
