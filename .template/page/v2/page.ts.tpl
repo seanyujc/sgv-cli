@@ -1,0 +1,18 @@
+import Component, { mixins } from "vue-class-component";
+import BasePage from "@/app/pages/BasePage";
+
+@Component({
+  components: {},
+  name: "<%= parentCamelKeyword%>",
+})
+export default class <%= pascalKeyword%>Page extends mixins(BasePage) {
+  title: string = "<%= pascalKeyword%>";
+
+  fetchData() {
+    // todo
+  }
+  /* 生命钩子 START */
+  mounted() {
+    //
+  }
+}
