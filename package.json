@@ -12,6 +12,10 @@
     "build": "npx tsc && npm unlink && npm link",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seanyujc/sgv-cli.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
