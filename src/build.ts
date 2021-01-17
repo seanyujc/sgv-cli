@@ -3,8 +3,9 @@ import { paramCase } from "change-case";
 import { program } from "commander";
 import inquirer from "inquirer";
 import path from "path";
-import { getCurrentDir } from "./core/common";
+import { getCurrentDir, writeTemplateFiles } from "./core/common";
 import { buildPage } from "./core/page";
+import * as fs from "fs";
 
 program
   .name("build")
@@ -21,25 +22,53 @@ program
   .parse(process.argv);
 
 const options = program.opts();
-
-if (options.page) {
-  const packageJson = require(path.resolve(getCurrentDir(), "package.json"));
-  if (packageJson.dependencies && packageJson.dependencies.vue) {
-    const vue: string = packageJson.dependencies.vue;
-    const m = vue.match(/(\d+)\.\d+\.\d/);
-    let version: 2 | 3 = 3;
-    if (m !== null) {
-      const v = +m[1];
-      if (+m[1] === 2 || +m[1] === 3) {
-        version = +m[1] as any;
-      }
-    }
-    let parentPath = [];
-    const jar = options.page.replace(/^\//, "").split("/");
-    for (let i = 0; i < jar.length; i++) {
-      const pageName = jar[i];
-      buildPage(parentPath.join("/"), pageName, i + 1 === jar.length, version);
-      parentPath.push(paramCase(pageName));
+const packageJson = require(path.resolve(getCurrentDir(), "package.json"));
+// vue version
+let version: 2 | 3 = 3;
+if (packageJson.dependencies && packageJson.dependencies.vue) {
+  const vue: string = packageJson.dependencies.vue;
+  const m = vue.match(/(\d+)\.\d+\.\d/);
+  if (m !== null) {
+    const v = +m[1];
+    if (+m[1] === 2 || +m[1] === 3) {
+      version = +m[1] as any;
     }
   }
+}
+
+if (options.page) {
+  let parentPath = [];
+  const jar = options.page.replace(/^\//, "").split("/");
+  for (let i = 0; i < jar.length; i++) {
+    const pageName = jar[i];
+    buildPage(parentPath.join("/"), pageName, i + 1 === jar.length, version);
+    parentPath.push(paramCase(pageName));
+  }
+}
+
+if (options.component) {
+  const jar = options.component.replace(/^\//, "").split("/");
+  const name = jar.pop() || options.component;
+  const parentPath = jar.join("/");
+  const parentPathUri = path.resolve(
+    getCurrentDir(),
+    "src/app/components",
+    options.component
+  );
+  const templates = { 2: "component/v2", 3: "component/main" };
+  const templatePath = path.resolve(__dirname, "../.template", templates[version]);
+  if (!fs.existsSync(parentPathUri)) {
+    fs.mkdirSync(parentPathUri, { recursive: true });
+  }
+  // console.log(templatePath);
+  
+  writeTemplateFiles(
+    templatePath,
+    parentPathUri,
+    parentPath,
+    name,
+    {
+      createFileName: "index.ts",
+    }
+  );
 }
