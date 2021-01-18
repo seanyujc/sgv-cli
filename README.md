@@ -1,6 +1,6 @@
 SGV 
 -------------- 
-SGV(Smart Grand Visual) is A simple CLI for scaffolding Vue.js projects(typescript) .
+SGV(Smart Grand Visual) is A simple CLI for scaffolding Vue.js projects(typescript).
 
 # Getting Started 
 ```sh

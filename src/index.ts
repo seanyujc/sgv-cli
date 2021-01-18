@@ -6,7 +6,7 @@ const packagejson = require("../package");
 program.version(packagejson.version);
 
 program
-  .description("SGV is A simple CLI for scaffolding Vue.js projects(ts).")
+  .description("SGV(Smart Grand Visual) is A simple CLI for scaffolding Vue.js projects(typescript).")
   .name("sgv")
   .usage("<command> [options] ")
   .command("init", "generate a new project from a template")

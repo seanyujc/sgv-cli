@@ -63,7 +63,7 @@ export function buildPage(
     },
   );
 }
-function createRouteObjectLitera(directory: string, keyword: string) {
+function createRouteObjectLitera(directory: string, keyword: string, accessObjectName="pages") {
   const { parentCamelKeyword, parentPathKebab } = getReplaceKeywords(
     keyword,
     directory,
@@ -81,7 +81,7 @@ function createRouteObjectLitera(directory: string, keyword: string) {
       ts.factory.createPropertyAssignment(
         "component",
         ts.factory.createPropertyAccessExpression(
-          ts.factory.createIdentifier("pages"),
+          ts.factory.createIdentifier(accessObjectName),
           `${parentCamelKeyword}PagePreloading`,
         ),
       ),
@@ -118,6 +118,24 @@ function writeRouteConfig(
       content,
       ts.ScriptTarget.Latest,
     );
+    // console.log(ast.statements);
+    let pages = "pages"
+    function delintNode(node: ts.Node) {
+      if (node.kind === ts.SyntaxKind.ImportDeclaration) {
+        // console.log("===============\n", node);
+        const importDeclaration = node as ts.ImportDeclaration;
+        if (ts.isStringLiteral(importDeclaration.moduleSpecifier) && importDeclaration.moduleSpecifier.text.includes("./pages")) {
+          // console.log(importDeclaration.moduleSpecifier.text);
+          const importClause = (<ts.ImportClause>importDeclaration.importClause)
+          if (importClause.namedBindings && ts.isNamespaceImport(importClause.namedBindings)) {
+            pages = importClause.namedBindings.name.text;
+          }
+        }
+      }
+      ts.forEachChild(node, delintNode);
+    }
+
+    delintNode(ast);
 
     const transformerFactory: ts.TransformerFactory<ts.Node> = (
       context: ts.TransformationContext,
@@ -129,6 +147,8 @@ function writeRouteConfig(
         if (!directory) {
           root = "/";
         }
+        // 找到根
+        // 找到属性名或变量名是routes的node
         if (
           !directory &&
           (ts.isPropertyAssignment(node) || ts.isVariableDeclaration(node)) &&
@@ -159,7 +179,7 @@ function writeRouteConfig(
             if (exists === -1) {
               let property = null;
               let arrayLiteral = ts.factory.createArrayLiteralExpression([
-                createRouteObjectLitera(directory, keyword),
+                createRouteObjectLitera(directory, keyword, pages),
                 ...node.initializer.elements,
               ]);
               if (ts.isPropertyAssignment(node)) {
@@ -182,6 +202,7 @@ function writeRouteConfig(
             }
           }
         }
+        // 插入子路由
         if (directory && ts.isObjectLiteralExpression(node)) {
           const paths = directory.split("/");
           paths[0] = "/" + paths[0];
@@ -236,7 +257,7 @@ function writeRouteConfig(
                     [
                       ...childrenProperty.initializer.elements,
                       // todo
-                      createRouteObjectLitera(directory, keyword),
+                      createRouteObjectLitera(directory, keyword, pages),
                     ],
                   ),
                 );
@@ -368,13 +389,13 @@ function joinMainExport(keyword: string, directory?: string) {
     let content = data.toString("utf8");
     let ast = ts.createSourceFile("index.ts", content, ts.ScriptTarget.Latest);
 
-    console.log(ast);
-    const statement0 = ast.statements[0];
+    // console.log(ast);
+    // const statement0 = ast.statements[0];
 
-    if (ts.isFunctionDeclaration(statement0)) {
-      console.log("\n==========\n");
-      console.log(statement0.type);
-    }
+    // if (ts.isFunctionDeclaration(statement0)) {
+    //   console.log("\n==========\n");
+    //   console.log(statement0.type);
+    // }
     const m = content.match(importName);
     if (m !== null) {
       return;
