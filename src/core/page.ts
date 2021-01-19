@@ -379,7 +379,7 @@ function joinMainExport(keyword: string, directory?: string) {
         ast,
       );
 
-      fs.writeFileSync(pagesMainFileUri, prettier.format(codeAfterTransform));
+      fs.writeFileSync(pagesMainFileUri, prettier.format(codeAfterTransform, { parser: "typescript" }));
     } catch (error) {
       console.log(chalk.red(error.message));
     }
@@ -436,7 +436,7 @@ function joinMainExport(keyword: string, directory?: string) {
     try {
       fs.writeFileSync(
         pagesFactoryFileUri,
-        prettier.format(codeAfterTransform),
+        prettier.format(codeAfterTransform, { parser: "typescript" }),
       );
     } catch (error) {
       console.log(chalk.red(error.message));
