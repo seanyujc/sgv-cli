@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "sgv": "./lib/index.js",
-    "sgv-init": "./lib/init.js",
-    "sgv-build": "./lib/build.js"
+    "sgv": "./lib/sgv.js",
+    "sgv-init": "./lib/sgv-init.js",
+    "sgv-build": "./lib/sgv-build.js"
   },
   "scripts": {
     "build": "npx tsc && npm unlink && npm link",

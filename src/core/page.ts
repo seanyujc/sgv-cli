@@ -63,11 +63,17 @@ export function buildPage(
     },
   );
 }
-function createRouteObjectLitera(directory: string, keyword: string, accessObjectName="pages") {
-  const { parentCamelKeyword, parentPathKebab } = getReplaceKeywords(
-    keyword,
-    directory,
-  );
+function createRouteObjectLitera(
+  directory: string,
+  keyword: string,
+  accessObjectName = "pages",
+) {
+  const {
+    parentCamelKeyword,
+    parentPathKebab,
+    snakeKeyword,
+    pascalKeyword,
+  } = getReplaceKeywords(keyword, directory);
   let root = "";
   if (!directory) {
     root = "/";
@@ -76,7 +82,11 @@ function createRouteObjectLitera(directory: string, keyword: string, accessObjec
     [
       ts.factory.createPropertyAssignment(
         "path",
-        ts.factory.createStringLiteral(root + keyword),
+        ts.factory.createStringLiteral(root + snakeKeyword),
+      ),
+      ts.factory.createPropertyAssignment(
+        "name",
+        ts.factory.createStringLiteral(parentCamelKeyword),
       ),
       ts.factory.createPropertyAssignment(
         "component",
@@ -119,15 +129,21 @@ function writeRouteConfig(
       ts.ScriptTarget.Latest,
     );
     // console.log(ast.statements);
-    let pages = "pages"
+    let pages = "pages";
     function delintNode(node: ts.Node) {
       if (node.kind === ts.SyntaxKind.ImportDeclaration) {
         // console.log("===============\n", node);
         const importDeclaration = node as ts.ImportDeclaration;
-        if (ts.isStringLiteral(importDeclaration.moduleSpecifier) && importDeclaration.moduleSpecifier.text.includes("./pages")) {
+        if (
+          ts.isStringLiteral(importDeclaration.moduleSpecifier) &&
+          importDeclaration.moduleSpecifier.text.includes("./pages")
+        ) {
           // console.log(importDeclaration.moduleSpecifier.text);
-          const importClause = (<ts.ImportClause>importDeclaration.importClause)
-          if (importClause.namedBindings && ts.isNamespaceImport(importClause.namedBindings)) {
+          const importClause = <ts.ImportClause>importDeclaration.importClause;
+          if (
+            importClause.namedBindings &&
+            ts.isNamespaceImport(importClause.namedBindings)
+          ) {
             pages = importClause.namedBindings.name.text;
           }
         }
@@ -379,7 +395,10 @@ function joinMainExport(keyword: string, directory?: string) {
         ast,
       );
 
-      fs.writeFileSync(pagesMainFileUri, prettier.format(codeAfterTransform, { parser: "typescript" }));
+      fs.writeFileSync(
+        pagesMainFileUri,
+        prettier.format(codeAfterTransform, { parser: "typescript" }),
+      );
     } catch (error) {
       console.log(chalk.red(error.message));
     }
