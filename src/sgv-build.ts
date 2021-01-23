@@ -6,6 +6,7 @@ import path from "path";
 import { getCurrentDir, writeTemplateFiles } from "./core/common";
 import { buildPage } from "./core/page";
 import * as fs from "fs";
+import { addFunctionInService, buildService } from "./core/service";
 
 program
   .name("build")
@@ -13,12 +14,13 @@ program
   .option("-p,--page [page name]", "generate a new page to current project")
   .option(
     "-c,--component [component name]",
-    "generate a new component to current project"
+    "generate a new component to current project",
   )
   .option(
     "-s,--service [service name]",
-    "generate a new service to current project"
+    "generate a new service to current project",
   )
+  .option("-f,--function [method name]", "method name of service")
   .parse(process.argv);
 
 const options = program.opts();
@@ -53,22 +55,46 @@ if (options.component) {
   const parentPathUri = path.resolve(
     getCurrentDir(),
     "src/app/components",
-    options.component
+    options.component,
   );
   const templates = { 2: "component/v2", 3: "component/main" };
-  const templatePath = path.resolve(__dirname, "../.template", templates[version]);
+  const templatePath = path.resolve(
+    __dirname,
+    "../.template",
+    templates[version],
+  );
   if (!fs.existsSync(parentPathUri)) {
     fs.mkdirSync(parentPathUri, { recursive: true });
   }
   // console.log(templatePath);
-  
-  writeTemplateFiles(
-    templatePath,
-    parentPathUri,
-    parentPath,
-    name,
-    {
-      createFileName: "index.ts",
-    }
-  );
+
+  writeTemplateFiles(templatePath, parentPathUri, parentPath, name, {
+    createFileName: "index.ts",
+  });
+}
+if (options.service) {
+  const keyword: string = <string>options.service;
+  const serviceName = keyword.substring(keyword.lastIndexOf("/") + 1);
+  const parentPath = keyword.substring(0, keyword.lastIndexOf("/"));
+
+  buildService(parentPath, serviceName);
+}
+
+if (options.service && options.function) {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "method",
+        message: `What request methods will you use request methods in service ${options.service}?`,
+        choices: ["GET", "POST", "DELETE", "PUT"],
+      },
+    ])
+    .then(({ method }) => {
+      addFunctionInService(
+        options.function,
+        method ? method : "POST",
+        options.service,
+      );
+    });
 }
