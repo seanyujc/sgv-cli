@@ -72,7 +72,7 @@ if (options.component) {
     createFileName: "index.ts",
   });
 }
-if (options.service) {
+if (options.service && !options.function) {
   const keyword: string = <string>options.service;
   const serviceName = keyword.substring(keyword.lastIndexOf("/") + 1);
   const parentPath = keyword.substring(0, keyword.lastIndexOf("/"));
