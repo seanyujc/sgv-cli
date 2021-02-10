@@ -6,7 +6,12 @@ import path from "path";
 import { getCurrentDir, writeTemplateFiles } from "./core/common";
 import { buildPage } from "./core/page";
 import * as fs from "fs";
-import { addFunctionInService, buildService } from "./core/service";
+import {
+  addFunctionInService,
+  buildService,
+  getCurrentAPIModules,
+  getHostListInAPIModule,
+} from "./core/service";
 
 program
   .name("build")
@@ -81,6 +86,7 @@ if (options.service && !options.function) {
 }
 
 if (options.service && options.function) {
+  const apiModules = getCurrentAPIModules();
   inquirer
     .prompt([
       {
@@ -89,12 +95,25 @@ if (options.service && options.function) {
         message: `What request methods will you use request methods in service ${options.service}?`,
         choices: ["GET", "POST", "DELETE", "PUT"],
       },
+      {
+        type: "list",
+        name: "apiModule",
+        message: "Which module do you want to add api configuration to?",
+        choices: apiModules,
+      },
     ])
-    .then(({ method }) => {
+    .then(({ method, apiModule }) => {
+      const hosts = getHostListInAPIModule(apiModule);
+      if (hosts.length > 1) {
+        inquirer.prompt([
+          
+        ])
+      }
       addFunctionInService(
         options.function,
-        method ? method : "POST",
         options.service,
+        method,
+        apiModule,
       );
     });
 }

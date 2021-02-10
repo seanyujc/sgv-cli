@@ -18,6 +18,54 @@ import {
 } from "change-case";
 import prettier from "prettier";
 
+export function getHostListInAPIModule(apiModule: string) {
+  const apiPath = path.join(
+    getCurrentDir(),
+    "src/app/config",
+    apiModule + ".conf.ts",
+  );
+  const res: string[] = [];
+  try {
+    const data = fs.readFileSync(apiPath);
+    let content = data.toString("utf8");
+    const ast = ts.createSourceFile(
+      apiModule + ".conf.ts",
+      content,
+      ts.ScriptTarget.Latest,
+    );
+    console.log(ast);
+    
+    function delintNode(node: ts.Node) {
+      if (node.kind === ts.SyntaxKind.TypeReference) {
+        
+      }
+      ts.forEachChild(node, delintNode);
+    }
+    delintNode(ast);
+  } catch (error) {
+
+  }
+  return res
+}
+
+export function getCurrentAPIModules() {
+  try {
+    const names = fs.readdirSync(path.join(getCurrentDir(), "src/app/config"));
+
+    let files: string[] = [];
+    for (const name of names) {
+      const stat = fs.lstatSync(
+        path.join(getCurrentDir(), "src/app/config", name),
+      );
+      if (stat.isFile()) {
+        files.push(name.replace(".conf.ts", ""));
+      }
+    }
+    return files;
+  } catch (error) {
+    return [];
+  }
+}
 export function getCurrentService(servicePath = "") {
   try {
     const names = fs.readdirSync(
@@ -73,8 +121,9 @@ export function buildService(parentPath: string, keyword: string) {
 
 export function addFunctionInService(
   keyword: string,
-  methodName: string,
   service: string,
+  methodName = "POST",
+  apiModule = "api",
 ) {
   const serviceFile = path.join(
     getCurrentDir(),
@@ -88,6 +137,10 @@ export function addFunctionInService(
     }
     let content = data.toString("utf8");
 
+    apiModule = apiModule.replace(/-*api/, "");
+    if (apiModule) {
+      apiModule += "/";
+    }
     // content = encodeEmptyLines(content);
     const ast = ts.createSourceFile(
       service + ".serv.ts",
@@ -118,12 +171,14 @@ export function addFunctionInService(
                 ts.factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword),
               ),
             ],
-            undefined,
+            ts.factory.createTypeReferenceNode("Promise", [
+              ts.factory.createTypeReferenceNode("any", []),
+            ]),
             ts.factory.createBlock(
               [
                 ts.factory.createReturnStatement(
                   ts.factory.createIdentifier(
-                    `this.proxyHttp.${methodName.toLocaleLowerCase()}("${keyword}", params)`,
+                    `this.proxyHttp.${methodName.toLocaleLowerCase()}("${apiModule}${keyword}", params)`,
                   ),
                 ),
               ],
@@ -151,7 +206,7 @@ export function addFunctionInService(
     };
     const result = ts.transform(ast, [transformerFactory]);
     const node = result.transformed[0];
-    console.log(node.getFullText());
+    // console.log(node.getFullText());
 
     const printer = ts.createPrinter();
     let codeAfterTransform = printer.printNode(
