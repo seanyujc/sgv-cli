@@ -41,7 +41,8 @@ if (!program.hasOwnProperty("new")) {
         winston.log(err);
         winston.log(chalk.red("  Initialize failed with errors.\n"));
       } else {
-        winston.log(chalk.cyan("  Initialize complete.\n"));
+        rm(projectName + "/.git");
+        spinner.succeed("Initialize complete.");
       }
       spinner.stop();
     });
