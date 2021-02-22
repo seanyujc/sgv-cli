@@ -19,7 +19,11 @@ import { error } from "winston";
 export const templateRoot = path.resolve(__dirname, "../../.template");
 
 export function getCurrentDir(): string {
-  return process.env.PWD || process.cwd();
+  if (process.env.NODE_PROJECT_ROOT) {
+    return process.env.NODE_PROJECT_ROOT;
+  } else {
+    return process.env.PWD || process.cwd();
+  }
 }
 
 export function getReplaceKeywords(keyword: string, parentPath?: string) {
@@ -63,7 +67,7 @@ export function replaceKeyword(
   tplContent: string,
   keyword: string,
   parentPath?: string,
-  leaf = true
+  leaf = true,
 ) {
   const compiled = template(tplContent);
   const replaceKeywords = getReplaceKeywords(keyword, parentPath);
@@ -94,7 +98,7 @@ export function writeTemplateFiles(
     leaf: true,
     createFileName: "",
   },
-  cb?: (error?: Error | undefined, info?: string) => void
+  cb?: (error?: Error | undefined, info?: string) => void,
 ) {
   if (!fs.existsSync(targetPath)) {
     fs.mkdirSync(targetPath);
@@ -126,10 +130,12 @@ export function writeTemplateFiles(
             data.toString("utf8"),
             keyword,
             directory,
-            options && options.leaf
+            options && options.leaf,
           );
           fs.writeFileSync(filePath, content, { flag: "w" });
-          succeeds.push(`The ${paramCase(fileNameOut) + extname} file. Path: ${filePath}`);
+          succeeds.push(
+            `The ${paramCase(fileNameOut) + extname} file. Path: ${filePath}`,
+          );
         } catch (error) {
           errors.push(error.message);
         }

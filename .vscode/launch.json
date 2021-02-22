@@ -1,0 +1,19 @@
+{
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "skipFiles": ["${workspaceFolder}/node_modules"],
+      "preLaunchTask": "npm: build",
+      "program": "${workspaceFolder}/lib/sgv-build.js",
+      "args": ["-p", "subject/sae/default"],
+      "env": { "NODE_PROJECT_ROOT": "../../front/TrialLab/TrialLab_H5" },
+      "console": "integratedTerminal"
+    }
+  ]
+}

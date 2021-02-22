@@ -79,10 +79,7 @@ if (options.component) {
 }
 if (options.service && !options.function) {
   const keyword: string = <string>options.service;
-  const serviceName = keyword.substring(keyword.lastIndexOf("/") + 1);
-  const parentPath = keyword.substring(0, keyword.lastIndexOf("/"));
-
-  buildService(parentPath, serviceName);
+  buildService(keyword);
 }
 
 if (options.service && options.function) {
@@ -105,9 +102,7 @@ if (options.service && options.function) {
     .then(({ method, apiModule }) => {
       const hosts = getHostListInAPIModule(apiModule);
       if (hosts.length > 1) {
-        inquirer.prompt([
-          
-        ])
+        inquirer.prompt([]);
       }
       addFunctionInService(
         options.function,

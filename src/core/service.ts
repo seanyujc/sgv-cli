@@ -34,18 +34,15 @@ export function getHostListInAPIModule(apiModule: string) {
       ts.ScriptTarget.Latest,
     );
     console.log(ast);
-    
+
     function delintNode(node: ts.Node) {
       if (node.kind === ts.SyntaxKind.TypeReference) {
-        
       }
       ts.forEachChild(node, delintNode);
     }
     delintNode(ast);
-  } catch (error) {
-
-  }
-  return res
+  } catch (error) {}
+  return res;
 }
 
 export function getCurrentAPIModules() {
@@ -92,44 +89,68 @@ export function getCurrentService(servicePath = "") {
   }
 }
 
-export function buildService(parentPath: string, keyword: string) {
-  let template = path.join(templateRoot, "service/service.ts.tpl");
-  const targetPath = path.join(
-    getCurrentDir(),
-    "src/app/core/services",
-    parentPath,
-  );
-  const targetFile = path.join(targetPath, paramCase(keyword) + ".serv.ts");
-  if (!fs.existsSync(targetPath)) {
-    fs.mkdirSync(targetPath, { recursive: true });
-  }
-  fs.readFile(template, {}, (error, data) => {
-    if (error) {
-      console.log(chalk.red(error.message));
-      return;
-    }
-    const content = replaceKeyword(data.toString("utf8"), keyword);
-    fs.writeFile(targetFile, content, { flag: "w" }, (error) => {
-      if (error) {
+export function buildService(keyword: string) {
+  return new Promise((resolve, reject) => {
+    const serviceName = keyword.substring(keyword.lastIndexOf("/") + 1);
+    const parentPath = keyword.substring(0, keyword.lastIndexOf("/"));
+
+    let template = path.join(templateRoot, "service/service.ts.tpl");
+    const targetPath = path.join(
+      getCurrentDir(),
+      "src/app/core/services",
+      parentPath,
+    );
+    const targetFile = path.join(
+      targetPath,
+      paramCase(serviceName) + ".serv.ts",
+    );
+    if (!fs.existsSync(targetPath)) {
+      try {
+        fs.mkdirSync(targetPath, { recursive: true });
+      } catch (error) {
         console.log(chalk.red(error.message));
+        reject(error);
         return;
       }
-      console.log(chalk.green(`创建了服务文件：${targetFile}`));
+    }
+    fs.readFile(template, {}, (error, data) => {
+      if (error) {
+        console.log(chalk.red(error.message));
+        reject(error);
+        return;
+      }
+      const content = replaceKeyword(data.toString("utf8"), serviceName);
+      fs.writeFile(targetFile, content, { flag: "w" }, (error) => {
+        if (error) {
+          console.log(chalk.red(error.message));
+          reject(error);
+          return;
+        }
+        console.log(chalk.green(`创建了服务文件：${targetFile}`));
+        resolve(`创建了服务文件：${targetFile}`);
+      });
     });
   });
 }
 
-export function addFunctionInService(
+export async function addFunctionInService(
   keyword: string,
-  service: string,
+  servicekeyword: string,
   methodName = "POST",
   apiModule = "api",
 ) {
   const serviceFile = path.join(
     getCurrentDir(),
     "src/app/core/services",
-    service + ".serv.ts",
+    servicekeyword + ".serv.ts",
   );
+  if (!fs.existsSync(serviceFile)) {
+    try {
+      await buildService(servicekeyword);
+    } catch (error) {
+      return;
+    }
+  }
   fs.readFile(serviceFile, {}, (error, data) => {
     if (error) {
       console.log(chalk.red(error.message));
@@ -143,7 +164,7 @@ export function addFunctionInService(
     }
     // content = encodeEmptyLines(content);
     const ast = ts.createSourceFile(
-      service + ".serv.ts",
+      servicekeyword + ".serv.ts",
       content,
       ts.ScriptTarget.Latest,
     );

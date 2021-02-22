@@ -229,7 +229,8 @@ function writeRouteConfig(
               ts.isIdentifierOrPrivateIdentifier(property.name) &&
               property.name.escapedText === "path" &&
               ts.isStringLiteral(property.initializer) &&
-              property.initializer.text === paths[paths.length - 1],
+              property.initializer.text.replace(/\/:\w+/, "") ===
+                paths[paths.length - 1],
           );
           if (index !== -1) {
             const childrenProperty = node.properties.find((property) => {
