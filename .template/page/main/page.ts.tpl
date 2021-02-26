@@ -1,6 +1,6 @@
 import { defineComponent } from "vue";
+import { useBasePage } from "/@/app/pages/base-page";
 import { useHeadMetadata } from "/@/app/core/composition/head-metadata";
-import { CommonService } from "/@/app/core/services/common.serv";
 import { createSingletonObject } from "/@/lib/sg-resource/src/decorator";
 
 export default defineComponent({
@@ -13,6 +13,7 @@ export default defineComponent({
     // todo
   },
   setup() {
+    useBasePage()
     const { ssrContext, setHeadMetadata } = useHeadMetadata();
     if (ssrContext) {
       ssrContext.title = "<%= pascalKeyword%> Page";
