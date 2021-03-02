@@ -5,6 +5,7 @@ import { createSingletonObject } from "/@/lib/sg-resource/src/decorator";
 
 export default defineComponent({
   name: "<%= pascalKeyword%>Page",
+  components: {},
   computed: {},
   data() {
     return {};
@@ -12,6 +13,7 @@ export default defineComponent({
   async serverPrefetch() {
     // todo
   },
+  methods: {},
   setup() {
     useBasePage()
     const { ssrContext, setHeadMetadata } = useHeadMetadata();
@@ -20,7 +22,6 @@ export default defineComponent({
     }
     return { ssrContext, setHeadMetadata };
   },
-  methods: {},
   mounted() {
     // todo
   },
