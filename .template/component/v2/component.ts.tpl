@@ -6,8 +6,9 @@ import { BaseComp } from "@/app/components/BaseComp";
   name: "<%= camelKeyword%>",
 })
 export default class <%= pascalKeyword%>Comp extends mixins(BaseComp) {
-  /* 生命钩子 START */
+  /* Lifecycle Hooks */
   mounted() {
     //
   }
+  /* Lifecycle Hooks END */
 }

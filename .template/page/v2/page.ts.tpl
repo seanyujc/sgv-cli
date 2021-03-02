@@ -11,8 +11,9 @@ export default class <%= pascalKeyword%>Page extends mixins(BasePage) {
   fetchData() {
     // todo
   }
-  /* 生命钩子 START */
+  /* Lifecycle Hooks */
   mounted() {
     //
   }
+  /* Lifecycle Hooks END */
 }

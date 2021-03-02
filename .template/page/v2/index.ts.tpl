@@ -1,5 +1,5 @@
-import { dealOccurred } from "@/app/pages/BasePage";
+import { dealOccurred } from "@/app/pages";
 
 export function <%= parentCamelKeyword%>PagePreloading(): Promise<any> {
-  return import("./<%= kebabKeyword%>").catch((error) => dealOccurred(error, "<%= pascalKeyword%>"));
+  return import("./<%= kebabKeyword%>.vue").catch((error) => dealOccurred(error, "<%= pascalKeyword%>"));
 }
