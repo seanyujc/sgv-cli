@@ -265,12 +265,14 @@ export async function addFunctionInService(
  * 添加api接口到配置文件
  * @param apiModule 目标模块配置文件
  * @param method 请求方法
+ * @param keyword 方法名关键字
  * @param apiPath 接口路径
  * @param host 服务主机
  */
 export function addApiConfig(
   apiModule: string,
   method: string,
+  keyword: string,
   apiPath: string,
   host?: string,
 ) {
@@ -289,10 +291,25 @@ export function addApiConfig(
     );
     console.log(ast);
     function delintNode(node: ts.Node) {
-      if (
-        ts.isVariableDeclaration(node) &&
-        (node.name as ts.Identifier).text === apiModule
-      ) {
+      if (ts.isExportAssignment(node)) {
+        const prop = ((node.expression as ts.AsExpression)
+          .expression as ts.ObjectLiteralExpression).properties.find(
+          (value) =>
+            ((value as ts.PropertyAssignment).name as ts.Identifier).text ===
+            method.toLocaleLowerCase(),
+        );
+        if (prop && ts.isPropertyAssignment(prop)) {
+          const apiList = (prop.initializer as ts.ObjectLiteralExpression)
+            .properties;
+          const has = apiList.find(
+            (value) =>
+              ((value as ts.PropertyAssignment).name as ts.Identifier).text ===
+              keyword,
+          );
+          if (!has) {
+            // apiList.reduce()
+          }
+        }
         console.log("-----------------------\n", node);
         return;
       }

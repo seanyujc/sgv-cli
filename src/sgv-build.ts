@@ -124,6 +124,6 @@ if (options.service && options.function) {
         method,
         apiModule,
       );
-      addApiConfig(apiModule, method, apiPath, host);
+      addApiConfig(apiModule, method, options.function, apiPath, host);
     });
 }
