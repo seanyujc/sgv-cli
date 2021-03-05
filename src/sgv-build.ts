@@ -7,6 +7,7 @@ import { getCurrentDir, writeTemplateFiles } from "./core/common";
 import { buildPage } from "./core/page";
 import * as fs from "fs";
 import {
+  addApiConfig,
   addFunctionInService,
   buildService,
   getCurrentAPIModules,
@@ -84,31 +85,45 @@ if (options.service && !options.function) {
 
 if (options.service && options.function) {
   const apiModules = getCurrentAPIModules();
+  const hosts = getHostListInAPIModule();
+  const questions = [
+    {
+      type: "list",
+      name: "method",
+      message: `What request methods will you use in service ${options.service}?`,
+      choices: ["GET", "POST", "DELETE", "PUT"],
+    },
+    {
+      type: "list",
+      name: "apiModule",
+      message: "Which module do you want to add api configuration to?",
+      choices: apiModules,
+    },
+    {
+      type: "input",
+      name: "apiPath",
+      message: `Do you want to provide an API access path?`,
+      default: "/" + options.function,
+    },
+  ];
+  if (hosts.length) {
+    questions.push({
+      type: "list",
+      name: "host",
+      message: `Which host do you want to choose?`,
+      choices: hosts,
+    });
+  }
+
   inquirer
-    .prompt([
-      {
-        type: "list",
-        name: "method",
-        message: `What request methods will you use request methods in service ${options.service}?`,
-        choices: ["GET", "POST", "DELETE", "PUT"],
-      },
-      {
-        type: "list",
-        name: "apiModule",
-        message: "Which module do you want to add api configuration to?",
-        choices: apiModules,
-      },
-    ])
-    .then(({ method, apiModule }) => {
-      const hosts = getHostListInAPIModule(apiModule);
-      if (hosts.length > 1) {
-        inquirer.prompt([]);
-      }
+    .prompt(questions)
+    .then(async ({ method, apiModule, apiPath, host }) => {
       addFunctionInService(
         options.function,
         options.service,
         method,
         apiModule,
       );
+      addApiConfig(apiModule, method, apiPath, host);
     });
 }

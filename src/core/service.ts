@@ -18,13 +18,13 @@ import {
 } from "change-case";
 import prettier from "prettier";
 
-export function getHostListInAPIModule(apiModule: string) {
+export function getHostListInAPIModule(apiModule = "api") {
   const apiPath = path.join(
     getCurrentDir(),
     "src/app/config",
     apiModule + ".conf.ts",
   );
-  const res: string[] = [];
+  let res: string[] = [];
   try {
     const data = fs.readFileSync(apiPath);
     let content = data.toString("utf8");
@@ -33,15 +33,24 @@ export function getHostListInAPIModule(apiModule: string) {
       content,
       ts.ScriptTarget.Latest,
     );
-    console.log(ast);
+    // console.log(ast);
 
     function delintNode(node: ts.Node) {
-      if (node.kind === ts.SyntaxKind.TypeReference) {
+      if (node.kind === ts.SyntaxKind.UnionType) {
+        res = (node as ts.UnionTypeNode).types.map(
+          (value) =>
+            ((value as ts.LiteralTypeNode).literal as ts.StringLiteral).text,
+        );
+        console.log(res);
+
+        return;
       }
       ts.forEachChild(node, delintNode);
     }
     delintNode(ast);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
   return res;
 }
 
@@ -250,4 +259,59 @@ export async function addFunctionInService(
       },
     );
   });
+}
+
+/**
+ * 添加api接口到配置文件
+ * @param apiModule 目标模块配置文件
+ * @param method 请求方法
+ * @param apiPath 接口路径
+ * @param host 服务主机
+ */
+export function addApiConfig(
+  apiModule: string,
+  method: string,
+  apiPath: string,
+  host?: string,
+) {
+  const apiConfigFilePath = path.join(
+    getCurrentDir(),
+    "src/app/config",
+    apiModule + ".conf.ts",
+  );
+  try {
+    const data = fs.readFileSync(apiConfigFilePath);
+    let content = data.toString("utf8");
+    const ast = ts.createSourceFile(
+      apiModule + ".conf.ts",
+      content,
+      ts.ScriptTarget.Latest,
+    );
+    console.log(ast);
+    function delintNode(node: ts.Node) {
+      if (
+        ts.isVariableDeclaration(node) &&
+        (node.name as ts.Identifier).text === apiModule
+      ) {
+        console.log("-----------------------\n", node);
+        return;
+      }
+      ts.forEachChild(node, delintNode);
+    }
+    delintNode(ast);
+    const printer = ts.createPrinter();
+
+    fs.writeFile(
+      apiConfigFilePath,
+      prettier.format(printer.printFile(ast), { parser: "typescript" }),
+      (error) => {
+        if (error) {
+          console.log(chalk.red(error.message));
+          return;
+        }
+      },
+    );
+  } catch (error) {
+    console.log(error);
+  }
 }

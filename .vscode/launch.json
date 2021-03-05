@@ -7,7 +7,18 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
+      "name": "Launch Build Service Method",
+      "skipFiles": ["${workspaceFolder}/node_modules"],
+      "preLaunchTask": "npm: build",
+      "program": "${workspaceFolder}/lib/sgv-build.js",
+      "args": ["-s", "common", "-f", "logout"],
+      "env": { "NODE_PROJECT_ROOT": "../sgv-tpl-vite" },
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Build Page",
       "skipFiles": ["${workspaceFolder}/node_modules"],
       "preLaunchTask": "npm: build",
       "program": "${workspaceFolder}/lib/sgv-build.js",
