@@ -6,10 +6,10 @@ import { createSingletonObject } from "/@/lib/sg-resource/src/decorator";
 export default defineComponent({
   name: "<%= pascalKeyword%>Page",
   components: {},
-  computed: {},
   data() {
     return {};
   },
+  computed: {},
   async serverPrefetch() {
     // todo
   },
