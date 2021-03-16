@@ -7,6 +7,17 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Launch Weapp Build",
+      "skipFiles": ["${workspaceFolder}/node_modules"],
+      "preLaunchTask": "npm: build",
+      "program": "${workspaceFolder}/lib/sgv-mini.js",
+      "args": ["build", "-s", "user"],
+      "env": { "NODE_PROJECT_ROOT": "../sgv-tpl-weapp" },
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch Build Service Method",
       "skipFiles": ["${workspaceFolder}/node_modules"],
       "preLaunchTask": "npm: build",
