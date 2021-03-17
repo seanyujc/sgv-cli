@@ -6,6 +6,19 @@ import * as winston from "winston";
 import chalk from "chalk";
 import { getCurrentDir } from "./common";
 const os = require("os");
+import {
+  camelCase,
+  capitalCase,
+  constantCase,
+  dotCase,
+  headerCase,
+  noCase,
+  paramCase,
+  pascalCase,
+  pathCase,
+  sentenceCase,
+  snakeCase,
+} from "change-case";
 
 export class Base {
   endl() {
@@ -18,42 +31,6 @@ export class Base {
     const i = filename.indexOf(".");
     return i < 0 ? "" : filename.substr(i);
   }
-  /**
-   * 转换成 Pascal
-   * @param str 驼峰字符串
-   */
-  changeCasePascal(str: string) {
-    const first = str.substr(0, 1).toLocaleUpperCase();
-    const surplus = str.substr(1, str.length);
-    return first + surplus;
-  }
-  changeCaseConstant(str: string) {
-    if (str) {
-      return str.replace(/([A-Z])/g, "_$1").toLocaleUpperCase();
-    }
-  }
-  changeCaseKebab(str: string) {
-    if (str) {
-      return str.replace(/([A-Z])/g, "-$1").toLocaleLowerCase();
-    }
-    return str;
-  }
-  changeCaseSnake(str: string) {
-    if (str) {
-      return str.replace(/([A-Z])/g, "_$1").toLocaleLowerCase();
-    }
-  }
-  changeCaseCamel(str: string) {
-    if (str) {
-      return str
-        .replace(/(^[A-Z])/, ($1) => {
-          return $1.toLocaleLowerCase();
-        })
-        .replace(/([-_][A-Za-z])/g, ($1) => {
-          return $1.replace(/[-_]/, "").toLocaleUpperCase();
-        });
-    }
-  }
   replaceKeyword(
     tplContent: string,
     keyword: string,
@@ -61,9 +38,9 @@ export class Base {
     pagePath: string = "",
   ) {
     const compiled = template(tplContent);
-    const uFKeyword = this.changeCasePascal(keyword);
-    const kebabKeyword = this.changeCaseKebab(keyword);
-    const snakeKeyword = this.changeCaseSnake(keyword);
+    const uFKeyword = pascalCase(keyword);
+    const kebabKeyword = paramCase(keyword);
+    const snakeKeyword = snakeCase(keyword);
     const levelPath = [];
     for (let i = 0; i < level; i++) {
       levelPath.push("../");
@@ -108,10 +85,10 @@ export class Base {
     }
     fs.writeFile(filePath, data, { flag: "w" }, (err) => {
       if (err) {
-        winston.error(err.message);
+        console.log(chalk.red(err.message));
         return;
       }
-      winston.info(`created file: ${filePath}`);
+      console.log(chalk.green(`created file: ${filePath}`));
     });
   }
 
@@ -136,7 +113,7 @@ export class Base {
       let fileContent = data.toString();
       const reg = new RegExp(anchor);
       if (fileContent.search(reg) === -1) {
-        winston.error("Failed! Anchor not find.");
+        console.log(chalk.red("Failed! Anchor not find."));
         return;
       }
       fileContent = fileContent.replace(reg, content);
@@ -188,11 +165,11 @@ export class Base {
 
 export class Weapp extends Base {
   buildPage(name: string) {
-    let fileName = this.changeCaseKebab(name);
+    let fileName = paramCase(name);
     let beforePath = "";
     if (name.indexOf("/") !== -1) {
       const fn = name.substring(name.lastIndexOf("/") + 1);
-      fileName = this.changeCaseKebab(fn);
+      fileName = paramCase(fn);
       beforePath = name
         .substring(0, name.lastIndexOf("/") + 1)
         .replace(/^\//, "");
@@ -218,13 +195,13 @@ export class Weapp extends Base {
           this.buildComponentBase("pages", fileName, beforePath, false);
         }
       } catch (error) {
-        winston.error(error);
+        console.log(chalk.red(error));
       }
     });
   }
 
   buildComponent(name: string) {
-    const fileName = this.changeCaseKebab(name);
+    const fileName = paramCase(name);
     const miniprogramRoot = path.join(getCurrentDir(), "miniprogram");
     fs.readdir(miniprogramRoot + "/components", (error, files) => {
       if (error) {
@@ -249,7 +226,7 @@ export class Weapp extends Base {
   }
 
   buildService(name: string) {
-    const fileName = this.changeCaseKebab(name) + ".serv.ts";
+    const fileName = paramCase(name) + ".serv.ts";
     const miniprogramRoot = path.join(getCurrentDir(), "miniprogram");
     fs.readdir(miniprogramRoot + "/core/services", (error, files) => {
       if (error) {
@@ -268,7 +245,7 @@ export class Weapp extends Base {
           console.log(chalk.red("已经存在！"));
           return;
         }
-        this.createServiceFile(fileName);
+        this.createServiceFile(name);
       }
     });
   }
@@ -350,7 +327,7 @@ Page({
     const fileName = name + ".serv.ts";
     const fileContent = `import BaseService from "./base.serv";
 
-export class ${name}Service extends BaseService {
+export class ${pascalCase(name)}Service extends BaseService {
   constructor() {
     super();
   }
