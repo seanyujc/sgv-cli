@@ -1,5 +1,5 @@
-import Component, { mixins } from "vue-class-component";
 import { BaseComp } from "@/app/components/BaseComp";
+import Component, { mixins } from "vue-class-component";
 
 @Component({
   components: {},
