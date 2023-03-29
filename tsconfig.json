@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+      "module": "commonjs",
+      "target": "es5",
+      "preserveConstEnums": true,
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "declaration": true,
+      "sourceMap": true,
+      "typeRoots": [
+        "./node_modules/@types"
+      ],
+      "types": [
+          "node",
+          "commander",
+          "ora"
+      ],
+      "outDir": "./bundles"
+  },
+  "compileOnSave": true,
+  "exclude": [
+      "node_modules",
+      "bundles",
+      ".sgv"
+  ]
+}

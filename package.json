@@ -1,0 +1,52 @@
+{
+  "name": "sgv-cli",
+  "version": "1.1.10",
+  "description": "A simple CLI for scaffolding Vue.js projects.",
+  "main": "index.js",
+  "bin": {
+    "sgv": "bundles/sgv.js",
+    "sgvs": "bundles/sgvs.js",
+    "sgv-init": "bundles/sgv-init.js",
+    "sgv-build": "bundles/sgv-build.js",
+    "sgvs-build": "bundles/sgvs-build.js",
+    "sgv-remove": "bundles/sgv-remove.js"
+  },
+  "scripts": {
+    "rebuild": "rimraf bundles && tsc && npm unlink && npm link",
+    "debug": "node --debug-brk=9229 --nolazy ./bundles/sgv-mini.js build -p=person"
+  },
+  "sgvConfig": {
+    "private": false,
+    "template": "http:///sgv-tpl-webpack.git"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seanyujc/sgv-cli.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/commander": "^2.11.0",
+    "@types/lodash.template": "^4.4.3",
+    "@types/mkdirp": "^0.5.1",
+    "@types/node": "^8.0.47",
+    "@types/ora": "^1.3.1",
+    "@types/rimraf": "^2.0.2",
+    "@types/winston": "^2.3.7"
+  },
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "commander": "^2.11.0",
+    "download-git-repo": "^1.0.1",
+    "git-clone": "^0.1.0",
+    "lodash.template": "^4.4.0",
+    "mkdirp": "^1.0.4",
+    "ncp": "^2.0.0",
+    "ora": "^1.3.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^2.8.3",
+    "winston": "^2.4.0"
+  }
+}
