@@ -1,7 +1,3 @@
 {
-  "tslint.exclude": [
-    "**/.sgv/**/*"
-  ],
-  "eslint.enable": false,
-  "prettier.trailingComma": "all"
+    "editor.tabSize": 2
 }

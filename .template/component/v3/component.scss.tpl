@@ -1,0 +1,2 @@
+.component-<%= kebabPrefix%><%= parentKebabKeyword%> {
+}

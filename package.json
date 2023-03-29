@@ -1,23 +1,18 @@
 {
   "name": "sgv-cli",
-  "version": "1.1.10",
-  "description": "A simple CLI for scaffolding Vue.js projects.",
+  "version": "2.0.3",
+  "description": "",
   "main": "index.js",
   "bin": {
-    "sgv": "bundles/sgv.js",
-    "sgvs": "bundles/sgvs.js",
-    "sgv-init": "bundles/sgv-init.js",
-    "sgv-build": "bundles/sgv-build.js",
-    "sgvs-build": "bundles/sgvs-build.js",
-    "sgv-remove": "bundles/sgv-remove.js"
+    "sgv": "./lib/sgv.js",
+    "sgv-init": "./lib/sgv-init.js",
+    "sgv-build": "./lib/sgv-build.js",
+    "sgv-add": "./lib/sgv-add.js"
   },
   "scripts": {
-    "rebuild": "rimraf bundles && tsc && npm unlink && npm link",
-    "debug": "node --debug-brk=9229 --nolazy ./bundles/sgv-mini.js build -p=person"
-  },
-  "sgvConfig": {
-    "private": false,
-    "template": "http:///sgv-tpl-webpack.git"
+    "build": "tsc",
+    "link": "npm link",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -25,28 +20,27 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
-    "@types/chalk": "^2.2.0",
-    "@types/commander": "^2.11.0",
-    "@types/lodash.template": "^4.4.3",
-    "@types/mkdirp": "^0.5.1",
-    "@types/node": "^8.0.47",
-    "@types/ora": "^1.3.1",
-    "@types/rimraf": "^2.0.2",
-    "@types/winston": "^2.3.7"
+    "@types/inquirer": "^7.3.1",
+    "@types/lodash.template": "^4.5.0",
+    "@types/mkdirp": "^1.0.1",
+    "@types/ncp": "^2.0.4",
+    "@types/prettier": "^2.1.6",
+    "@types/rimraf": "^3.0.0",
+    "typescript": "^4.6.3"
   },
   "dependencies": {
-    "chalk": "^2.3.0",
-    "commander": "^2.11.0",
-    "download-git-repo": "^1.0.1",
-    "git-clone": "^0.1.0",
-    "lodash.template": "^4.4.0",
+    "change-case": "^4.1.2",
+    "commander": "^7.0.0",
+    "git-pull-or-clone": "^2.0.2",
+    "inquirer": "^7.3.3",
+    "lodash.template": "^4.5.0",
     "mkdirp": "^1.0.4",
     "ncp": "^2.0.0",
-    "ora": "^1.3.0",
+    "ora": "^5.2.0",
+    "prettier": "^2.2.1",
     "rimraf": "^3.0.2",
-    "typescript": "^2.8.3",
-    "winston": "^2.4.0"
+    "winston": "^3.3.3"
   }
 }
