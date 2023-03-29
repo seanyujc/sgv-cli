@@ -7,9 +7,47 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "启动程序",
-      "program": "${workspaceFolder}/bundles/sgv-mini.js build -p ddd",
-      "outFiles": ["${workspaceFolder}/bundles/**/*.js"]
+      "name": "Launch SSR Build",
+      "skipFiles": ["${workspaceFolder}/node_modules"],
+      "preLaunchTask": "npm: build",
+      "program": "${workspaceFolder}/lib/sgv-mini.js",
+      "args": ["build", "-s", "user"],
+      "env": { "NODE_PROJECT_ROOT": "../sgv-tpl-h5-ssr" },
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Build Service Method",
+      "runtimeExecutable": "/Users/sean/.nvm/versions/node/v16.13.2/bin/node",
+      "skipFiles": ["${workspaceFolder}/node_modules"],
+      "preLaunchTask": "npm: build",
+      "program": "${workspaceFolder}/lib/sgv-build.js",
+      "args": ["-s", "user", "-f", "logout"],
+      "env": { "NODE_PROJECT_ROOT": "../../../experiment/y-pc" },
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Build Page",
+      "skipFiles": ["${workspaceFolder}/node_modules"],
+      "preLaunchTask": "npm: build",
+      "program": "${workspaceFolder}/lib/sgv-build.js",
+      "args": ["-p", "subject/saeii/default"],
+      "env": { "NODE_PROJECT_ROOT": "../../../yaoyanshe/TrialLab/TrialLab_H5" },
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Build Component",
+      "skipFiles": ["${workspaceFolder}/node_modules"],
+      "preLaunchTask": "npm: build",
+      "program": "${workspaceFolder}/lib/sgv-build.js",
+      "args": ["-c", "autoTextarea", "-e", "my"],
+      "env": { "NODE_PROJECT_ROOT": "../../../experiment/y-pc" },
+      "console": "integratedTerminal"
     }
   ]
 }
