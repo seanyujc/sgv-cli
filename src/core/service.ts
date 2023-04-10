@@ -409,11 +409,12 @@ export async function addFunctionInService(
             ts.isVariableStatement(variableStatement) &&
             ts.isVariableDeclarationList(variableStatement.declarationList)
           ) {
-            const variableDeclarationIndex = variableStatement.declarationList.declarations.findIndex(
-              (decl) =>
-                ts.isIdentifier(decl.name) &&
-                decl.name.escapedText === `${servicekeyword}Service`,
-            );
+            const variableDeclarationIndex =
+              variableStatement.declarationList.declarations.findIndex(
+                (decl) =>
+                  ts.isIdentifier(decl.name) &&
+                  decl.name.escapedText === `${servicekeyword}Service`,
+              );
             const variableDeclaration =
               variableStatement.declarationList.declarations[
                 variableDeclarationIndex
@@ -527,7 +528,11 @@ export async function addFunctionInService(
     // console.log(codeAfterTransform);
     fs.writeFile(
       serviceFile,
-      prettier.format(codeAfterTransform, { parser: "typescript" }),
+      prettier.format(codeAfterTransform, {
+        parser: "typescript",
+        trailingComma: "all",
+        endOfLine: "auto",
+      }),
       { encoding: "utf8" },
       (error) => {
         if (error) {
@@ -726,7 +731,11 @@ export function addApiConfig(
     );
     fs.writeFile(
       apiConfigFilePath,
-      prettier.format(codeAfterTransform, { parser: "typescript" }),
+      prettier.format(codeAfterTransform, {
+        parser: "typescript",
+        trailingComma: "all",
+        endOfLine: "auto",
+      }),
       { encoding: "utf8" },
       (error) => {
         if (error) {

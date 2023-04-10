@@ -60,7 +60,6 @@ export function buildPage(
         console.log(chalk.grey(info));
       }
       joinMainExport(paramCase(keyword), directory);
-
     },
   );
 }
@@ -69,7 +68,6 @@ function isExportDefault(node: ts.Declaration): boolean {
   const modifier = ts.ModifierFlags.ExportDefault;
   return (ts.getCombinedModifierFlags(node) & modifier) === modifier;
 }
-
 
 /**
  * add export page expression
@@ -85,11 +83,8 @@ function joinMainExport(keyword: string, directory?: string) {
     getCurrentDir(),
     "src/app/pages/factory.page.ts",
   );
-  const {
-    parentCamelKeyword,
-    parentPathKebab,
-    pascalKeyword,
-  } = getReplaceKeywords(keyword, directory);
+  const { parentCamelKeyword, parentPathKebab, pascalKeyword } =
+    getReplaceKeywords(keyword, directory);
   const importName = `${parentCamelKeyword}PagePreloading`;
   if (directory) {
     directory = `/${directory}`;
@@ -161,7 +156,11 @@ function joinMainExport(keyword: string, directory?: string) {
 
       fs.writeFileSync(
         pagesMainFileUri,
-        prettier.format(codeAfterTransform, { parser: "typescript" }),
+        prettier.format(codeAfterTransform, {
+          parser: "typescript",
+          trailingComma: "all",
+          endOfLine: "auto",
+        }),
         {
           encoding: "utf8",
         },
@@ -223,7 +222,11 @@ function joinMainExport(keyword: string, directory?: string) {
     try {
       fs.writeFileSync(
         pagesFactoryFileUri,
-        prettier.format(codeAfterTransform, { parser: "typescript" }),
+        prettier.format(codeAfterTransform, {
+          parser: "typescript",
+          trailingComma: "all",
+          endOfLine: "auto",
+        }),
         {
           encoding: "utf8",
         },

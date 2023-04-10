@@ -6,7 +6,7 @@ import BasePage from "@/app/pages/BasePage";
   name: "<%= parentCamelKeyword%>",
 })
 export default class <%= pascalKeyword%>Page extends mixins(BasePage) {
-  title: string = "<%= pascalKeyword%>";
+  title = "<%= pascalKeyword%>";
 
   fetchData() {
     // todo

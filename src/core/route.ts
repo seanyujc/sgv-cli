@@ -18,8 +18,8 @@ export function writeRouteConfig(
   );
 
   try {
-    const data = fs.readFileSync(routeConfigFile);
-    const content = data.toString("utf8");
+    const data = fs.readFileSync(routeConfigFile, { encoding: "utf-8" });
+    const content = data;
     // console.log(content);
 
     let ast = ts.createSourceFile(
@@ -156,9 +156,13 @@ export function writeRouteConfig(
     // console.log(prettier.format(codeAfterTransform));
     fs.writeFileSync(
       routeConfigFile,
-      prettier.format(codeAfterTransform, { parser: "typescript" }),
+      prettier.format(codeAfterTransform, {
+        parser: "typescript",
+        trailingComma: "all",
+        endOfLine: "auto",
+      }),
       {
-        encoding: "utf8",
+        encoding: "utf-8",
       },
     );
   } catch (error) {

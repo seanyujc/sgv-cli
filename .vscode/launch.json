@@ -34,8 +34,8 @@
       "skipFiles": ["${workspaceFolder}/node_modules"],
       "preLaunchTask": "npm: build",
       "program": "${workspaceFolder}/lib/sgv-build.js",
-      "args": ["-p", "subject/saeii/default"],
-      "env": { "NODE_PROJECT_ROOT": "../../../yaoyanshe/TrialLab/TrialLab_H5" },
+      "args": ["-p", "user/group"],
+      "env": { "NODE_PROJECT_ROOT": "../../../yaoyanshe/YYS/YYS_Mgmt" },
       "console": "integratedTerminal"
     },
     {

@@ -77,7 +77,7 @@ export function replaceKeyword(
     pascalPrefix: pascalCase(prefix),
     kebabPrefix: prefix ? prefix + "-" : "",
     ...replaceKeywords,
-    pageMainContent: leaf ? "{{title}}" : "<router-view></router-view>",
+    pageMainContent: leaf ? "{{ title }}" : "<router-view></router-view>",
   });
 }
 function getExtname(fileName: string) {

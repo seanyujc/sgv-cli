@@ -21,11 +21,8 @@ export function joinMainExport(
     "src/app/components/index.ts",
   );
 
-  const {
-    parentCamelKeyword,
-    parentKebabKeyword,
-    pascalKeyword,
-  } = getReplaceKeywords(keyword, directory);
+  const { parentCamelKeyword, parentKebabKeyword, pascalKeyword } =
+    getReplaceKeywords(keyword, directory);
 
   const importName = pascalCase(
     `${options.prefix ? options.prefix + "-" : ""}${parentKebabKeyword}`,
@@ -94,7 +91,11 @@ export function joinMainExport(
 
       fs.writeFileSync(
         exportFilePath,
-        prettier.format(codeAfterTransform, { parser: "typescript" }),
+        prettier.format(codeAfterTransform, {
+          parser: "typescript",
+          trailingComma: "all",
+          endOfLine: "auto",
+        }),
         {
           encoding: "utf8",
         },
