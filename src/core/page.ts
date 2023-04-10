@@ -206,7 +206,7 @@ function joinMainExport(keyword: string, directory?: string) {
           [
             ts.factory.createReturnStatement(
               ts.factory
-                .createIdentifier(`import(".${directory}/${keyword}/${keyword}").catch((error) => {
+                .createIdentifier(`import(".${directory}/${keyword}/${keyword}.vue").catch((error) => {
     return dealOccurred(error, "${pascalKeyword}");
   })`),
             ),
